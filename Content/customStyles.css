@@ -1,0 +1,20 @@
+﻿/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+/* Carousel fix - to the center */
+.carousel {
+    position: relative;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+#myCarousel .nav a small {
+display:block;
+}
+
+#myCarousel .nav {
+background:#eee;
+} 
