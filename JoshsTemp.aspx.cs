@@ -12,14 +12,38 @@ public partial class JoshsTemp : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-
-
             //Need a command to load users image from DB and display to profileImage
-
+            
             //Need commands to load name, email, phone and password from DB and display to txtName, txtEmail, txtPhone and txtPassword
-            /*SqlConnection sql = new SqlConnection("ViewDataWindow_MSSQL__/_LocalDB__v11.0/C__USERS_LOANER_ULCARPOOLING_APP_DATA_CARPOOLING_DB.MDF/True/SqlTable/dbo.users.sql");
-            SqlCommand cmd = new SqlCommand("select FName from users", sql);
-            SqlDataAdapter da = new SqlDataAdapter(cmd);*/
+            
+            SqlConnection sql = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\Loaner\\ULCarpooling\\App_Data\\carpooling_db.mdf;Integrated Security=True;");
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+
+            cmd.CommandText = "Select * from users Where User_ID = 3";
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.Connection = sql;
+
+            sql.Open();
+
+            reader = cmd.ExecuteReader();
+
+            if(reader.HasRows)
+            {
+                while(reader.Read())
+                {
+                    txtName.Text = reader.GetString(1) + " " + reader.GetString(2);
+                    txtEmail.Text = reader.GetString(3);
+                    txtPhone.Text = reader.GetString(4);
+
+                }
+            }
+            else
+            {
+                Response.Write("No data found");
+            }
+            reader.Close();
+            sql.Close();
 
 
             //Need a command to load feedback from DB to feedbackImage
