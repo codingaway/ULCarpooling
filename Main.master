@@ -6,8 +6,11 @@
 <head runat="server">
     <title>UL Carpooling</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Bootstrap core CSS -->
+   <%-- <!-- Bootstrap core CSS -->
+  <%--  <link href="Content/bootstrap.min.css" rel="stylesheet" />--%>
+<%--    <link href="Content/bootstrap.min.ORG.css" rel="stylesheet" />--%>
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
+
     <link href="Content/sticky-footer.css" rel="stylesheet" />
     <link href="Content/customStyles.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
@@ -24,7 +27,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-
+        <%--Add AJAX scrpit handler--%>
+        <asp:ScriptManager ID="ScriptManager1" runat="server"/>
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -51,15 +55,13 @@
             </div>
         </nav>
 
-        <div class="container">
-            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
     </asp:ContentPlaceHolder>
-        </div>
         <!-- /container -->
         <div class="footer">
             <div class="container">
-                <p>&copy; Company 2014</p>
-                <p>Sticky footer here.</p>
+                <p>&copy; UL Carpooling 2015</p>
+                <p>All rights reserved.</p>
              </div>
         </div>
 
@@ -71,6 +73,7 @@
     <script src="Scripts/jquery-1.9.0.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
     <script src="Scripts/carouselControl.js"></script>
+    <asp:ContentPlaceHolder ID="cphScripts" runat="server"></asp:ContentPlaceHolder>
 
 </body>
 </html>

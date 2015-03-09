@@ -23,6 +23,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ULCarpooling", "http://loca
 		Release.AspNetCompiler.Debug = "False"
 		SlnRelativePath = "..\ULCarpooling\"
 		DefaultWebSiteLanguage = "Visual C#"
+		StartServerOnDebug = "true"
 	EndProjectSection
 EndProject
 Global

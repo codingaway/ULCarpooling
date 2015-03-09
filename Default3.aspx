@@ -8,7 +8,7 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner">
             <div class="item active">
-                <img src="http://placehold.it/1200x440/cccccc/ffffff">
+                <img src="Images/bridge2.png">
                 <div class="carousel-caption">
                     <h3>Headline</h3>
                     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
@@ -16,7 +16,7 @@
             </div>
             <!-- End Item -->
             <div class="item">
-                <img src="http://placehold.it/1200x440/999999/cccccc" />
+                <img src="Images/castle.png" />
                 <div class="carousel-caption">
                     <h3>Headline</h3>
                     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
@@ -24,7 +24,7 @@
             </div>
             <!-- End Item -->
             <div class="item">
-                <img src="http://placehold.it/1200x440/dddddd/333333" />
+                <img src="Images/irishworld.png" />
                 <div class="carousel-caption">
                     <h3>Headline</h3>
                     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
@@ -32,7 +32,7 @@
             </div>
             <!-- End Item -->
             <div class="item">
-                <img src="http://placehold.it/1200x440/999999/cccccc" />
+                <img src="Images/schrodinger.png" />
                 <div class="carousel-caption">
                     <h3>Headline</h3>
                     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
