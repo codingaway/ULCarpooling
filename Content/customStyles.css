@@ -34,3 +34,9 @@ background:#eee;
 .searchbar{
     margin-top: 50px;
 }
+.footer--list {
+    list-style: outside none none;
+    margin: 0px;
+    padding: 0px;
+}
+
