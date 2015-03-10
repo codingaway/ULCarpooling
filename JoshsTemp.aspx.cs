@@ -12,10 +12,12 @@ public partial class JoshsTemp : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
+            //Code to get User_ID from cookie
+
             //Need a command to load users image from DB and display to profileImage
-            
+
             //Need commands to load name, email, phone and password from DB and display to txtName, txtEmail, txtPhone and txtPassword
-            
+
             SqlConnection sql = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\Loaner\\ULCarpooling\\App_Data\\carpooling_db.mdf;Integrated Security=True;");
             SqlCommand cmd = new SqlCommand();
             SqlDataReader reader;
@@ -28,9 +30,9 @@ public partial class JoshsTemp : System.Web.UI.Page
 
             reader = cmd.ExecuteReader();
 
-            if(reader.HasRows)
+            if (reader.HasRows)
             {
-                while(reader.Read())
+                while (reader.Read())
                 {
                     txtName.Text = reader.GetString(1) + " " + reader.GetString(2);
                     txtEmail.Text = reader.GetString(3);
@@ -54,5 +56,10 @@ public partial class JoshsTemp : System.Web.UI.Page
 
             //Need a command to load Trip Histories from DB
         }
+    }
+
+    protected void editDetails_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("JoshsEditProfile.aspx");
     }
 }

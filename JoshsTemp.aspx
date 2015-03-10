@@ -39,7 +39,7 @@
         <asp:Label ID="lblEmail" runat="server" Text="Email:"></asp:Label>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:TextBox ID="txtEmail" runat="server" Width="179px"></asp:TextBox>
-        <asp:Button ID="Button3" runat="server" BackColor="#00CC00" ForeColor="White" style="z-index: 1; left: 482px; top: 228px; position: absolute; width: 78px; height: 21px; right: 434px" Text="Cancel" />
+        <asp:Button ID="btnCancel3" runat="server" BackColor="#00CC00" ForeColor="White" style="z-index: 1; left: 482px; top: 228px; position: absolute; width: 78px; height: 21px; right: 434px" Text="Cancel" />
         <br />
         <asp:Label ID="lblPhone" runat="server" Text="Phone:"></asp:Label>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -49,16 +49,16 @@
         <asp:Label ID="lblPassword" runat="server" Text="Password:"></asp:Label>
         &nbsp;<asp:TextBox ID="txtPassword" runat="server" Width="175px"></asp:TextBox>
         <br />
-        <asp:Button ID="Button5" runat="server" BackColor="#00CC00" ForeColor="White" style="z-index: 1; left: 734px; top: 179px; position: absolute; width: 81px; height: 25px" Text="Confirm" />
+        <asp:Button ID="Button5" runat="server" BackColor="#00CC00" ForeColor="White" style="z-index: 1; left: 734px; top: 179px; position: absolute; width: 81px; height: 25px; right: 179px;" Text="Confirm" />
         <asp:Label ID="Label9" runat="server" Font-Size="X-Large" style="z-index: 1; left: 580px; top: 288px; position: absolute; width: 132px" Text="Trip History"></asp:Label>
         <br />
-        <asp:Button ID="Button1" runat="server" BackColor="#00CC00" ForeColor="White" Text="Change Password" />
+        <asp:Button ID="btnChangePW" runat="server" BackColor="#00CC00" ForeColor="White" Text="Change Password" />
         <asp:Button ID="Button4" runat="server" BackColor="#663300" ForeColor="White" style="z-index: 1; left: 838px; top: 176px; position: absolute; width: 97px; height: 26px" Text="Decline" />
         <br />
         <asp:TextBox ID="txtTrip" runat="server" style="z-index: 1; left: 582px; top: 332px; position: absolute; width: 337px"></asp:TextBox>
         <br />
-        <asp:Button ID="Button2" runat="server" BackColor="#00CC00" ForeColor="White" Text="Edit My Details" />
-        <asp:Button ID="Button6" runat="server" BackColor="#00CC00" ForeColor="White" style="z-index: 1; left: 832px; top: 363px; position: absolute; width: 94px; height: 25px" Text="Review" />
+        <asp:Button ID="editDetails" runat="server" BackColor="#00CC00" ForeColor="White" Text="Edit My Details" OnClick="Button2_Click" />
+        <asp:Button ID="btnReviewTrip" runat="server" BackColor="#00CC00" ForeColor="White" style="z-index: 1; left: 832px; top: 363px; position: absolute; width: 94px; height: 25px" Text="Review" />
         <br />
         <br />
         <asp:Label ID="Label6" runat="server" Font-Size="X-Large" Text="My Feedback"></asp:Label>
