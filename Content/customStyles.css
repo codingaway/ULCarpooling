@@ -32,7 +32,9 @@ background:#eee;
     text-align: left;
 }
 .searchbar{
-    margin-top: 50px;
+  max-width: 400px;
+  padding: 25px;
+  margin: 15px auto;
 }
 .footer--list {
     list-style: outside none none;
