@@ -4,8 +4,8 @@
         <fieldset>
             <legend>Search</legend>
             <div class="form-group">
-                <label class="control-label col-md-4" for="DropDownList1">Looking for</label>
-                <div class=" col-md-8">
+                <label class="control-label col-md-2" for="DropDownList1">Looking for</label>
+                <div class="col-md-10">
                     <asp:DropDownList ID="DropDownList1" CssClass="form-control" runat="server">
                         <asp:ListItem Value="1">Request</asp:ListItem>
                         <asp:ListItem Value="2">Offer</asp:ListItem>
@@ -14,8 +14,8 @@
 
             </div>
             <div class="form-group">
-                <label class="control-label col-md-4" for="DropDownList4">From</label>
-                <div class=" col-md-8">
+                <label class="control-label col-md-2" for="DropDownList4">From</label>
+                <div class="col-md-10">
                     <asp:DropDownList ID="DropDownList4" CssClass="form-control" runat="server">
                         <asp:ListItem Value="1">UL</asp:ListItem>
                         <asp:ListItem Value="2">City</asp:ListItem>
@@ -24,8 +24,8 @@
 
             </div>
             <div class="form-group">
-                <label class="control-label col-md-4" for="DropDownList2">To</label>
-                <div class=" col-md-8">
+                <label class="control-label col-md-2" for="DropDownList2">To</label>
+                <div class="col-md-10">
                     <asp:DropDownList ID="DropDownList2" CssClass="form-control" runat="server">
                         <asp:ListItem Value="1">Request</asp:ListItem>
                         <asp:ListItem Value="2">Offer</asp:ListItem>
@@ -34,20 +34,21 @@
 
             </div>
             <div class="form-group">
-                <label class="control-label col-md-4" for="<%=TextBox2.ClientID%>">Between</label>
-                <div class='input-group date  col-md-6' id='datetimepicker1'>
-                    <asp:TextBox ID="TextBox2" CssClass="form-control" runat="server" TextMode="DateTimeLocal"></asp:TextBox>
+                <label class="control-label col-md-2" for="<%=TextBox2.ClientID%>">Between</label>
+                <div class='input-group date' id='datetimepicker1'>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                     </span>
+                    <asp:TextBox ID="TextBox2" CssClass="form-control  col-md-10" runat="server" TextMode="DateTimeLocal"></asp:TextBox>
+                    
                 </div>
 
             </div>
             <div class="form-group">
-                <label class="control-label col-md-4" for="<%=TextBox3.ClientID%>">To</label>
-                <div class='input-group date col-md-6' id='datetimepicker2'>
-                    <asp:TextBox ID="TextBox3" CssClass="form-control" runat="server" TextMode="DateTimeLocal"></asp:TextBox>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                <label class="control-label col-md-2" for="<%=TextBox3.ClientID%>">To</label>
+                <div class='input-group date' id='datetimepicker2'>
+                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                     </span>
+                    <asp:TextBox ID="TextBox3" CssClass="form-control col-md-10" runat="server" TextMode="DateTimeLocal"></asp:TextBox>
                 </div>
 
             </div>
