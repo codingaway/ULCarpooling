@@ -57,7 +57,7 @@
         <br />
         <asp:TextBox ID="txtTrip" runat="server" style="z-index: 1; left: 582px; top: 332px; position: absolute; width: 337px"></asp:TextBox>
         <br />
-        <asp:Button ID="editDetails" runat="server" BackColor="#00CC00" ForeColor="White" Text="Edit My Details" OnClick="Button2_Click" />
+        <asp:Button ID="editDetails" runat="server" BackColor="#00CC00" ForeColor="White" Text="Edit My Details" OnClick="editDetails_Click" />
         <asp:Button ID="btnReviewTrip" runat="server" BackColor="#00CC00" ForeColor="White" style="z-index: 1; left: 832px; top: 363px; position: absolute; width: 94px; height: 25px" Text="Review" />
         <br />
         <br />

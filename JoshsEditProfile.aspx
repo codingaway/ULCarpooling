@@ -39,7 +39,7 @@
 &nbsp;&nbsp;
         <br />
         <br />
-       <asp:Button ID="btnSubmit" runat="server" OnClick="btnAddImage_Click" Text="Submit" />
+       <asp:Button ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="Submit" />
     
     </div>
     </form>
