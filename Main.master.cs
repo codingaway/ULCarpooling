@@ -11,4 +11,10 @@ public partial class Main : System.Web.UI.MasterPage
     {
 
     }
+    protected void lbtnLogin_Click(object sender, EventArgs e)
+    {
+        ASP.login_ascx searchControl = (ASP.login_ascx)LoadControl("~/Login.ascx");
+        ContentPlaceHolder1.Controls.Clear();
+        ContentPlaceHolder1.Controls.Add(searchControl);
+    }
 }
