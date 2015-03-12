@@ -1,4 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Main.master.cs" Inherits="Main" %>
+
 <%@ Reference Control="~/Login.ascx" %>
 <!DOCTYPE html>
 
@@ -10,7 +11,7 @@
   <%--  <link href="Content/bootstrap.min.css" rel="stylesheet" />--%>
     <%--    <link href="Content/bootstrap.min.ORG.css" rel="stylesheet" />--%>
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
-
+    <link href="Content/bootstrap-toggle.min.css" rel="stylesheet" />
     <link href="Content/sticky-footer.css" rel="stylesheet" />
     <link href="Content/customStyles.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
@@ -29,7 +30,7 @@
     <form id="form1" runat="server">
         <%--Add AJAX scrpit handler--%>
         <asp:ScriptManager ID="ScriptManager1" runat="server" />
-        <nav class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -38,47 +39,182 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="Default.aspx">UL Carpooling</a>
+                    <a class="navbar-brand" href="Default.aspx">
+                        <img style="max-width: 70px; margin-top: -7px;" src="Images/Logo.gif" />
+                    </a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
-                    <%--                    <div class="navbar-form navbar-right">
-                        <div class="form-group">
-                            <input type="text" placeholder="Email" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <input type="password" placeholder="Password" class="form-control" />
-                        </div>
-                        <button type="submit" class="btn btn-success">Sign in</button>
-                    </div>--%>
+                    <ul class="nav navbar-nav navbar-left">
+                        <li class="form-group">
+                            <asp:LinkButton ID="lbtnSearch" runat="server" CssClass="rounded-button blue-button" data-toggle="modal" data-target="#searchModal"><span class="glyphicon glyphicon-search"></span> Search </asp:LinkButton>
+                        </li>
+                        <li class="form-group">
+                            <asp:LinkButton ID="lbtnAddReq" runat="server" CssClass="rounded-button blue-button" data-toggle="modal" data-target="#addReqModal"><span class="glyphicon glyphicon-plus-sign"></span> Add Request </asp:LinkButton>
+                        </li>
+                        <li class="form-group">
+                            <asp:LinkButton ID="lbtnAddOffer" runat="server" CssClass="rounded-button blue-button" data-toggle="modal" data-target="#addOfferModal"><span class="glyphicon glyphicon-plus-sign"></span> Add Offer </asp:LinkButton>
+                        </li>
+                    </ul>
 
                     <ul class="nav navbar-nav pull-right">
                         <li class="navbar--list-item">
-
-
-                            <asp:LinkButton CssClass="rounded-button blue-button" ID="lbtnLogin" runat="server" OnClick="lbtnLogin_Click"><span class="glyphicon glyphicon-log-in"></span> Login</asp:LinkButton>
+                            <asp:LinkButton CssClass="rounded-button blue-button" ID="lbtnLogin" runat="server" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> Login</asp:LinkButton>
                         </li>
                         <li class="navbar--list-item">
-
                             <asp:LinkButton ID="lbtnRegister" runat="server"><span class="glyphicon glyphicon-user"></span> Register</asp:LinkButton>
                         </li>
-                        <li class="navbar--list-item"></li>
-                        <li class="navbar--list-item"></li>
                     </ul>
 
                 </div>
                 <!--/.navbar-collapse -->
             </div>
         </nav>
-        <div class="container">
+        <div class="container top-buffer">
+            <!-- Modal -->
+            <%--<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>--%>
+
+            <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Search</h4>
+                        </div>
+                        <div class="well bs-component searchbar">
+                            <div class="form-horizontal">
+                                <fieldset>
+                                    <legend>Search</legend>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="chkSearchType">Looking for</label>
+                                            <div class="col-md-10">
+                                                <asp:CheckBox ID="chkSearchType" data-toggle="toggle" runat="server" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="DropDownList4">From</label>
+                                            <div class="col-md-10">
+                                                <asp:DropDownList ID="DropDownList4" CssClass="form-control" runat="server">
+                                                    <asp:ListItem Value="1">UL</asp:ListItem>
+                                                    <asp:ListItem Value="2">City</asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="DropDownList2">To</label>
+                                            <div class="col-md-10">
+                                                <asp:DropDownList ID="DropDownList2" CssClass="form-control" runat="server">
+                                                    <asp:ListItem Selected="True">Searching for</asp:ListItem>
+                                                    <asp:ListItem Value="1">Request</asp:ListItem>
+                                                    <asp:ListItem Value="2">Offer</asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="TextBox2">Between</label>
+                                            <div class="col-md-10">
+                                                <div class='input-group date' id='datetimepicker1'>
+                                                    <asp:TextBox ID="TextBox2" CssClass="form-control" runat="server" placeholder="Finish Date-Time" TextMode="DateTimeLocal"></asp:TextBox>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2" for="TextBox3">To</label>
+                                            <div class="col-md-10">
+                                                <div class='input-group date' id='datetimepicker2'>
+                                                    <asp:TextBox ID="TextBox3" CssClass="form-control" runat="server" TextMode="DateTimeLocal"></asp:TextBox>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-3 col-md-offset-2">
+                                                <asp:Button ID="btnSearch" CssClass="btn btn-primary" runat="server" Text="Search" />
+                                            </div>
+                                            <div class="col-md-2">
+                                                <asp:Button ID="btnReset" CssClass="btn btn-default" runat="server" Text="Reset" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%--Login modal - Starts--%>
+            <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="loginModalLabel">User Login</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-signin">
+                                <h2 class="form-signin-heading">Please sign in</h2>
+                                <asp:Label ID="lblEmail" CssClass="sr-only" runat="server" Text="Email"></asp:Label>
+                                <asp:TextBox ID="txtEmail" CssClass="form-control" placeholder="Email address" runat="server"></asp:TextBox>
+
+                                <asp:Label ID="lblPassword" CssClass="sr-only" runat="server" Text="Password"></asp:Label>
+
+                                <asp:TextBox ID="txtPassword" CssClass="form-control" placeholder="Password" runat="server"></asp:TextBox>
+                                <asp:CheckBox ID="chkRemember" CssClass="checkbox" runat="server" Text="Remember me" />
+
+                               
+                           <asp:Button ID="btnLogin" CssClass="btn btn-lg btn-primary" runat="server" Text="Sign in" />
+                                
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <asp:LinkButton ID="btnForgotPass" runat="server">Forgot Password</asp:LinkButton>
+                               <p>
+                                    <span>Not registered? </span>
+                                    <asp:LinkButton ID="btnSignup" runat="server">Sign up</asp:LinkButton>
+                                </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%-- Login modal - Ends--%>
+
+            <%--Main content area starts here--%>
             <div class="row">
                 <div class="col-md-4">
                     <asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
                 </div>
                 <div class="col-md-4">
-
                 </div>
                 <div class="col-md-4">
-
                 </div>
 
             </div>
@@ -139,6 +275,33 @@
     <script src="Scripts/jquery-1.9.0.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
     <script src="Scripts/carouselControl.js"></script>
+    <script src="Scripts/bootstrap-toggle.min.js"></script>
+    <script src="Scripts/moment.min.js"></script>
+    <script src="Scripts/bootstrap-datetimepicker.min.js"></script>
+    <%--Scrpits for date time picker--%>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+        $(function () {
+            $('#datetimepicker2').datetimepicker();
+        });
+
+    </script>
+
+    <%--  Scripts for searchtype toggle button--%>
+    <script type="text/javascript">
+        $(function () {
+            $('#chkSearchType').bootstrapToggle(
+                {
+                    on: 'Requests',
+                    off: 'Offers',
+                    onstyle: 'warning',
+                    offstyle: 'info'
+                }
+                );
+        });
+    </script>
     <asp:ContentPlaceHolder ID="cphScripts" runat="server"></asp:ContentPlaceHolder>
 
 </body>

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Default" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="Default - Copy.aspx.cs" Inherits="Default" %>
 <%@ Reference Control="~/Search.ascx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
@@ -74,4 +74,14 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" runat="Server">
+    <script src="Scripts/moment.min.js"></script>
+    <script src="Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+        $(function () {
+            $('#datetimepicker2').datetimepicker();
+        });
+    </script>
 </asp:Content>

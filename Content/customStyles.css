@@ -11,9 +11,9 @@ body {
     margin: 0 auto;
 }
 
-.container{
+/*.container{
     max-width:960px !important;
-}
+}*/
 
 #myCarousel .nav a small {
 display:block;
@@ -83,4 +83,13 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-/*Sign in form styling*/
+/*Sign in form styling -- end */
+    
+/* toggle button fix */
+.toggle.btn {
+    min-width: 100px;
+    min-height: 34px;
+}
+
+/* leave space at the top */
+.top-buffer { margin-top:20px; }
