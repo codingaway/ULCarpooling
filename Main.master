@@ -27,6 +27,7 @@
     </asp:ContentPlaceHolder>
 </head>
 <body>
+    <asp:SqlDataSource ID="SqlDataSource1" runat="server"></asp:SqlDataSource>
     <form id="form1" runat="server">
         <%--Add AJAX scrpit handler--%>
         <asp:ScriptManager ID="ScriptManager1" runat="server" />
@@ -40,7 +41,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="Default.aspx">
-                        <img style="max-width: 70px; margin-top: -7px;" src="Images/Logo.gif" />
+                        <span>UL Carpooling</span>
                     </a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
@@ -56,13 +57,38 @@
                         </li>
                     </ul>
 
+                    
+
                     <ul class="nav navbar-nav pull-right">
-                        <li class="navbar--list-item">
+                        <asp:LoginView ID="LoginView1" runat="server">
+                        <AnonymousTemplate>
+                            <asp:Label CssClass="navbar-text" runat="server"> Hello Guest! </asp:Label>
+                         <li class="navbar--list-item">
+                            <asp:LinkButton ID="lbtnRegister" runat="server"><span class="glyphicon glyphicon-user"></span> Register</asp:LinkButton>
+                        </li>
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                            <asp:Label CssClass="navbar-text" runat="server"> Welcome </asp:Label>
+                            <li>
+                                <asp:HyperLink ID="HyperLink1" NavigateUrl="~/Default2.aspx" runat="server">
+                                    <asp:LoginName ID="LoginName2" runat="server" />
+                                </asp:HyperLink> 
+                            </li>
+                     
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                         <li> 
+                            <asp:LoginStatus ID="LoginStatus1" LoginText="<span class='glyphicon glyphicon-log-in'></span> Login"  LogoutText="<span class='glyphicon glyphicon-log-out'></span> Logout" runat="server" />
+                        </li>
+                        <%--<li>
+                            <asp:LoginName ID="LoginName1" runat="server" />
+                        </li>
+                          <li class="navbar--list-item">
                             <asp:LinkButton CssClass="rounded-button blue-button" ID="lbtnLogin" runat="server" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> Login</asp:LinkButton>
                         </li>
                         <li class="navbar--list-item">
                             <asp:LinkButton ID="lbtnRegister" runat="server"><span class="glyphicon glyphicon-user"></span> Register</asp:LinkButton>
-                        </li>
+                        </li>--%>
                     </ul>
 
                 </div>
