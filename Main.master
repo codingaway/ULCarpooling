@@ -64,13 +64,13 @@
                         <AnonymousTemplate>
                             <asp:Label CssClass="navbar-text" runat="server"> Hello Guest! </asp:Label>
                          <li class="navbar--list-item">
-                            <asp:LinkButton ID="lbtnRegister" runat="server"><span class="glyphicon glyphicon-user"></span> Register</asp:LinkButton>
+                             <asp:HyperLink ID="hlRegister" NavigateUrl="~/Register.aspx" runat="server"><span class="glyphicon glyphicon-user"></span> Register</asp:HyperLink>
                         </li>
                         </AnonymousTemplate>
                         <LoggedInTemplate>
                             <asp:Label CssClass="navbar-text" runat="server"> Welcome </asp:Label>
                             <li>
-                                <asp:HyperLink ID="HyperLink1" NavigateUrl="~/Default2.aspx" runat="server">
+                                <asp:HyperLink ID="HyperLink1" NavigateUrl="~/Dashboard.aspx" runat="server">
                                     <asp:LoginName ID="LoginName2" runat="server" />
                                 </asp:HyperLink> 
                             </li>
@@ -78,7 +78,7 @@
                         </LoggedInTemplate>
                     </asp:LoginView>
                          <li> 
-                            <asp:LoginStatus ID="LoginStatus1" LoginText="<span class='glyphicon glyphicon-log-in'></span> Login"  LogoutText="<span class='glyphicon glyphicon-log-out'></span> Logout" runat="server" />
+                            <asp:LoginStatus ID="LoginStatus1" LoginText="<span class='glyphicon glyphicon-log-in'></span> Sign in"  LogoutText="<span class='glyphicon glyphicon-log-out'></span> Sign out" runat="server" />
                         </li>
                         <%--<li>
                             <asp:LoginName ID="LoginName1" runat="server" />
@@ -97,23 +97,6 @@
         </nav>
         <div class="container top-buffer">
             <!-- Modal -->
-            <%--<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>--%>
 
             <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -261,8 +244,8 @@
 
                     <div class="col-md-3 top-margin text-space">
                         <ul class="footer--list">
-                            <li><a href="#">Register</a></li>
-                            <li><a href="#">Sign-in</a></li>
+                            <li><a href="Register.aspx">Register</a></li>
+                            <li><a href="login.aspx">Sign-in</a></li>
                             <li><a href="#">Terms of Use</a></li>
                             <li><a href="#">Privacy Policy</a></li>
                         </ul>
@@ -277,7 +260,7 @@
                     </div>
 
                     <div class="col-md-3 top-margin text-space">
-                        <div>
+                        <div class="social-icons">
                             <a href="#" target="_blank">
                                 <img alt="Twitter Logo" class="twitter-datacamp-position" src="https://d3egmynekukbig.cloudfront.net/assets/twitter-6a5067dc2efb237a71046008a09e940d.png" /></a>
                         </div>
