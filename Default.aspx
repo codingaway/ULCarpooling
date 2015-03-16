@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Default2" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Default" %>
 <%@ Reference Control="~/Search.ascx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
@@ -55,7 +55,7 @@
 
     </div>
     <!-- End Carousel -->
-    <div class="container">
+    <div class="container top-buffer">
         <div class="row">
         <div class="col-md-8">
    <%-- Search bar--%>
@@ -63,25 +63,16 @@
    <%-- Search bar--%>
         </div>
         <div class="col-md-4">
+            <div class="well sidebar">
             <h2>Side column</h2>
             <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
             <h2>Side column</h2>
             <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-
+        </div>
 
         </div>
     </div>
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" runat="Server">
-    <script src="Scripts/moment.min.js"></script>
-    <script src="Scripts/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker1').datetimepicker();
-        });
-        $(function () {
-            $('#datetimepicker2').datetimepicker();
-        });
-    </script>
 </asp:Content>

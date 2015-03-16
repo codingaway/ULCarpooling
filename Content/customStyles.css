@@ -1,6 +1,6 @@
 ﻿/* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 50px;
+  padding-top: 70px;
   padding-bottom: 20px;
 }
 
@@ -11,8 +11,24 @@ body {
     margin: 0 auto;
 }
 
-.container{
+/*.container{
     max-width:960px !important;
+}*/
+
+/*Fix navbar brand*/
+
+.navbar a.navbar-brand {
+	font-size: 24px;
+	padding-right: 50px;
+	font-family: 'Maven Pro', sans-serif;
+	font-weight: 500;
+	/*background: url(images/logo-46x40.png) 0 2px no-repeat;*/
+	text-shadow: 2px 2px 4px #0C1118;
+	filter: dropshadow(color=#0C1118, offx=2, offy=2); 
+}
+.navbar a.navbar-brand:hover, .navbar a.navbar-brand:active {
+	text-shadow: 2px 2px 6px #9EABBC;
+	filter: dropshadow(color=#9EABBC, offx=2, offy=2); 
 }
 
 #myCarousel .nav a small {
@@ -32,7 +48,9 @@ background:#eee;
     text-align: left;
 }
 .searchbar{
-    margin-top: 50px;
+  max-width: 400px;
+  padding: 25px;
+  margin: 15px auto;
 }
 .footer--list {
     list-style: outside none none;
@@ -40,3 +58,61 @@ background:#eee;
     padding: 0px;
 }
 
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+/*Sign in form styling*/
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+  /*margin-bottom: 10px;*/
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+/*Sign in form styling -- end */
+    
+/* toggle button fix */
+.toggle.btn {
+    min-width: 100px;
+    min-height: 34px;
+}
+
+/* leave space at the top */
+.top-buffer { margin-top:20px; }
+
+.radioButtonList label{
+    display:inline;
+    padding: 0 10px;
+}
+    
