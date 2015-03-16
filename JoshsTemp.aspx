@@ -13,9 +13,9 @@
         <asp:Image ID="profileImage" runat="server" Height="100px" Width="113px" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Label ID="activeOffers" runat="server" Font-Size="X-Large" style="position: absolute; z-index: 1; left: 295px; top: 19px; height: 27px; right: 498px;" Text="My Active Offers"></asp:Label>
-        <asp:TextBox ID="txtOffer" runat="server" style="z-index: 1; left: 294px; top: 68px; position: absolute; height: 15px; right: 559px;"></asp:TextBox>
-        <asp:TextBox ID="txtOffer2" runat="server" style="z-index: 1; left: 292px; top: 98px; position: absolute"></asp:TextBox>
-        <asp:Button ID="btnCancel" runat="server" BackColor="#00CC00" ForeColor="White" style="z-index: 1; left: 465px; top: 65px; position: absolute; height: 24px; width: 78px" Text="Cancel" />
+        <asp:TextBox ID="txtOffer" runat="server" style="z-index: 1; left: 249px; top: 66px; position: absolute; height: 15px; width: 200px; right: 774px;"></asp:TextBox>
+        <asp:TextBox ID="txtOffer2" runat="server" style="z-index: 1; left: 292px; top: 98px; position: absolute height: 15px; width: 200px; right: 774px;"></asp:TextBox>
+        <asp:Button ID="btnCancel" runat="server" BackColor="#00CC00" ForeColor="White" style="z-index: 1; left: 467px; top: 64px; position: absolute; height: 24px; width: 78px" Text="Cancel" />
         <asp:Button ID="btnCancel2" runat="server" BackColor="#00CC00" ForeColor="White" style="z-index: 1; top: 95px; position: absolute; width: 78px; left: 465px" Text="Cancel" />
         <asp:Label ID="Label7" runat="server" Font-Size="X-Large" style="z-index: 1; left: 589px; top: 20px; position: absolute; width: 140px; height: 27px" Text="Notifications"></asp:Label>
         <asp:Label ID="lblRequestNotification" runat="server" style="z-index: 1; top: 58px; position: absolute; width: 137px; height: 18px; right: 178px; left: 679px;" Text="Requested for a trip to"></asp:Label>

@@ -18,7 +18,7 @@ public partial class JoshsChangePW : System.Web.UI.Page
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         //Validate Old Password with one stored in DB, query
-        string query = "SELECT password FROM secret WHERE user_id = 3";
+        string query = "SELECT user_pass FROM user_secret WHERE User_id = 3";
         SqlConnection sql = new SqlConnection(strConnection);
         
         string pw = "";
@@ -33,7 +33,7 @@ public partial class JoshsChangePW : System.Web.UI.Page
             SqlDataReader reader = cmd.ExecuteReader();
 
             if(reader.Read()){
-                pw = reader["password"].ToString();
+                pw = reader["user_pass"].ToString();
             }
             else{
                 Response.Write("Error");
@@ -49,7 +49,7 @@ public partial class JoshsChangePW : System.Web.UI.Page
             if (txtNewPW.Text.ToLower().Equals(txtConfirmPW.Text.ToLower()))
             {
                 //If the above is done then store New Password in DB
-                string update = "UPDATE secret SET password = @password WHERE user_id = 3";
+                string update = "UPDATE user_secret SET user_pass = @password WHERE User_id = 3";
                 using (SqlCommand cmd = new SqlCommand(update, sql))
                 {
                     cmd.Parameters.Add("@password", SqlDbType.VarChar).Value = txtNewPW.Text.ToLower();
