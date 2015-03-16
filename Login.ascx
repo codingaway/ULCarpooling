@@ -10,7 +10,7 @@
     <asp:TextBox ID="txtPassword" CssClass="form-control" placeholder="Password" runat="server"></asp:TextBox>
     <asp:CheckBox ID="chkRemember" CssClass="checkbox" runat="server" Text="Remember me" />
 
-    <asp:Button ID="btnLogin" CssClass="btn btn-lg btn-primary btn-block" runat="server" Text="Sign in" />
+    <asp:Button ID="btnLogin" CssClass="btn btn-lg btn-primary btn-block" runat="server" Text="Sign in" OnClick="btnLogin_Click" />
     <p>
       <span> Not registered? </span>
     <asp:LinkButton ID="btnSignup"  runat="server">Sign in</asp:LinkButton>

@@ -25,22 +25,12 @@
         <asp:Label ID="lblPhone" runat="server" Text="Phone"></asp:Label>
         <br />
         <br />
-        <asp:TextBox ID="txtPassword" runat="server"></asp:TextBox>
-&nbsp;&nbsp;&nbsp;
-        <asp:Label ID="lblPW" runat="server" Text="Password"></asp:Label>
-        <br />
-        <br />
-        <asp:TextBox ID="txtConfirmPW" runat="server"></asp:TextBox>
-&nbsp;&nbsp;&nbsp;
-        <asp:Label ID="lblConfirmPW" runat="server" Text="Confirm Password"></asp:Label>
-        <br />
-        <br />
         <asp:FileUpload ID="imageUpload" runat="server" />
 &nbsp;&nbsp;
+        <asp:Label ID="lblChangeImage" runat="server" Text="Change Profile Image"></asp:Label>
         <br />
         <br />
        <asp:Button ID="btnSubmit" runat="server" OnClick="btnSubmit_Click" Text="Submit" />
-    
     </div>
     </form>
 </body>
