@@ -143,7 +143,7 @@
                                             <label class="control-label col-md-2" for="TextBox2">Between</label>
                                             <div class="col-md-10">
                                                 <div class='input-group date' id='datetimepicker1'>
-                                                    <asp:TextBox ID="TextBox2" CssClass="form-control" runat="server" placeholder="Finish Date-Time" TextMode="DateTimeLocal"></asp:TextBox>
+                                                    <asp:TextBox ID="TextBox2" CssClass="form-control" runat="server" placeholder="Start Date-Time"></asp:TextBox>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
                                                 </div>
@@ -153,7 +153,7 @@
                                             <label class="control-label col-md-2" for="TextBox3">To</label>
                                             <div class="col-md-10">
                                                 <div class='input-group date' id='datetimepicker2'>
-                                                    <asp:TextBox ID="TextBox3" CssClass="form-control" runat="server" TextMode="DateTimeLocal"></asp:TextBox>
+                                                    <asp:TextBox ID="TextBox3" CssClass="form-control" runat="server" placeholder="Finish Date-Time"></asp:TextBox>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
                                                 </div>
