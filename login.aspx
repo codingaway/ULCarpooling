@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="login.aspx.cs" Inherits="Default6" %>
+﻿<%@ Page Title="Sign in" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="login.aspx.cs" Inherits="login" %>
 
 <%--<%@ Reference Control="~/Login.ascx" %>--%>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
