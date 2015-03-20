@@ -10,8 +10,12 @@
             <h3 class="form-signin-heading">Please sign in</h3>
             <asp:Label ID="lblEmail" CssClass="sr-only" runat="server" Text="Email"></asp:Label>
             <asp:TextBox ID="txtEmail" CssClass="form-control" placeholder="Email address" runat="server"></asp:TextBox>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="txtEmail" 
+                CssClass="text-warning"
+                ValidationGroup="Login" Display="Dynamic"
+                runat="server" ErrorMessage="Email address required"></asp:RequiredFieldValidator>
             <asp:RegularExpressionValidator ID="valRegExpEmail" runat="server"
-                 CssClass="text-warning"
+                 CssClass="text-warning" Display="Dynamic"
                 ErrorMessage="Email must be a valid UL email address"
                 ValidationGroup="Login"
                 ControlToValidate="txtEmail" ValidationExpression="^([1-9]{1}\d{6,7}@studentmail.ul.ie)|([aA-zZ]+\w*([-+.']\w+)*@ul.ie)$" >
@@ -23,6 +27,7 @@
                  ControlToValidate ="txtPassword" 
                 CssClass="text-warning"
                 ValidationGroup="Login"
+                Display="Dynamic"
                 ErrorMessage="Password required">
             </asp:RequiredFieldValidator>
             <asp:CheckBox ID="chkRemember" CssClass="checkbox" runat="server" Text="Remember me" />
