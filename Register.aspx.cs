@@ -25,4 +25,11 @@ public partial class Default6 : System.Web.UI.Page
     //    e.IsValid = chkTerms.Checked;
     //}
 
+
+    /* Server validation method to check if supplied email is unique to the database */
+    protected void serverValisUniqueEmail(object sender, ServerValidateEventArgs args)
+    {
+
+    }
+
 }
