@@ -115,4 +115,21 @@ body {
     display:inline;
     padding: 0 10px;
 }
+
+.error-marker{
+    padding-left: 5px;
+    padding-top: 5px;
+    font-size: 1.5em;
+    color: red;
+}
+
+.val-summary .alert-danger{
+    padding: 15px;
+}
+.val-summary ul{
+    margin-top:10px;
+}
+.val-summary li{
+    margin-bottom: 5px;
+}
     

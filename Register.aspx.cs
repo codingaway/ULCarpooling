@@ -15,5 +15,14 @@ public partial class Default6 : System.Web.UI.Page
     {
         //ASP.login_ascx login = (ASP.login_ascx)LoadControl("~/Login.ascx");
         //plhLogin.Controls.Add(login);
+
+        //string chkBoxScrpit = "function isChkTermsChecked(sender, e){e.IsValid = $('#<%=valSummary.ClientID%>').is(':checked');}";
+        //ClientScript.RegisterOnSubmitStatement(this.GetType(), "isChkTermsChecked", chkBoxScrpit);
     }
+
+    //protected void CheckBoxRequired_ServerValidate(object sender, ServerValidateEventArgs e)
+    //{
+    //    e.IsValid = chkTerms.Checked;
+    //}
+
 }
