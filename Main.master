@@ -57,28 +57,28 @@
                         </li>
                     </ul>
 
-                    
+
 
                     <ul class="nav navbar-nav pull-right">
                         <asp:LoginView ID="LoginView1" runat="server">
-                        <AnonymousTemplate>
-                            <asp:Label CssClass="navbar-text" runat="server"> Hello Guest! </asp:Label>
-                         <li class="navbar--list-item">
-                             <asp:HyperLink ID="hlRegister" NavigateUrl="~/Register.aspx" runat="server"><span class="glyphicon glyphicon-user"></span> Register</asp:HyperLink>
-                        </li>
-                        </AnonymousTemplate>
-                        <LoggedInTemplate>
-                            <asp:Label CssClass="navbar-text" runat="server"> Welcome </asp:Label>
-                            <li>
-                                <asp:HyperLink ID="HyperLink1" NavigateUrl="~/Dashboard.aspx" runat="server">
-                                    <asp:LoginName ID="LoginName2" runat="server" />
-                                </asp:HyperLink> 
-                            </li>
-                     
-                        </LoggedInTemplate>
-                    </asp:LoginView>
-                         <li> 
-                            <asp:LoginStatus ID="LoginStatus1" LoginText="<span class='glyphicon glyphicon-log-in'></span> Sign in"  LogoutText="<span class='glyphicon glyphicon-log-out'></span> Sign out" runat="server" />
+                            <AnonymousTemplate>
+                                <asp:Label CssClass="navbar-text" runat="server"> Hello Guest! </asp:Label>
+                                <li class="navbar--list-item">
+                                    <asp:HyperLink ID="hlRegister" NavigateUrl="~/Register.aspx" runat="server"><span class="glyphicon glyphicon-user"></span> Register</asp:HyperLink>
+                                </li>
+                            </AnonymousTemplate>
+                            <LoggedInTemplate>
+                                <asp:Label CssClass="navbar-text" runat="server"> Welcome </asp:Label>
+                                <li>
+                                    <asp:HyperLink ID="HyperLink1" NavigateUrl="~/Dashboard.aspx" runat="server">
+                                        <asp:LoginName ID="LoginName2" runat="server" />
+                                    </asp:HyperLink>
+                                </li>
+
+                            </LoggedInTemplate>
+                        </asp:LoginView>
+                        <li>
+                            <asp:LoginStatus ID="LoginStatus1" LoginText="<span class='glyphicon glyphicon-log-in'></span> Sign in" LogoutText="<span class='glyphicon glyphicon-log-out'></span> Sign out" runat="server" />
                         </li>
                         <%--<li>
                             <asp:LoginName ID="LoginName1" runat="server" />
@@ -96,7 +96,7 @@
             </div>
         </nav>
         <div class="container top-buffer">
-            <!-- Modal -->
+            <!--Search Modal -->
 
             <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -105,10 +105,10 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Search</h4>
                         </div>
+                        <div class="media-body">
                         <div class="well bs-component searchbar">
                             <div class="form-horizontal">
                                 <fieldset>
-                                    <legend>Search</legend>
                                     <div class="row">
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="chkSearchType">Looking for</label>
@@ -142,7 +142,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="TextBox2">Between</label>
                                             <div class="col-md-10">
-                                                <div class='input-group date' id='datetimepicker1'>
+                                                <div class='input-group date'>
                                                     <asp:TextBox ID="TextBox2" CssClass="form-control" runat="server" placeholder="Start Date-Time"></asp:TextBox>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
@@ -152,7 +152,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2" for="TextBox3">To</label>
                                             <div class="col-md-10">
-                                                <div class='input-group date' id='datetimepicker2'>
+                                                <div class='input-group date'>
                                                     <asp:TextBox ID="TextBox3" CssClass="form-control" runat="server" placeholder="Finish Date-Time"></asp:TextBox>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
@@ -161,18 +161,13 @@
                                         </div>
 
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <div class="col-md-3 col-md-offset-2">
-                                                <asp:Button ID="btnSearch" CssClass="btn btn-primary" runat="server" Text="Search" />
-                                            </div>
-                                            <div class="col-md-2">
-                                                <asp:Button ID="btnReset" CssClass="btn btn-default" runat="server" Text="Reset" />
-                                            </div>
-                                        </div>
-                                    </div>
                                 </fieldset>
                             </div>
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                            <asp:Button ID="btnReset" CssClass="btn btn-default" runat="server" Text="Reset" />
+                            <asp:Button ID="btnSearch" CssClass="btn btn-primary" runat="server" Text="Search" />
                         </div>
                     </div>
                 </div>
@@ -197,24 +192,86 @@
                                 <asp:TextBox ID="txtPassword" CssClass="form-control" placeholder="Password" runat="server"></asp:TextBox>
                                 <asp:CheckBox ID="chkRemember" CssClass="checkbox" runat="server" Text="Remember me" />
 
-                               
-                           <asp:Button ID="btnLogin" CssClass="btn btn-lg btn-primary" runat="server" Text="Sign in" />
-                                
+
+                                <asp:Button ID="btnLogin" CssClass="btn btn-lg btn-primary" runat="server" Text="Sign in" />
+
                             </div>
                         </div>
                         <div class="modal-footer">
-                            
+
                             <asp:LinkButton ID="btnForgotPass" runat="server">Forgot Password</asp:LinkButton>
-                               <p>
-                                    <span>Not registered? </span>
-                                    <asp:LinkButton ID="btnSignup" runat="server">Sign up</asp:LinkButton>
-                                </p>
+                            <p>
+                                <span>Not registered? </span>
+                                <asp:LinkButton ID="btnSignup" runat="server">Sign up</asp:LinkButton>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <%-- Login modal - Ends--%>
+
+            <%--Add offer modal --Starts----%>
+
+            <div class="modal fade" id="addOfferModal" tabindex="-1" role="dialog" aria-labelledby="addOfferlLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="addOfferlLabel">Add an Offer</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="well bs-component">
+                                <div class="form-horizontal">
+                                    <fieldset>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="DDdepartLoc">Depart Location</label>
+                                                <div class="col-md-8">
+                                                    <asp:DropDownList ID="DDdepartLoc" CssClass="form-control" runat="server">
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="DDarrivalLoc">Arrival Location</label>
+                                                <div class="col-md-8">
+                                                    <asp:DropDownList ID="DDarrivalLoc" CssClass="form-control" runat="server">
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="txtDate">Date - Time</label>
+                                                <div class="col-md-8">
+                                                    <div class='input-group date'>
+                                                        <asp:TextBox ID="txtDate" CssClass="form-control" runat="server" TextMode="DateTimeLocal"></asp:TextBox>
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="txtSeats">Number Of Seats</label>
+                                                <div class="col-md-8">
+                                                    <asp:TextBox ID="txtSeats" CssClass="form-control" runat="server"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <asp:Button ID="btnOfferSubmit" CssClass="btn btn-primary" runat="server" Text="Add Offer" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%--Add offer modal --Ends----%>
 
             <%--Main content area starts here--%>
             <div class="row">
@@ -290,10 +347,7 @@
     <%--Scrpits for date time picker--%>
     <script type="text/javascript">
         $(function () {
-            $('#datetimepicker1').datetimepicker();
-        });
-        $(function () {
-            $('#datetimepicker2').datetimepicker();
+            $('.date').datetimepicker();
         });
 
     </script>
