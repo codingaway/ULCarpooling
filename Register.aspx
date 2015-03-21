@@ -95,6 +95,21 @@
                                         ControlToValidate="txtAnswer" runat="server" ErrorMessage="Answer to secret question required">*</asp:RequiredFieldValidator>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-4" for="<%=rblUserType.ClientID%>">User Categorie</label>
+                                <div class="col-md-7">
+                                    <div class="radioButtonList">
+                                        <asp:RadioButtonList CssClass="form-control" ID="rblUserType" runat="server" RepeatLayout="Flow" Style="display: inline" RepeatDirection="Horizontal">
+                                            <asp:ListItem Value="0">Student</asp:ListItem>
+                                            <asp:ListItem Value="1">Staff</asp:ListItem>
+                                        </asp:RadioButtonList>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 error-marker">
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator12"
+                                        ControlToValidate="rblUserType" runat="server" ErrorMessage="Select an user category">*</asp:RequiredFieldValidator>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">

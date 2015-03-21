@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Globalization;
 
 public partial class RegisterPage : System.Web.UI.Page
 {
@@ -38,12 +39,31 @@ public partial class RegisterPage : System.Web.UI.Page
     {
         if(IsValid)
         {
+            //Localized the date format
+            DateTimeFormatInfo dateInfo = new System.Globalization.DateTimeFormatInfo();
+            dateInfo.ShortDatePattern = "dd/MM/yyyy";
+            DateTime dob = Convert.ToDateTime(txtDoB.Text, dateInfo);
+
+            string smoker = rblSmoker.SelectedIndex.ToString();
+            string gender = rblGender.SelectedIndex.ToString();
+
             //Read form inputs and create a new user
+            bool insertSuccess = DBHelper.addNewUser(txtFName.Text, txtSName.Text, txtEmail.Text, dob, txtPassword.Text, txtQuestion.Text, txtAnswer.Text, txtPhone.Text, rblUserType.SelectedIndex + 1, smoker, gender);
 
             //On success show message confirming that user is registered 
-            lblPageHeader.Text = "Thank you";
-            lblFormMessage.Text = "You have registered succefully.";
-            pnlFormInput.Visible = false;
+            if (insertSuccess)
+            {
+                lblPageHeader.Text = "Thank you";
+                lblFormMessage.Text = "You have registered succefully.";
+                pnlFormInput.Visible = false;
+            }
+            else
+            {
+                lblPageHeader.Text = "Error processing";
+                lblFormMessage.Text = "Registration is not complete.";
+                lblFormMessage.ForeColor = System.Drawing.Color.Red;
+                //pnlFormInput.Visible = false;
+            }
         }
 
     }
