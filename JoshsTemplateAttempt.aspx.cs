@@ -12,6 +12,7 @@ using System.Data;
 public partial class JoshsTemplateAttempt : System.Web.UI.Page
 {
     protected SqlConnection sql = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\Loaner\\ULCarpooling\\App_Data\\carpooling_db.mdf;Integrated Security=True;");
+    protected static int offer, request;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -24,9 +25,6 @@ public partial class JoshsTemplateAttempt : System.Web.UI.Page
             //profileImage.ImageUrl = "~/DisplayImg.ashx?id=" + 3; //User_ID from cookie needed
 
             //Need commands to load name, email and phone from DB and display to txtName, txtEmail, txtPhone
-
-            //SqlConnection sql = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=C:\\Users\\Loaner\\ULCarpooling\\App_Data\\carpooling_db.mdf;Integrated Security=True;");
-            //SqlCommand cmd = new SqlCommand();
 
             using (SqlCommand cmd = new SqlCommand("Select * from users Where User_ID = 3", sql))
             {
@@ -47,11 +45,11 @@ public partial class JoshsTemplateAttempt : System.Web.UI.Page
 
                         if (reader["profile_pic"] == System.DBNull.Value)
                         {
-                            //profileImage.ImageUrl = "~/Images/emptyProfileImage.png";
+                            profileImage.ImageUrl = "~/Images/emptyProfileImage.png";
                         }
                         else
                         {
-                            //profileImage.ImageUrl = "~/DisplayImg.ashx?id=" + 3;
+                            profileImage.ImageUrl = "~/Images/emptyProfileImage.png";
                         }
                     }
                 }
@@ -88,6 +86,20 @@ public partial class JoshsTemplateAttempt : System.Web.UI.Page
 
 
             //Need a command to load feedback from DB to feedbackImage
+            using (SqlCommand cmd = new SqlCommand("SELECT AVG(rating) FROM Reviews WHERE user_id = 3", sql))
+            {
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Connection = sql;
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                
+                if(reader.Read())
+                {
+                    lblRating.Text = reader.GetValue(0).ToString();
+                }
+
+                reader.Close();
+            }
 
             //Need a command to load Active Offers/Requests from DB
             using (SqlCommand cmd = new SqlCommand("SELECT * FROM offer_rec WHERE user_id = 3", sql))
@@ -103,7 +115,7 @@ public partial class JoshsTemplateAttempt : System.Web.UI.Page
                 {
                     int offerID = Int32.Parse(reader["offer_id"].ToString());
                     reader.Close();
-                    if (checkIfPending(offerID))
+                    if (checkIfPending(offerID, 0))
                     {
                         reader = cmd.ExecuteReader();
                         if (reader.Read())
@@ -115,6 +127,9 @@ public partial class JoshsTemplateAttempt : System.Web.UI.Page
                             display += getPlaceName(from) + " - ";
                             display += getPlaceName(to);
                             lblPendingOffer1.Text = display;
+                            lblPendingOffer1.Visible = true;
+                            btnCancel.Visible = true;
+                            offer = offerID;
                         }
                         else
                             lblPendingOffer1.Text = "No pending offers3";
@@ -127,11 +142,76 @@ public partial class JoshsTemplateAttempt : System.Web.UI.Page
                 reader.Close();
             }
 
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM req_rec WHERE user_id = 3", sql))
+            {
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Connection = sql;
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                string display;
+                int from, to;
+
+                if (reader.Read())
+                {
+                    int requestID = Int32.Parse(reader["Request_id"].ToString());
+                    reader.Close();
+                    if (checkIfPending(requestID, 1))
+                    {
+                        reader = cmd.ExecuteReader();
+                        if (reader.Read())
+                        {
+                            display = reader["date_time"].ToString() + " ";
+                            from = Int32.Parse(reader["from"].ToString());
+                            to = Int32.Parse(reader["to"].ToString());
+                            reader.Close();
+                            display += getPlaceName(from) + " - ";
+                            display += getPlaceName(to);
+                            lblPendingRequests1.Text = display;
+                            lblPendingRequests1.Visible = true;
+                            btnCancel3.Visible = true;
+                            request = requestID;
+                        }
+                        else
+                            lblPendingRequests1.Text = "No pending requests3";
+                    }
+                    else
+                        lblPendingRequests1.Text = "No pending requests2";
+                }
+                else
+                    lblPendingRequests1.Text = "No pending requests";
+                reader.Close();
+            }
+
             //Need a command to load Notifications from DB
 
             //Need a command to load Trip Histories from DB
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM trip_rec WHERE driver = 3", sql))
+            {
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Connection = sql;
 
-            //reader.Close();
+                SqlDataReader reader = cmd.ExecuteReader();
+                string display;
+                int from, to;
+
+                if (reader.Read())
+                {
+                    display = reader["date_time"].ToString() + " ";
+                    from = Int32.Parse(reader["from"].ToString());
+                    to = Int32.Parse(reader["to"].ToString());
+                    reader.Close();
+                    display += getPlaceName(from) + " - ";
+                    display += getPlaceName(to);
+                    lblHistory1.Text = display;
+                    lblHistory1.Visible = true;
+                    btnReviewTrip.Visible = true;
+                    btnReportTrip.Visible = true;
+                }
+                else
+                    lblHistory1.Text = "No trip histories found3";
+                reader.Close();
+            }
+
             sql.Close();
         }
     }
@@ -157,34 +237,101 @@ public partial class JoshsTemplateAttempt : System.Web.UI.Page
         }
     }
 
-    protected bool checkIfPending(int id)
+    protected bool checkIfPending(int id, int flag)
     {
-        SqlCommand command = new SqlCommand("SELECT * from pending_offer WHERE offer_id = @id", sql);
-        command.Parameters.Add("@id", SqlDbType.Int).Value = id;
-        command.Connection = sql;
-
-        SqlDataReader reader2 = command.ExecuteReader();
-        if (reader2.Read())
+        if (flag == 0)
         {
-            reader2.Close();
-            return true;
+            SqlCommand command = new SqlCommand("SELECT * from pending_offer WHERE offer_id = @id", sql);
+            command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+            command.Connection = sql;
+
+            SqlDataReader reader2 = command.ExecuteReader();
+            if (reader2.Read())
+            {
+                reader2.Close();
+                return true;
+            }
+            else
+            {
+                reader2.Close();
+                return false;
+            }
         }
         else
         {
-            reader2.Close();
-            return false;
-        }
+            SqlCommand command = new SqlCommand("SELECT * from pending_req WHERE request_id = @id", sql);
+            command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+            command.Connection = sql;
 
+            SqlDataReader reader2 = command.ExecuteReader();
+            if (reader2.Read())
+            {
+                reader2.Close();
+                return true;
+            }
+            else
+            {
+                reader2.Close();
+                return false;
+            }
+        }
 
     }
 
     protected void editDetails_Click(object sender, EventArgs e)
     {
         //Response.Redirect("JoshsEditProfile.aspx");
+        //edit details
     }
 
     protected void btnChangePW_Click(object sender, EventArgs e)
     {
         //Response.Redirect("JoshsChangePW.aspx");
+        // change password
+    }
+
+    protected void btnBan_Click(object sender, EventArgs e)
+    {
+        //Ban another user
+    }
+
+    protected void btnCancel_Click(object sender, EventArgs e)
+    {
+        using (SqlCommand cmd = new SqlCommand("DELETE * FROM pending_offer WHERE offer_id = @id", sql))
+        {
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.Connection = sql;
+                
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = 101;
+                //lblPendingOffer1.Visible = false;
+                btnCancel.Visible = false;
+                lblPendingOffer1.Text = offer.ToString();
+                //Response.Redirect("JoshsTemplateAttempt.aspx");
+        }
+    }
+
+    protected void btnCancel3_Click(object sender, EventArgs e)
+    {
+        using (SqlCommand cmd = new SqlCommand("DELETE * FROM pending_req WHERE request_id = @id", sql))
+        {
+            cmd.CommandType = System.Data.CommandType.Text;
+            cmd.Connection = sql;
+
+            cmd.Parameters.Add("@id", SqlDbType.Int).Value = request;
+            //lblPendingRequests1.Visible = false;
+            btnCancel3.Visible = false;
+            lblPendingRequests1.Text = request.ToString();
+            //Response.Redirect("JoshsTemplateAttempt.aspx");
+        }
+    }
+
+    protected void btnReviewTrip_Click(object sender, EventArgs e)
+    {
+        //review a trip
+    }
+
+    protected void btnReportTrip_Click(object sender, EventArgs e)
+    {
+        //report a trip
     }
 }
