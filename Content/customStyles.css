@@ -115,4 +115,21 @@ body {
     display:inline;
     padding: 0 10px;
 }
-    
+
+/*i.star {
+	background-image: url(../Images/star-sprite.png);
+	display: inline-block;
+	height: 16px;
+	width: 80px;
+	background-position-x: -80px;
+	background-position-y: -48px;
+}
+
+i.star-1    { background-position-x: -64px; }
+i.star-2    { background-position-x: -48px; }
+i.star-3    { background-position-x: -32px; }
+i.star-4    { background-position-x: -16px; }
+i.star-5    { background-position-x: 0; }
+i.star-qtr  { background-position-y: -32px; }
+i.star-half { background-position-y: -16px; }
+i.star-3qtr { background-position-y: 0; }*/
