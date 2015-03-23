@@ -123,6 +123,8 @@ body {
     color: red;
 }
 
+
+/*Form Validation error text styling */
 .val-summary .alert-danger{
     padding: 15px;
 }
@@ -132,4 +134,16 @@ body {
 .val-summary li{
     margin-bottom: 5px;
 }
+
+/*  Collapsible panels  */
+.collapsePanel {
+	height:0px;
+	overflow:hidden;
+}
+
+.collapsePanelHeader{
+	vertical-align: middle;
+    cursor: pointer;
+}
+
     

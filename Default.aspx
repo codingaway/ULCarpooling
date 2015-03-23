@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Default" %>
-<%@ Reference Control="~/Search.ascx" %>
+<%@ Register Src="~/Controls/uscListControl.ascx" TagPrefix="uc1" TagName="uscListControl" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 </asp:Content>
@@ -57,13 +58,22 @@
     <!-- End Carousel -->
     <div class="container top-buffer">
         <div class="row">
-        <div class="col-md-8">
-   <%-- Search bar--%>
-          <asp:PlaceHolder ID="plhMidColumn" runat="server"></asp:PlaceHolder>
-   <%-- Search bar--%>
+        <div class="col-md-4">
+            <div class="well">
+                <div class="row">
+                <uc1:uscListControl runat="server" ID="uscListControl" />
+          <asp:PlaceHolder ID="plhLeftColumn" runat="server"></asp:PlaceHolder>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="well">
+            <asp:PlaceHolder ID="plhMidColumn" runat="server"></asp:PlaceHolder>
+            </div>
         </div>
         <div class="col-md-4">
             <div class="well sidebar">
+            <asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
             <h2>Side column</h2>
             <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
             <h2>Side column</h2>
