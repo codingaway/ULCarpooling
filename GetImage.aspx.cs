@@ -14,6 +14,7 @@ public partial class GetImage : System.Web.UI.Page
     {
         if (Request.QueryString["ImageID"] != null)
         {
+            
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
             string strQuery = "select image_name, content_type, data from profile_image where User_ID=@id";
