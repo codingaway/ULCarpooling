@@ -1,5 +1,4 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="JoshsTemplateAttempt.aspx.cs" Inherits="JoshsTemplateAttempt" %>
-<%@ Reference Control="~/Search.ascx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 </asp:Content>
