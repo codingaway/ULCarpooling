@@ -17,8 +17,9 @@
                     <div class="row">
                        <div class="form-group">
                         <label class="control-label col-md-2" for="Depart">Depart Location :</label>
+  
                         <div class="col-md-10">
-                            <asp:DropDownList ID="DDdepartLoc" CssClass="form-control" runat="server">
+                            <asp:DropDownList ID="DDdepartLoc" CssClass="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DDdepartLoc_SelectedIndexChanged1">
                             </asp:DropDownList>
                         </div>
                     </div> 

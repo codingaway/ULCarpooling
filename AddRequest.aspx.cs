@@ -10,32 +10,40 @@ using System.Data.SqlClient;
 
 public partial class AddRequest : System.Web.UI.Page
 {
-    SqlConnection con1;
+    SqlConnection con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True");
     SqlCommand cmd1;
     SqlDataAdapter adpt1;
     protected void Page_Load(object sender, EventArgs e)
     {
-        con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True");
+        if (!this.IsPostBack)
+        {
+            fillDepartList();
+        }
+    }
+
+
+    private void fillDepartList()
+    {
+
+        con1.Open();
 
         adpt1 = new SqlDataAdapter("Select * from County", con1);
         DataTable dt = new DataTable();
         adpt1.Fill(dt);
         DDdepartLoc.DataSource = dt;
-        DDdepartLoc.DataBind();
         DDdepartLoc.DataTextField = "Name";
         DDdepartLoc.DataValueField = "c_code";
         DDdepartLoc.DataBind();
+        con1.Close();
+        //Adding "Please select" option in dropdownlist for validation
+        DDdepartLoc.Items.Insert(0, new ListItem("Please select", "0"));
 
-        DDarrivalLoc.DataSource = dt;
-        DDarrivalLoc.DataTextField = "Name";
-        DDarrivalLoc.DataValueField = "c_code";
-        DDarrivalLoc.DataBind();
+
     }
-
 
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
-        con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True");
+        
         con1.Open();
         int count = 0;
         string str1 = DDdepartLoc.SelectedItem.Value;
@@ -53,7 +61,6 @@ public partial class AddRequest : System.Web.UI.Page
         {
 
             cmd1.Parameters.AddWithValue("@Request_id", count.ToString());
-
             cmd1.Parameters.AddWithValue("@from", str1);
             cmd1.Parameters.AddWithValue("@to", str4);
             cmd1.Parameters.AddWithValue("@date_time", txtDate.Text);
@@ -65,5 +72,23 @@ public partial class AddRequest : System.Web.UI.Page
         //command1.Dispose();
 
         con1.Close();
+    }
+    
+    protected void DDdepartLoc_SelectedIndexChanged1(object sender, EventArgs e)
+    {
+        con1.Open();
+        string selectSQL = "SELECT * FROM County ";
+        selectSQL += "WHERE c_code!='" + DDdepartLoc.SelectedItem.Value + "'";
+
+        adpt1 = new SqlDataAdapter(selectSQL, con1);
+        DataTable dt = new DataTable();
+        adpt1.Fill(dt);
+        DDarrivalLoc.DataSource = dt;
+        DDarrivalLoc.DataTextField = "Name";
+        DDarrivalLoc.DataValueField = "c_code";
+        DDarrivalLoc.DataBind();
+        con1.Close();
+        //Adding "Please select" option in dropdownlist for validation
+        DDarrivalLoc.Items.Insert(0, new ListItem("Please select", "0"));
     }
 }
