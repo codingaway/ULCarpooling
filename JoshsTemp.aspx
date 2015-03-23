@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <link href="Content/JoshsStarRating.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -64,7 +65,7 @@
         <asp:Label ID="Label6" runat="server" Font-Size="X-Large" Text="My Feedback"></asp:Label>
         <br />
         <br />
-        <asp:Image ID="feedbackImage" runat="server" Height="26px" Width="158px" />
+        <asp:Image ID="Image1" runat="server" CssClass="star-5" Height="37px" Width="216px" />
         <br />
         
     
