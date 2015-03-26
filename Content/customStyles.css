@@ -146,4 +146,18 @@ body {
     cursor: pointer;
 }
 
+/* List item styles */
+.list-item{
+}
+.list-item .place-title{
+    color: #ff9900;
+}
+.list-item img{
+    float: right;
+}
+.list-item .date-time{
+    color: rgba(0, 0, 0, 0.7);
+}
+
+
     

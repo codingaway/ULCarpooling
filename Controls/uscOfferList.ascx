@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="uscListControl.ascx.cs" Inherits="uscListControl" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="uscOfferList.ascx.cs" Inherits="uscOfferList" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 
 <%--<asp:SqlDataSource ID="SqlDataSource1" runat="server"
@@ -9,13 +9,13 @@
         SelectCommand="select * from vUserInfo" />
  <div class="row">
             <div class="col-md-12">
-                <h3>Offer List</h3>
+                <h4>Offer List</h4>
                 <asp:ListView ID="ListView1"
                     DataSourceID="SqlDataSource1" runat="server" OnItemCommand="ListView1_ItemCommand">
                     <LayoutTemplate>
                         <div runat="server">
                             <div id="itemPlaceholder" runat="server" />
-                            <asp:DataPager ID="pager1" PageSize="3" runat="server">
+                            <asp:DataPager ID="pager1" PageSize="10" runat="server">
                                 <Fields>
                                     <asp:NumericPagerField />
                                 </Fields>
@@ -32,24 +32,24 @@
                             TextLabelID="lblShowHideDetails"
                             CollapsedText=""
                             ExpandedText=""
-                            ExpandedImage="~/Images/collapse_blue.jpg"
-                            CollapsedImage="~/Images/expand_blue.jpg" />
+                            ExpandedImage="~/Images/up.png"
+                            CollapsedImage="~/Images/down.png" />
 
-                        <div class="panel panel-info">
+                        <div class="panel panel-info list-item">
                             <div class="panel-heading">
                                 <asp:Panel ID="titlePanel" runat="server" CssClass="collapsePanelHeader">
 
-                                    <asp:Image ID="imgShowHide" runat="server" ImageUrl="~/Images/expand_blue.jpg" />
+                                    
                                     <asp:Label ID="lblShowHideDetails" runat="server" Text=""></asp:Label>
                                     <span id="panel-title" class="panel-title">
-                                        <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> &nbsp; 
-                                        <%#Eval("frm_place") %> &nbsp; To <%#Eval("to_place")%>
-                                         
-                                       <%-- <a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a>--%>
-
+                                    <span class="glyphicon glyphicon-map-marker"></span> <span class="place-title"><%#Eval("frm_place") %></span> &nbsp;To&nbsp;<span class="place-title"><%#Eval("to_place")%></span>
+                                        <asp:Image ID="imgShowHide" runat="server" ImageUrl="~/Images/down.png" />
+                                      <br /><span class="glyphicon glyphicon-calendar"></span>
+                                        <span class="date-time"><%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %></span>
+                                        
                                     </span>
 
-
+                                
                                 </asp:Panel>
                             </div>
                             <asp:Panel ID="contentPanel" runat="server">
@@ -64,7 +64,8 @@
                                             
                                         </AnonymousTemplate>
                                         <LoggedInTemplate>
-                                            <img alt="user picture" height="40" width="40" src='<%=ResolveClientUrl("~/GetImage.aspx?ImageID=") %><%#Eval("User_ID")%>' />
+                                            <img alt="user picture" height="40" width="40" src='<%=ResolveClientUrl("~/GetImage.aspx?ImageID=") %>
+                                                <%#Eval("User_ID")%>' />
                                     User: <%#Eval("full_name") %> Number of seats: <%#Eval("seats") %>
                                     <asp:LinkButton ID="LinkButton1" runat="server">View Reviews</asp:LinkButton>
                                     <asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Send request" />
