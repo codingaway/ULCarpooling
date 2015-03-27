@@ -151,12 +151,17 @@ body {
 }
 .list-item .place-title{
     color: #ff9900;
+    padding-left: 5px;
 }
-.list-item img{
+.list-item .arrow{
     float: right;
+    margin-right: -10px;
+    margin-top: 15px;
 }
 .list-item .date-time{
-    color: rgba(0, 0, 0, 0.7);
+    color: #808080;
+    font-size: .8em;
+    padding-left: 5px;
 }
 
 
