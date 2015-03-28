@@ -1,5 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="Dashboard.aspx.cs" Inherits="Dashboard" %>
 
+<%@ Register Src="~/Controls/PendingOffers.ascx" TagPrefix="uc1" TagName="PendingOffers" %>
+
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 </asp:Content>
@@ -91,14 +95,20 @@
             </div>
             <div class="col-md-4">
                 <h2>My Active Offers</h2>
-                <p>
-                    <asp:Label ID="lblPendingOffer1" runat="server" Text="No Pending Offers" Visible="False" />
-                    <asp:Button ID="btnCancel" CssClass="btn btn-primary" runat="server" Text="Cancel" Visible="False" OnClick="btnCancel_Click" />
-                </p>
-                <p>
-                    <asp:Label ID="lblPendingOffer2" runat="server" Text="" Visible="False" />
-                    <asp:Button ID="btnCancel2" CssClass="btn btn-primary" runat="server" Text="Cancel" Visible="False" OnClick="btnCancel_Click" />
-                </p>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+
+                        <uc1:PendingOffers runat="server" userID='<%#Eval("userID") %>' id="PendingOffers" />
+                        <!--<p>
+                            <asp:Label ID="lblPendingOffer1" runat="server" Text="No Pending Offers" Visible="False" />
+                            <asp:Button ID="btnCancel" CssClass="btn btn-primary" runat="server" Text="Cancel" Visible="False" OnClick="btnCancel_Click" />
+                        </p>
+                        <p>
+                            <asp:Label ID="lblPendingOffer2" runat="server" Text="" Visible="False" />
+                            <asp:Button ID="btnCancel2" CssClass="btn btn-primary" runat="server" Text="Cancel" Visible="False" OnClick="btnCancel_Click" />
+                        </p>!-->
+                    </div>
+                </div>
                 <h2>My Active Requests</h2>
                 <p>
                     <asp:Label ID="lblPendingRequests1" runat="server" Text="No Pending Requests" Visible="False" />
