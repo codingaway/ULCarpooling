@@ -13,10 +13,37 @@ public partial class Main : System.Web.UI.MasterPage
     {
 
     }
+
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+        LoadScript();
+    }
+
     protected void lbtnLogin_Click(object sender, EventArgs e)
     {
         //ASP.login_ascx searchControl = (ASP.login_ascx)LoadControl("~/Login.ascx");
         //ContentPlaceHolder1.Controls.Clear();
         //ContentPlaceHolder1.Controls.Add(searchControl);
+    }
+
+    private void LoadScript()
+    {
+
+        String scriptName = "DateValidation";
+        String scriptUrl = "~/Scripts/dateValidation.js";
+        Type scriptType = this.GetType();
+
+        ClientScriptManager clientScriptManager = Page.ClientScript;
+
+        if (!clientScriptManager.IsClientScriptIncludeRegistered(scriptType, scriptName))
+        {
+            clientScriptManager.RegisterClientScriptInclude(scriptType, scriptName, ResolveClientUrl(scriptUrl));
+        }
+
+    }
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        ContentPlaceHolder1.Controls.Clear();
     }
 }
