@@ -5,7 +5,8 @@
 
 <asp:SqlDataSource ID="SqlDataSource2" runat="server"
     ConnectionString="<%$ ConnectionStrings:DbConnString%>"
-    SelectCommand="select * from vUserInfo where User_ID=@id"/>
+    SelectCommand="select * from vUserInfo where User_ID=3"/>
+
 <div class="row">
     <div class="col-md-12">
         <asp:ListView ID="ListView2"

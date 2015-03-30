@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -120,7 +120,7 @@ public partial class Dashboard : System.Web.UI.Page
                 }
 
                 //Need a command to load Active Offers/Requests from DB
-                using (SqlCommand cmd = new SqlCommand("SELECT * FROM offer_rec WHERE user_id =" + userID, conn))
+                /*using (SqlCommand cmd = new SqlCommand("SELECT * FROM offer_rec WHERE user_id =" + userID, conn))
                 {
                     cmd.CommandType = System.Data.CommandType.Text;
                     cmd.Connection = conn;
@@ -158,7 +158,7 @@ public partial class Dashboard : System.Web.UI.Page
                     else
                         lblPendingOffer1.Text = "No pending offers";
                     reader.Close();
-                }
+                }*/
 
                 using (SqlCommand cmd = new SqlCommand("SELECT * FROM req_rec WHERE user_id =" + userID, conn))
                 {
@@ -332,7 +332,7 @@ public partial class Dashboard : System.Web.UI.Page
 
     protected void btnCancel_Click(object sender, EventArgs e)
     {
-        SqlConnection conn = new SqlConnection();
+        /*SqlConnection conn = new SqlConnection();
         conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
         using (SqlCommand cmd = new SqlCommand("DELETE * FROM pending_offer WHERE offer_id = @id", conn))
         {
@@ -344,7 +344,7 @@ public partial class Dashboard : System.Web.UI.Page
                 btnCancel.Visible = false;
                 lblPendingOffer1.Text = offer.ToString();
                 //Response.Redirect("JoshsTemplateAttempt.aspx");
-        }
+        }*/
     }
 
     protected void btnCancel3_Click(object sender, EventArgs e)
