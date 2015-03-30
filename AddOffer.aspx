@@ -46,7 +46,7 @@
                                                      
                            <div class="form-group">
                                 <div class="col-md-4 col-md-offset-4">
-                                    <asp:Button ID="btnSubmit" CssClass="btn btn-primary" runat="server" Text="Submit" />
+                                    <asp:Button ID="btnSubmit" CssClass="btn btn-primary" runat="server" Text="Submit" ValidationGroup="AddOffer" />
                                 </div>
                                 
                             </div>
