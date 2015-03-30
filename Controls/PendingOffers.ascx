@@ -1,16 +1,17 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="PendingOffers.ascx.cs" Inherits="PendingOffers" %>
 
-
 <%--<%@ Reference Page="~/Dashboard.aspx" %>--%>
 
 <asp:SqlDataSource ID="SqlDataSource2" runat="server"
-    ConnectionString="<%$ ConnectionStrings:DbConnString%>"
-    SelectCommand="select * from vUserInfo where User_ID=3"/>
+    ConnectionString="<%$ ConnectionStrings:DbConnString%>">
+    </asp:SqlDataSource>
 
 <div class="row">
     <div class="col-md-12">
-        <asp:ListView ID="ListView2"
-            DataSourceID="SqlDataSource2" runat="server" OnItemCommand="ListView2_ItemCommand">
+        <asp:Label ID="myLabel" runat="server" /><p></p>
+        <asp:Label ID="myLabel2" runat="server" />
+        <asp:ListView ID="ListView2" 
+            runat="server" DataSourceID="SqlDataSource2" OnItemCommand="ListView2_ItemCommand">
             <LayoutTemplate>
                 <div runat="server">
                     <div id="itemPlaceholder" runat="server" />
@@ -24,6 +25,7 @@
             <ItemTemplate>
                 <div class="well">
                     <span id="panel-title" class="panel-title">
+                        
                         
                         <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> 
                                             <%#Eval("frm_place") %> to <%#Eval("to_place")%>

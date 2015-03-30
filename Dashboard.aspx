@@ -94,7 +94,7 @@
             </div>
             <div class="col-md-4">
                 <h2>My Active Offers</h2>
-                <uc1:PendingOffers runat="server" ID="PendingOffers" />
+                <uc1:PendingOffers runat="server" ID="PendingOffers" userID="<%#userID%>"/>
                 <h2>My Active Requests</h2>
                 <p>
                     <asp:Label ID="lblPendingRequests1" runat="server" Text="No Pending Requests" Visible="False" />

@@ -16,15 +16,20 @@ public partial class Dashboard : System.Web.UI.Page
 {
     protected static int offer, request;
 
-    protected string userID;
+    public string userID;
     private string accLevel;
 
     protected void Page_Load(object sender, EventArgs e)
     {
         SqlConnection conn = new SqlConnection();
         conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
-        getUserID();
         //profileImage.ImageUrl = "~/Images/emptyProfileImage.png";
+
+        if (Request.IsAuthenticated) //Check first if request is authenticated 
+        {
+            //Code to get User_ID from cookie
+            getUserID();
+        }
 
         if (!IsPostBack)
         {
@@ -37,7 +42,7 @@ public partial class Dashboard : System.Web.UI.Page
             if (Request.IsAuthenticated) //Check first if request is authenticated 
             {
                 //Code to get User_ID from cookie
-                getUserID();
+               
                 using (SqlCommand cmd = new SqlCommand("Select * from users Where User_ID =" + userID, conn))
                 {
                     cmd.CommandType = System.Data.CommandType.Text;
