@@ -12,7 +12,7 @@ public partial class GetImage : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request.QueryString["ImageID"] != null)
+        if (Request.IsAuthenticated && Request.QueryString["ImageID"] != null)
         {
             
             SqlConnection conn = new SqlConnection();
@@ -39,6 +39,17 @@ public partial class GetImage : System.Web.UI.Page
                 Response.AddHeader("content-disposition", "attachment;filename="
                 + dt.Rows[0]["image_name"].ToString());
                 Response.BinaryWrite(bytes);
+                Response.Flush();
+                Response.End();
+            }
+            else //No image found show default image
+            {
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.ContentType = "image/jpg";
+                Response.AddHeader("content-disposition", "attachment;filename=default.jpg");
+                Response.WriteFile( "~/Images/default.jpg");
                 Response.Flush();
                 Response.End();
             }

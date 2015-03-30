@@ -13,8 +13,6 @@
     <link href="Content/bootstrap-toggle.min.css" rel="stylesheet" />
     <link href="Content/sticky-footer.css" rel="stylesheet" />
     <link href="Content/customStyles.css" rel="stylesheet" />
-    <!-- Custom styles for this template -->
-    <!-- <link href="starter-template.css" rel="stylesheet"> -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -104,69 +102,78 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Search</h4>
                         </div>
-                        <div class="media-body">
-                        <div class="well bs-component searchbar">
+                        <div class="modal-body">
+                                <div class="well bs-component searchbar">
                             <div class="form-horizontal">
                                 <fieldset>
-                                    <div class="row">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="chkSearchType">Looking for</label>
-                                            <div class="col-md-10">
+                                            <label class="control-label col-md-4" for="chkSearchType">Looking for</label>
+                                            <div class="col-md-8">
                                                 <asp:CheckBox ID="chkSearchType" data-toggle="toggle" runat="server" />
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="DropDownList4">From</label>
-                                            <div class="col-md-10">
-                                                <asp:DropDownList ID="DropDownList4" CssClass="form-control" runat="server">
+                                            <label class="control-label col-md-4" for="ddlTripFrom">From</label>
+                                            <div class="col-md-8">
+                                                <asp:DropDownList ID="ddlTripFrom" CssClass="form-control" runat="server">
+                                                    <asp:ListItem Value="0" Selected="True">From</asp:ListItem>
                                                     <asp:ListItem Value="1">UL</asp:ListItem>
                                                     <asp:ListItem Value="2">City</asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="DropDownList2">To</label>
-                                            <div class="col-md-10">
-                                                <asp:DropDownList ID="DropDownList2" CssClass="form-control" runat="server">
-                                                    <asp:ListItem Selected="True">Searching for</asp:ListItem>
+                                            <label class="control-label col-md-4" for="ddlTripTo">To</label>
+                                            <div class="col-md-8">
+                                                <asp:DropDownList ID="ddlTripTo" CssClass="form-control" runat="server">
+                                                    <asp:ListItem Selected="True">To</asp:ListItem>
                                                     <asp:ListItem Value="1">Request</asp:ListItem>
                                                     <asp:ListItem Value="2">Offer</asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2" for="TextBox2">Between</label>
-                                            <div class="col-md-10">
+                                            <label class="control-label col-md-4" for="txtStartDate">Between</label>
+                                            <div class="col-md-8">
                                                 <div class='input-group date'>
-                                                    <asp:TextBox ID="TextBox2" CssClass="form-control" runat="server" placeholder="Start Date-Time"></asp:TextBox>
+                                                    <asp:TextBox ID="txtStartDate" CssClass="form-control" runat="server" placeholder="dd/mm/yyy hh:mm"></asp:TextBox>
                                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                                     </span>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-2" for="TextBox3">To</label>
-                                            <div class="col-md-10">
-                                                <div class='input-group date'>
-                                                    <asp:TextBox ID="TextBox3" CssClass="form-control" runat="server" placeholder="Finish Date-Time"></asp:TextBox>
-                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                         <%--        <asp:CompareValidator
+                                                    ID="valStartDate" runat="server" 
+                                                    Type="Date"
+                                                    Operator="DataTypeCheck"
+                                                    ControlToValidate="txtStartDate" 
+                                                    ErrorMessage="Please enter a valid date."
+                                                     ValidationGroup="search" >
+                                                </asp:CompareValidator>--%>
 
-                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4" for="txtEndDate">To</label>
+                                            <div class="col-md-8">
+                                                <div class='input-group date'>
+                                                    <asp:TextBox ID="txtEndDate" CssClass="form-control" runat="server" placeholder="dd/mm/yyy hh:mm"></asp:TextBox>
+                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                                <asp:CompareValidator ID="CompareValidator2"  ControlToValidate="txtEndDate" runat="server" ErrorMessage="CompareValidator"></asp:CompareValidator>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-warning">
+                                            <asp:ValidationSummary ID="valSummerySearch" runat="server"
+                                                 ValidationGroup="search" />
+                                        </div>
                                 </fieldset>
                             </div>
-                        </div>
+                                </div>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button ID="btnReset" CssClass="btn btn-default" runat="server" Text="Reset" />
-                            <asp:Button ID="btnSearch" CssClass="btn btn-primary" runat="server" Text="Search" />
+                            <input type="reset" name="reset"  value="Reset" class="btn btn-default" /> 
+                         <%--   <asp:Button ID="btnReset" CssClass="btn btn-default" runat="server" Text="Reset" />--%>
+                            <asp:Button ID="btnSearch" CssClass="btn btn-primary" ValidationGroup="search" runat="server" Text="Search" />
                         </div>
                     </div>
                 </div>
@@ -288,12 +295,6 @@
         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
         </asp:ContentPlaceHolder>
         <!-- /container -->
-        <%--        <div class="footer">
-            <div class="container">
-                <p>&copy; UL Carpooling 2015</p>
-                <p>All rights reserved.</p>
-            </div>
-        </div>--%>
         <footer class="footer">
             <div class="container">
                 <div class="row">
@@ -325,8 +326,11 @@
                             <a href="#" target="_blank">
                                 <img alt="Facebook Logo" class="facebook-datacamp-position" src="https://d3egmynekukbig.cloudfront.net/assets/facebook-8b2ed1afff78708231dbd8dd75d2d22b.png" /></a>
                         </div>
-                        <div class="footer--logo footer-datacamp-position"></div>
-
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>&copy; UL Carpooling 2015. All rights reserved.</p>
                     </div>
                 </div>
             </div>
@@ -350,7 +354,6 @@
         });
 
     </script>
-
     <%--  Scripts for searchtype toggle button--%>
     <script type="text/javascript">
         $(function () {
