@@ -1,26 +1,50 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="ReviewPage.aspx.cs" Inherits="ReviewPage" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <style>
+    /* Rating */
+.blankstar
+{
+background-image: url(images/blank_star.png);
+width: 16px;
+height: 16px;
+}
+.waitingstar
+{
+background-image: url(images/half_star.png);
+width: 16px;
+height: 16px;
+}
+.shiningstar
+{
+background-image: url(images/shining_star.png);
+width: 16px;
+height: 16px;
+}
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <div class="container top-buffer">
         <div class="well bs-component">
             <div class="form-horizontal">
                 <fieldset>
-                    <legend>REVIEWS</legend>
-                    
-                    <asp:Table runat="server" CellPadding="5" GridLines ="Both" HorizontalAlign="Center">
-                       <asp:TableRow>
-                         <asp:TableCell>
-                             <asp:Image ID="Image1" runat="server" ImageUrl="~/Images/male.jpg" Height="150px" Width="150px" />
-                         </asp:TableCell>
-                         <asp:TableCell>2</asp:TableCell>
-                       </asp:TableRow>
-                       <asp:TableRow>
-                         <asp:TableCell></asp:TableCell>
-                         
-                       </asp:TableRow>
-                     </asp:Table>
+                  <asp:Table runat="server" CellPadding="5" GridLines="Both" HorizontalAlign="Center" Height="500px" Width="700px" CssClass="table">
+   <asp:TableRow>
+     <asp:TableCell Height="100" Width="150" HorizontalAlign="Center">
+         <asp:Image ID="profilePic" runat="server" ImageUrl="~/Images/male.jpg" Height="95" /></asp:TableCell>
+     <asp:TableCell HorizontalAlign="Center"><h2>Reviews</h2></asp:TableCell>
+   </asp:TableRow>
+   <asp:TableRow>
+     <asp:TableCell>
+         <cc1:Rating ID="Rating1" AutoPostBack="true" OnChanged="OnRatingChanged" runat="server" StarCssClass="blankstar" WaitingStarCssClass="waitingstar" FilledStarCssClass="shiningstar" EmptyStarCssClass="blankstar">
+         </cc1:Rating>
+     </asp:TableCell>
+     <asp:TableCell VerticalAlign="Top">
+         <asp:GridView ID="grdResult" runat="server" Width="550"></asp:GridView>
+     </asp:TableCell>
+   </asp:TableRow>
+</asp:Table>  
                 </fieldset>
             </div>
         </div>

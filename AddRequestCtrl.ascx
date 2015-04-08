@@ -1,8 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="AddRequestCtrl.ascx.cs" Inherits="AddRequestCtrl" %>
 <%@ Register Assembly="GMaps" Namespace="Subgurim.Controles" TagPrefix="cc1" %>
 
-
-
 <div class="container top-buffer">
         <div class="well bs-component">
             <div class="form-horizontal">

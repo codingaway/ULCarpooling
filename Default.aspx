@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Default" %>
-<%@ Register Src="~/Controls/uscListControl.ascx" TagPrefix="uc1" TagName="uscListControl" %>
+<%@ Register Src="~/Controls/uscOfferList.ascx" TagPrefix="uc1" TagName="uscOfferList" %>
+<%@ Register Src="~/Controls/uscRequestList.ascx" TagPrefix="uc1" TagName="uscRequestList" %>
+
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
@@ -60,14 +62,15 @@
         <div class="row">
         <div class="col-md-4">
             <div class="well">
-                <div class="row">
-                <uc1:uscListControl runat="server" ID="uscListControl" />
+               
+                <uc1:uscOfferList runat="server" ID="uscOfferList" />
           <asp:PlaceHolder ID="plhLeftColumn" runat="server"></asp:PlaceHolder>
-                </div>
+              
             </div>
         </div>
         <div class="col-md-4">
             <div class="well">
+                <uc1:uscRequestList runat="server" ID="uscRequestList" />
             <asp:PlaceHolder ID="plhMidColumn" runat="server"></asp:PlaceHolder>
             </div>
         </div>
