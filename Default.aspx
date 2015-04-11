@@ -1,10 +1,13 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Default" %>
-<%@ Register Src="~/Controls/uscOfferList.ascx" TagPrefix="uc1" TagName="uscOfferList" %>
-<%@ Register Src="~/Controls/uscRequestList.ascx" TagPrefix="uc1" TagName="uscRequestList" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+<%@ Register Src="~/Controls/uscCustomList.ascx" TagPrefix="uc1" TagName="uscCustomList" %>
+
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="Content/tabStyles.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 
@@ -16,7 +19,7 @@
                 <div class="carousel-caption page-header">
                     <h1>UL Carpooling <small>Subtext for header</small></h1>
                 </div>
-            <%--    <div class="carousel-caption">
+                <%--    <div class="carousel-caption">
                     <h3>Headline</h3>
                     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
                 </div>--%>
@@ -60,31 +63,50 @@
     <!-- End Carousel -->
     <div class="container top-buffer">
         <div class="row">
-        <div class="col-md-4">
-            <div class="well">
-               
-                <uc1:uscOfferList runat="server" ID="uscOfferList" />
-          <asp:PlaceHolder ID="plhLeftColumn" runat="server"></asp:PlaceHolder>
-              
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="well">
-                <uc1:uscRequestList runat="server" ID="uscRequestList" />
-            <asp:PlaceHolder ID="plhMidColumn" runat="server"></asp:PlaceHolder>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="well sidebar">
-            <asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
-            <h2>Side column</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <h2>Side column</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        </div>
+            <div class="col-md-8">
+                <div class="">
+                    <asp:SqlDataSource ID="SqlDataSource1" runat="server"
+                        ConnectionString="<%$ ConnectionStrings:DbConnString%>"
+                        SelectCommand="select * from vOfferDetails" />
+                    <div class="row">
+                        <cc1:TabContainer ID="TabContainer1" runat="server" CssClass="mainTab">
+                            <cc1:TabPanel runat="server" ID="tabOfferList">
+                                <HeaderTemplate>
+                                    Offers
+                                </HeaderTemplate>
+                                <ContentTemplate>
+                                    <asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
 
+                                    <uc1:uscCustomList runat="server" ID="OfferList" />
+                                </ContentTemplate>
+                            </cc1:TabPanel>
+                            <cc1:TabPanel runat="server" ID="tablRequest">
+                                <HeaderTemplate>
+                                    Request
+                                </HeaderTemplate>
+                                <ContentTemplate>
+                                    <asp:PlaceHolder ID="PlaceHolder2" runat="server"></asp:PlaceHolder>
+                                    <uc1:uscCustomList runat="server" ID="RequestList" />
+                                </ContentTemplate>
+                            </cc1:TabPanel>
+                        </cc1:TabContainer>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="well sidebar">
+
+                    <h2>Side column</h2>
+                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                    <h2>Side column</h2>
+                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                </div>
+
+            </div>
         </div>
-    </div>
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" runat="Server">

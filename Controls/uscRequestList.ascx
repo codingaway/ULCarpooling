@@ -7,7 +7,9 @@
 <div class="row">
     <div class="col-md-12">
         <h4>Request List</h4>
-        <asp:ListView ID="ListView1"
+<%--        <asp:ListView ID="ListView1"
+            DataSourceID="SqlDataSource1" runat="server" OnItemCommand="ListView1_ItemCommand">--%>
+             <asp:ListView ID="ListView1"
             DataSourceID="SqlDataSource1" runat="server" OnItemCommand="ListView1_ItemCommand">
             <LayoutTemplate>
                 <div runat="server">
@@ -61,11 +63,11 @@
 
                                 </AnonymousTemplate>
                                 <LoggedInTemplate>
-                                    <img alt="user picture" height="40" width="40" src='<%=ResolveClientUrl("~/GetImage.aspx?ImageID=") %>
-                                                <%#Eval("User_ID")%>' />
+                                    <img alt="user picture" height="40" width="40" src='<%=ResolveClientUrl("~/GetImage.aspx?ImageID=")%><%#Eval("User_ID")%>' />
                                     <%#Eval("full_name") %>
                                     <asp:LinkButton ID="LinkButton1" runat="server">View Reviews</asp:LinkButton>
-                                    <asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandArgument='<%#Eval("Request_id") %>' CommandName="ItemCommand" runat="server" Text="Offer lift" />
+                                    <%--<asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandArgument='<%#Eval("Request_id") %>' CommandName="ItemCommand" runat="server" Text="Offer lift" />--%>
+                                    <asp:Button CssClass="btn btn-info pull-right" ID="Button1" runat="server" Text="Offer lift" />
 
                                 </LoggedInTemplate>
                             </asp:LoginView>

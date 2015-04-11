@@ -14,11 +14,11 @@ public partial class Main : System.Web.UI.MasterPage
 
     }
 
-    protected override void OnPreRender(EventArgs e)
-    {
-        base.OnPreRender(e);
-        LoadScript();
-    }
+    //protected override void OnPreRender(EventArgs e)
+    //{
+    //    base.OnPreRender(e);
+    //    LoadScript();
+    //}
 
     protected void lbtnLogin_Click(object sender, EventArgs e)
     {
@@ -34,6 +34,7 @@ public partial class Main : System.Web.UI.MasterPage
         String scriptUrl = "~/Scripts/dateValidation.js";
         Type scriptType = this.GetType();
 
+        
         ClientScriptManager clientScriptManager = Page.ClientScript;
 
         if (!clientScriptManager.IsClientScriptIncludeRegistered(scriptType, scriptName))
@@ -41,9 +42,5 @@ public partial class Main : System.Web.UI.MasterPage
             clientScriptManager.RegisterClientScriptInclude(scriptType, scriptName, ResolveClientUrl(scriptUrl));
         }
 
-    }
-    protected void btnSearch_Click(object sender, EventArgs e)
-    {
-        ContentPlaceHolder1.Controls.Clear();
     }
 }
