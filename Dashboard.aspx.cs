@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -14,17 +14,20 @@ using System.Web.UI.HtmlControls;
 
 public partial class Dashboard : System.Web.UI.Page
 {
-    protected static int offer, request;
-
-    protected string userID;
+    public string userID;
     private string accLevel;
 
     protected void Page_Load(object sender, EventArgs e)
     {
         SqlConnection conn = new SqlConnection();
         conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
-        getUserID();
         //profileImage.ImageUrl = "~/Images/emptyProfileImage.png";
+
+        if (Request.IsAuthenticated) //Check first if request is authenticated 
+        {
+            //Code to get User_ID from cookie
+            getUserID();
+        }
 
         if (!IsPostBack)
         {
@@ -37,7 +40,7 @@ public partial class Dashboard : System.Web.UI.Page
             if (Request.IsAuthenticated) //Check first if request is authenticated 
             {
                 //Code to get User_ID from cookie
-                getUserID();
+               
                 using (SqlCommand cmd = new SqlCommand("Select * from users Where User_ID =" + userID, conn))
                 {
                     cmd.CommandType = System.Data.CommandType.Text;
@@ -91,8 +94,7 @@ public partial class Dashboard : System.Web.UI.Page
                             pw += "*";
                         }
                         lblPW.Text = pw;
-                        txtPW.Text = pw;
-                        txtConPW.Text = pw;
+                        txtOldPW.Text = pw;
                     }
                     else
                     {
@@ -101,7 +103,26 @@ public partial class Dashboard : System.Web.UI.Page
                     reader.Close();
                 }
 
+                // Ban a user/ view list of banned users
 
+                using(SqlCommand cmd = new SqlCommand("SELECT FName, Sname FROM users Join blocked_user on User_ID = blocked_user.blocked_user Where blocked_user.blocked_by =" + userID , conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    //cmd.Parameters.Add("@id", SqlDbType.Int).Value = userID;
+                    cmd.Connection = conn;
+
+                    SqlDataAdapter reader = new SqlDataAdapter(cmd);
+                    DataSet myDS = new DataSet();
+                    reader.Fill(myDS, "BlockedUsers");
+                    DataTable myDataTable = myDS.Tables[0];
+                    DataRow tempRow = null;
+
+                    foreach(DataRow tempRow_Variable in myDataTable.Rows)
+                    {
+                        tempRow = tempRow_Variable;
+                        bannedUserLB.Items.Add((tempRow["FName"] + " " + tempRow["SName"]));
+                    }
+                }
 
                 //Need a command to load feedback from DB to feedbackImage
                 using (SqlCommand cmd = new SqlCommand("SELECT AVG(rating) FROM Reviews WHERE user_id =" + userID, conn))
@@ -120,115 +141,10 @@ public partial class Dashboard : System.Web.UI.Page
                 }
 
                 //Need a command to load Active Offers/Requests from DB
-                using (SqlCommand cmd = new SqlCommand("SELECT * FROM offer_rec WHERE user_id =" + userID, conn))
-                {
-                    cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.Connection = conn;
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    string display;
-                    int from, to;
-
-                    if (reader.Read())
-                    {
-                        int offerID = Int32.Parse(reader["offer_id"].ToString());
-                        reader.Close();
-                        if (checkIfPending(offerID, 0))
-                        {
-                            reader = cmd.ExecuteReader();
-                            if (reader.Read())
-                            {
-                                display = reader["date_time"].ToString() + " ";
-                                from = Int32.Parse(reader["place_from"].ToString());
-                                to = Int32.Parse(reader["place_to"].ToString());
-                                reader.Close();
-                                display += getPlaceName(from) + " - ";
-                                display += getPlaceName(to);
-                                lblPendingOffer1.Text = display;
-                                lblPendingOffer1.Visible = true;
-                                btnCancel.Visible = true;
-                                offer = offerID;
-                            }
-                            else
-                                lblPendingOffer1.Text = "No pending offers3";
-                        }
-                        else
-                            lblPendingOffer1.Text = "No pending offers2";
-                    }
-                    else
-                        lblPendingOffer1.Text = "No pending offers";
-                    reader.Close();
-                }
-
-                using (SqlCommand cmd = new SqlCommand("SELECT * FROM req_rec WHERE user_id =" + userID, conn))
-                {
-                    cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.Connection = conn;
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    string display;
-                    int from, to;
-
-                    if (reader.Read())
-                    {
-                        int requestID = Int32.Parse(reader["Request_id"].ToString());
-                        reader.Close();
-                        if (checkIfPending(requestID, 1))
-                        {
-                            reader = cmd.ExecuteReader();
-                            if (reader.Read())
-                            {
-                                display = reader["date_time"].ToString() + " ";
-                                from = Int32.Parse(reader["place_from"].ToString());
-                                to = Int32.Parse(reader["place_to"].ToString());
-                                reader.Close();
-                                display += getPlaceName(from) + " - ";
-                                display += getPlaceName(to);
-                                lblPendingRequests1.Text = display;
-                                lblPendingRequests1.Visible = true;
-                                btnCancel3.Visible = true;
-                                request = requestID;
-                            }
-                            else
-                                lblPendingRequests1.Text = "No pending requests3";
-                        }
-                        else
-                            lblPendingRequests1.Text = "No pending requests2";
-                    }
-                    else
-                        lblPendingRequests1.Text = "No pending requests";
-                    reader.Close();
-                }
 
                 //Need a command to load Notifications from DB
 
                 //Need a command to load Trip Histories from DB
-                using (SqlCommand cmd = new SqlCommand("SELECT * FROM trip_rec WHERE driver =" + userID, conn))
-                {
-                    cmd.CommandType = System.Data.CommandType.Text;
-                    cmd.Connection = conn;
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    string display;
-                    int from, to;
-
-                    if (reader.Read())
-                    {
-                        display = reader["date_time"].ToString() + " ";
-                        from = Int32.Parse(reader["place_from"].ToString());
-                        to = Int32.Parse(reader["place_to"].ToString());
-                        reader.Close();
-                        display += getPlaceName(from) + " - ";
-                        display += getPlaceName(to);
-                        lblHistory1.Text = display;
-                        lblHistory1.Visible = true;
-                        btnReviewTrip.Visible = true;
-                        btnReportTrip.Visible = true;
-                    }
-                    else
-                        lblHistory1.Text = "No trip histories found3";
-                    reader.Close();
-                }
                 conn.Close();
             }
             else
@@ -251,78 +167,75 @@ public partial class Dashboard : System.Web.UI.Page
             accLevel = userData[1];
     }
 
-    protected string getPlaceName(int Place_id)
-    {
-        SqlConnection conn = new SqlConnection();
-        conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
-        
-        SqlCommand cmd2 = new SqlCommand("SELECT place_name FROM places WHERE Place_id = @Place_id", conn);
-        cmd2.Parameters.Add("@Place_id", SqlDbType.Int).Value = Place_id;
-        conn.Open();
-        SqlDataReader reader = cmd2.ExecuteReader();
-        string placeName;
-
-        if (reader.Read())
-        {
-            placeName = reader["place_name"].ToString();
-            reader.Close();
-            return placeName;
-        }
-        else
-        {
-            placeName = "Place_id mismatch";
-            reader.Close();
-            return placeName;
-        }
-    }
-
-    protected bool checkIfPending(int id, int flag)
-    {
-        SqlConnection conn = new SqlConnection();
-        conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
-        if (flag == 0)
-        {
-            SqlCommand command = new SqlCommand("SELECT * from pending_offer WHERE offer_id = @id", conn);
-            command.Parameters.Add("@id", SqlDbType.Int).Value = id;
-            command.Connection = conn;
-            conn.Open();
-            SqlDataReader reader2 = command.ExecuteReader();
-            if (reader2.Read())
-            {
-                reader2.Close();
-                return true;
-            }
-            else
-            {
-                reader2.Close();
-                return false;
-            }
-        }
-        else
-        {
-            SqlCommand command = new SqlCommand("SELECT * from pending_req WHERE request_id = @id", conn);
-            command.Parameters.Add("@id", SqlDbType.Int).Value = id;
-            command.Connection = conn;
-            conn.Open();
-            SqlDataReader reader2 = command.ExecuteReader();
-            if (reader2.Read())
-            {
-                reader2.Close();
-                return true;
-            }
-            else
-            {
-                reader2.Close();
-                return false;
-            }
-        }
-
-    }
-
     protected void editDetails_Click(object sender, EventArgs e)
     {
-        //Response.Redirect("JoshsEditProfile.aspx");
-        //edit details
+        // Read the file and convert it to Byte Array
+        string filePath = imageUpload.PostedFile.FileName;
+        string filename = Path.GetFileName(filePath);
+        string ext = Path.GetExtension(filename);
+        string contenttype = String.Empty;
+
+        //Set the contenttype based on File Extension
+        switch (ext)
+        {
+            case ".jpg": contenttype = "image/jpg"; break;
+            case ".png": contenttype = "image/png"; break;
+            case ".gif": contenttype = "image/gif"; break;
+            case ".pdf": contenttype = "application/pdf"; break;
+        }
+        if (contenttype != String.Empty)
+        {
+            Stream fs = imageUpload.PostedFile.InputStream;
+            BinaryReader br = new BinaryReader(fs);
+            Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+
+            HttpPostedFile File = imageUpload.PostedFile;
+
+            fs.Close();
+            br.Close();
+
+            string[] name = (txtName.Text).Split(new Char[] { ' ' });
+            string mobile = txtPhone.Text;
+
+            //insert the file into database 
+            string strQuery = "UPDATE users SET FName = @FName, SName = @Sname, Mobile = @Mobile WHERE User_ID =" + userID;
+            SqlCommand cmd = new SqlCommand(strQuery);
+            cmd.Parameters.Add("@FName", SqlDbType.VarChar).Value = name[0];
+            cmd.Parameters.Add("@SName", SqlDbType.VarChar).Value = name[1];
+            cmd.Parameters.Add("@Mobile", SqlDbType.Char).Value = mobile;
+            InsertUpdateData(cmd);
+
+            string strQuery2 = "UPDATE profile_image SET image_name = @iName, content_type = @cType, data = @data WHERE user_ID =" + userID;
+            SqlCommand cmd2 = new SqlCommand(strQuery2);
+            cmd2.Parameters.Add("@data", SqlDbType.Binary).Value = bytes;
+            cmd2.Parameters.Add("@cType", SqlDbType.VarChar).Value = contenttype;
+            cmd2.Parameters.Add("@iName", SqlDbType.VarChar).Value = filename;
+            InsertUpdateData(cmd2);
+        }
+    }
+
+    private Boolean InsertUpdateData(SqlCommand cmd)
+    {
+        SqlConnection con = new SqlConnection();
+        con.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+        cmd.CommandType = CommandType.Text;
+        cmd.Connection = con;
+        try
+        {
+            con.Open();
+            cmd.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Response.Write(ex.Message);
+            return false;
+        }
+        finally
+        {
+            con.Close();
+            con.Dispose();
+        }
     }
 
     protected void btnBan_Click(object sender, EventArgs e)
@@ -330,38 +243,9 @@ public partial class Dashboard : System.Web.UI.Page
         //Ban another user
     }
 
-    protected void btnCancel_Click(object sender, EventArgs e)
+    protected void btnUnBan_Click(object sender, EventArgs e)
     {
-        SqlConnection conn = new SqlConnection();
-        conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
-        using (SqlCommand cmd = new SqlCommand("DELETE * FROM pending_offer WHERE offer_id = @id", conn))
-        {
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.Connection = conn;
-                
-                cmd.Parameters.Add("@id", SqlDbType.Int).Value = offer;
-                //lblPendingOffer1.Visible = false;
-                btnCancel.Visible = false;
-                lblPendingOffer1.Text = offer.ToString();
-                //Response.Redirect("JoshsTemplateAttempt.aspx");
-        }
-    }
-
-    protected void btnCancel3_Click(object sender, EventArgs e)
-    {
-        SqlConnection conn = new SqlConnection();
-        conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
-        using (SqlCommand cmd = new SqlCommand("DELETE * FROM pending_req WHERE request_id = @id", conn))
-        {
-            cmd.CommandType = System.Data.CommandType.Text;
-            cmd.Connection = conn;
-
-            cmd.Parameters.Add("@id", SqlDbType.Int).Value = request;
-            //lblPendingRequests1.Visible = false;
-            btnCancel3.Visible = false;
-            lblPendingRequests1.Text = request.ToString();
-            //Response.Redirect("JoshsTemplateAttempt.aspx");
-        }
+        //Unban a user
     }
 
     protected void btnReviewTrip_Click(object sender, EventArgs e)

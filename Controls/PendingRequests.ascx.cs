@@ -10,19 +10,19 @@ using System.Data.SqlClient;
 using System.Configuration;
 
 
-public partial class PendingOffers : System.Web.UI.UserControl
+public partial class PendingRequests : System.Web.UI.UserControl
 {
     public string userID { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
     {
         DataBind();
-        string query = "Select * FROM vOfferDetails WHERE User_ID =" + userID;
-        SqlDataSource2.SelectCommand = query;
-        ListView2.DataBind();
+        string query = "Select * FROM vRequestDetails WHERE User_ID =" + userID;
+        SqlDataSource3.SelectCommand = query;
+        ListView3.DataBind();
     }
 
-    protected void ListView2_ItemCommand(object sender, ListViewCommandEventArgs e)
+    protected void ListView3_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
 
     }
