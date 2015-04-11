@@ -11,10 +11,13 @@ using System.Data.SqlClient;
 /// </summary>
 public class DBHelper
 {
-    //public readonly string connectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True";
+    public const int OFFER_LIST = 0;
+    public const int REQ_LIST = 1;
+
+    //public const string connectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True";
 	private DBHelper()
 	{
-        //This class contains static methods, do not want to instantiate new onject from it
+        //This class contains static methods, do not want to instantiate new object from it
 	}
 
     public static bool isEmailUnique(string email)
@@ -72,9 +75,20 @@ public class DBHelper
              conn.Dispose();
              success = true;
          }
-         catch (SqlException ex) {}
+         catch (SqlException ex) { return success; }
          return success;
      }
+
+
+    public static void CreatePendingRequest(string userID, string offerID)
+    {
+
+    }
+
+    public static void CreatePendingOffer(string userID, string requestID)
+    {
+
+    }
 
 
 
