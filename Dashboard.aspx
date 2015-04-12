@@ -52,7 +52,6 @@
                                             <asp:TextBox ID="txtPhone" runat="server" Text="" /> <p></p>
                                             <asp:CheckBox ID="chkBoxSmoker" runat="server" checked="false"/> <p></p>
                                             <asp:DropDownList ID="genderDDL" runat="server" >
-                                                <asp:ListItem></asp:ListItem>
                                                 <asp:ListItem>Male</asp:ListItem>
                                                 <asp:ListItem>Female</asp:ListItem>
                                             </asp:DropDownList> <p></p>
@@ -149,7 +148,7 @@
                         </div>
                     </div>
                     <p></p>
-                <asp:Button ID="btnReviewComplaints" CssClass="btn btn-primary" runat="server" Text="Review Complaints" data-toggle="modal" data-target="#reviewComplaints" Visible="false"/>
+                <asp:Button ID="btnReviewComplaints" CssClass="btn btn-primary" runat="server" Text="Review complaints" data-toggle="modal" data-target="#reviewComplaints" Visible="false"/>
                     <div class="modal fade" id="reviewComplaints" tabindex="-1" role="dialog" aria-labelledby="reviewComplaintsLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
