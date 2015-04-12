@@ -12,17 +12,17 @@
         <div class="row">
             <div class="well col-md-4">
                 <h4 class="modal-title" id="myModalLabel">Search</h4>
-                <div class="form-horizontal">
+                <div class="">
                     <fieldset>
                         <div class="form-group">
-                            <label class="control-label col-md-4" for="chkSearchType">Looking for</label>
-                            <div class="col-md-8">
+                            <label class="control-label sr-only" for="chkSearchType">Looking for</label>
+                            <div class="">
                                 <asp:CheckBox ID="chkSearchType" runat="server"  AutoPostBack="true" OnCheckedChanged="CheckBox_CheckedChanged" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-4" for="ddlTripFrom">From</label>
-                            <div class="col-md-8">
+                            <label class="control-label" for="ddlTripFrom">From</label>
+                            <div class="">
                                 <asp:DropDownList ID="ddlTripFrom" CssClass="form-control" runat="server" AutoPostBack ="true" 
                                     EnableViewState="true"
                                     AppendDataBoundItems="true"
@@ -32,16 +32,16 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-4" for="ddlTripTo">To</label>
-                            <div class="col-md-8">
+                            <label class="control-label" for="ddlTripTo">To</label>
+                            <div class="">
                                 <asp:DropDownList ID="ddlTripTo" CssClass="form-control" AppendDataBoundItems="true"  runat="server">
                                     <asp:ListItem Value="0" Text="To">To</asp:ListItem>
                                 </asp:DropDownList>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-4" for="txtStartDate">Between</label>
-                            <div class="col-md-8">
+                            <label class="control-label" for="txtStartDate">Time range</label>
+                            <div class="">
                                 <div class='input-group date'>
                                     <asp:TextBox ID="txtStartDate" CssClass="form-control" runat="server" placeholder="dd/mm/yyy hh:mm"></asp:TextBox>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
@@ -57,8 +57,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-4" for="txtEndDate">To</label>
-                            <div class="col-md-8">
+                            <label class="control-label" for="txtEndDate">To</label>
+                            <div class="">
                                 <div class='input-group date'>
                                     <asp:TextBox ID="txtEndDate" CssClass="form-control" runat="server" placeholder="dd/mm/yyy hh:mm"></asp:TextBox>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>

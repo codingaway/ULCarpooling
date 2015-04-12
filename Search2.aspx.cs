@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -116,5 +117,69 @@ public partial class Search2 : System.Web.UI.Page
     {
         SqlDataSource1.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
         SqlDataSource1.SelectCommand = "select * from vOfferDetails where user_ID = 1";
+    }
+    protected void TextBox1_TextChanged(object sender, EventArgs e)
+    {
+        if(TextBox1.Text != "")
+        {
+            Regex regex = new Regex("\\W+");
+            string placeString = regex.Replace(TextBox1.Text.Trim(), "");
+
+            //cmd.CommandText = "select * from vGetPlaceName WHERE pname like @myParameter";
+            //cmd.Parameters.AddWithValue("@myParameter", "%" + prefixText + "%");
+
+            SqlDataSource2.SelectCommand = "select * from vGetPlaceName WHERE pname like '%" + placeString + "%'";
+            ListBox1.DataBind();
+
+        }
+        //else
+        //{
+        //    SqlDataSource2.SelectCommand = "select * from vGetPlaceName";
+            
+        //}
+        
+    }
+    protected void btnHidden_Click(object sender, EventArgs e)
+    {
+        if (TextBox1.Text != "")
+        {
+            Regex regex = new Regex("\\W+");
+            string placeString = regex.Replace(TextBox1.Text.Trim(), "");
+
+            //cmd.CommandText = "select * from vGetPlaceName WHERE pname like @myParameter";
+            //cmd.Parameters.AddWithValue("@myParameter", "%" + prefixText + "%");
+
+            SqlDataSource2.SelectCommand = "select * from vGetPlaceName WHERE pname like '%" + placeString + "%'";
+           
+        }
+        else
+        {
+            SqlDataSource2.SelectCommand = "select * from vGetPlaceName";
+        }
+        TextBox2.Text = "";
+        ListBox1.DataBind();
+    }
+
+    protected void btnHidden2_Click(object sender, EventArgs e) 
+    {
+        if (ListBox1.SelectedValue != null && Convert.ToInt32(ListBox1.SelectedValue) > 0)
+        {
+            if (TextBox2.Text != "")
+            {
+                Regex regex = new Regex("\\W+");
+                string placeString = regex.Replace(TextBox2.Text.Trim(), "");
+                SqlDataSource3.SelectCommand = "select pname, to_id from vGetToPlaceName WHERE frm_id = "
+                        + ListBox1.SelectedValue
+                        + " and pname like '%"
+                        + placeString + "%'";
+                    
+            }
+            else 
+            {
+                SqlDataSource3.SelectCommand = "select pname, to_id from vGetToPlaceName WHERE frm_id = "
+                        + ListBox1.SelectedValue;
+            }
+            ListBox2.DataBind();
+        }
     }
 }

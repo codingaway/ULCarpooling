@@ -4,18 +4,26 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <style>
+        .droplist {
+            position: absolute;
+            z-index: 1000;
+        }
+       .hidden {
+            visibility: hidden;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 
     <div class="container top-buffer">
         <div class="row">
-             
+
             <div class="well col-md-4">
                 <h4 class="modal-title" id="myModalLabel">Search</h4>
                 <div class="form-horizontal">
                     <fieldset>
                         <div class="form-group">
-                            <label class="control-label col-md-4" for="chkSearchType">Looking for</label>
                             <div class="col-md-8">
                                 <asp:CheckBox ID="chkSearchType" data-toggle="toggle" runat="server" />
                             </div>
@@ -23,21 +31,44 @@
                         <div class="form-group">
                             <label class="control-label col-md-4" for="ddlTripFrom">From</label>
                             <div class="col-md-8">
-                                <asp:DropDownList ID="ddlTripFrom" CssClass="form-control" runat="server">
-                                    <asp:ListItem Value="0" Selected="True">From</asp:ListItem>
-                                    <asp:ListItem Value="1">UL</asp:ListItem>
-                                    <asp:ListItem Value="2">City</asp:ListItem>
-                                </asp:DropDownList>
+                                <asp:TextBox ID="TextBox1" runat="server" onkeyup="refreshFromList();"
+                                    placeholder="Select a place"
+                                    autocomplete="off"></asp:TextBox>
+                                <asp:UpdatePanel ID="UpdatePanel1" UpdateMode="Conditional" runat="server">
+                                    <ContentTemplate>
+                                        <asp:ListBox ID="ListBox1" runat="server" CssClass="droplist" DataSourceID="SqlDataSource2" onchange="updateFromText();"
+                                            DataTextField="pname" DataValueField="place_id"></asp:ListBox>
+                                        <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:DbConnString %>" SelectCommand="select * from vGetPlaceName"></asp:SqlDataSource>
+
+
+                                    </ContentTemplate>
+                                    <Triggers>
+                                        <asp:AsyncPostBackTrigger ControlID="btnHidden" EventName="Click" />
+                                    </Triggers>
+                                </asp:UpdatePanel>
+                                <asp:Button ID="btnHidden" CssClass="sr-only" Text="Hidden Button" runat="server" OnClick="btnHidden_Click" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-4" for="ddlTripTo">To</label>
                             <div class="col-md-8">
-                                <asp:DropDownList ID="ddlTripTo" CssClass="form-control" runat="server">
-                                    <asp:ListItem Selected="True">To</asp:ListItem>
-                                    <asp:ListItem Value="1">Request</asp:ListItem>
-                                    <asp:ListItem Value="2">Offer</asp:ListItem>
-                                </asp:DropDownList>
+                               <asp:TextBox ID="TextBox2" runat="server"
+                                    placeholder="Destination"
+                                   onkeyup="refreshToList();"
+                                    autocomplete="off"></asp:TextBox>
+                                <asp:UpdatePanel ID="UpdatePanel2" UpdateMode="Conditional" runat="server">
+                                    <ContentTemplate>
+                                        <asp:ListBox ID="ListBox2" runat="server" CssClass="droplist" DataSourceID="SqlDataSource3" onchange="updateToText();"
+                                            DataTextField="pname" DataValueField="to_id"></asp:ListBox>
+                                        <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:DbConnString %>" ></asp:SqlDataSource>
+
+
+                                    </ContentTemplate>
+                                    <Triggers>
+                                        <asp:AsyncPostBackTrigger ControlID="btnHidden2" EventName="Click" />
+                                    </Triggers>
+                                </asp:UpdatePanel>
+                                <asp:Button ID="btnHidden2" CssClass="sr-only" Text="Hidden Button" runat="server" OnClick="btnHidden2_Click" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -87,7 +118,7 @@
                     </fieldset>
                 </div>
             </div>
-            
+
             <div class="col-md-8">
                 <div class="well">
                     <asp:SqlDataSource ID="SqlDataSource1" runat="server"
@@ -128,15 +159,16 @@
 
                                                 <asp:Label ID="lblShowHideDetails" runat="server" Text=""></asp:Label>
                                                 <span id="panel-title" class="panel-title">
-                                                    <span class="glyphicon glyphicon-map-marker"></span><span class="place-title"><%#Eval("frm_place") %></span> &nbsp;To&nbsp;<span class="place-title"><%#Eval("to_place")%></span><br /><span class="glyphicon glyphicon-calendar"></span><span class="date-time"><%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %></span></span><asp:Image ID="imgShowHide" runat="server" CssClass="arrow" ImageUrl="~/Images/down.png" />
-                                                
+                                                    <span class="glyphicon glyphicon-map-marker"></span><span class="place-title"><%#Eval("frm_place") %></span> &nbsp;To&nbsp;<span class="place-title"><%#Eval("to_place")%></span><br />
+                                                    <span class="glyphicon glyphicon-calendar"></span><span class="date-time"><%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %></span></span><asp:Image ID="imgShowHide" runat="server" CssClass="arrow" ImageUrl="~/Images/down.png" />
+
 
                                             </asp:Panel>
                                         </div>
                                         <asp:Panel ID="contentPanel" runat="server">
                                             <div class="panel-body">
-                                                
-                                              <%--  <asp:Panel ID="pnlAnonymous" runat="server">
+
+                                                <%--  <asp:Panel ID="pnlAnonymous" runat="server">
                                                     <span>Please sign in</span>
                                                 </asp:Panel>
                                                 <asp:Panel ID="pnlLoggedIn" runat="server" Visible="False">
@@ -154,8 +186,8 @@
 
                                                     </AnonymousTemplate>
                                                     <LoggedInTemplate>
-                                                       
-                                                     <img alt="user picture" height="40" width="40" src='<%=ResolveClientUrl("~/GetImage.aspx?ImageID=") %>
+
+                                                        <img alt="user picture" height="40" width="40" src='<%=ResolveClientUrl("~/GetImage.aspx?ImageID=") %>
                                                 <%#  Eval("User_ID")%>' />
                                                         <%# Eval("full_name") %> Number of seats: <%#Eval("seats") %>
                                                         <asp:LinkButton ID="LinkButton1" runat="server">View Reviews</asp:LinkButton>
@@ -179,4 +211,59 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" runat="Server">
+    <script type="text/javascript">
+        
+        $(document).ready(function () {
+            $("#<%=ListBox1.ClientID%>").hide();
+            $("#<%=ListBox2.ClientID%>").hide();
+
+            $("#<%=TextBox1.ClientID%>").focusin(function () {
+                $("#<%=ListBox2.ClientID%>").fadeOut();
+                $("#<%=ListBox1.ClientID%>").fadeIn();
+            });
+
+            $("#<%=TextBox1.ClientID%>").focusout(function () {
+                $("#<%=ListBox1.ClientID%>").fadeOut();
+            });
+
+            $("#<%=TextBox2.ClientID%>").focusin(function () {
+                $("#<%=ListBox2.ClientID%>").toggleClass("hidden", false);
+                $("#<%=ListBox2.ClientID%>").fadeIn();
+            });
+
+            $("#<%=TextBox2.ClientID%>").focusout(function () {
+                $("#<%=ListBox2.ClientID%>").fadeOut();
+            });
+        });
+
+        function updateToText() {
+            $("#<%=TextBox2.ClientID%>").val($("#<%=ListBox2.ClientID%> option:selected").text());
+            $("#<%=ListBox2.ClientID%>").fadeOut();
+            
+        }
+
+        function updateFromText() {
+            $("#<%=TextBox2.ClientID%>").val("");
+            $("#<%=btnHidden2.ClientID%>").trigger('click');
+            $("#<%=TextBox1.ClientID%>").val($("#<%=ListBox1.ClientID%> option:selected").text());
+            $("#<%=ListBox1.ClientID%>").fadeOut();
+            $("#<%=ListBox2.ClientID%>").toggleClass("hidden", true);
+
+        }
+
+        function refreshFromList()
+        {
+            var pretext = $("#<%=TextBox1.ClientID%>").val();
+
+            if (pretext.length > 2 || pretext.length == 0)
+                $("#<%=btnHidden.ClientID%>").trigger('click');
+        }
+        function refreshToList(textID, buttonID) {
+            
+            var pretext = $("#<%=TextBox2.ClientID%>").val();
+            if (pretext.length > 2 || pretext.length == 0) {
+                $("#<%=btnHidden2.ClientID%>").trigger('click');
+            }
+        }
+    </script>
 </asp:Content>

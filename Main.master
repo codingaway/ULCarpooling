@@ -28,7 +28,7 @@
     <asp:SqlDataSource ID="SqlDataSource1" runat="server"></asp:SqlDataSource>
     <form id="form1" runat="server">
         <%--Add AJAX scrpit handler--%>
-        <asp:ScriptManager ID="ScriptManager1" runat="server" />
+        <asp:ScriptManager ID="ScriptManager1" EnablePartialRendering="true" runat="server" />
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
