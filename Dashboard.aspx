@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="Dashboard.aspx.cs" Inherits="Dashboard" %>
 
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+
 <%@ Register Src="~/Controls/PendingOffers.ascx" TagPrefix="uc1" TagName="PendingOffers" %>
 <%@ Register Src="~/Controls/PendingRequests.ascx" TagPrefix="uc2" TagName="PendingRequests" %>
 <%@ Register Src="~/Controls/TripHistory.ascx" TagPrefix="uc3" TagName="TripHistory" %>
@@ -39,9 +41,10 @@
                                             <p>Phone: </p>
                                             <p>Smoker: </p>
                                             <p>Gender: </p>
+                                            <p>Date of Birth: </p>
                                             <p>Old Password: </p>
                                             <p>New Password: </p>
-                                            <p>Confrim Password: </p>
+                                            <p>Confirm Password: </p>
                                             <p>Change Image: </p>
                                         </div>
                                         <div class="col-md-8">
@@ -53,6 +56,8 @@
                                                 <asp:ListItem>Male</asp:ListItem>
                                                 <asp:ListItem>Female</asp:ListItem>
                                             </asp:DropDownList> <p></p>
+                                            <asp:TextBox ID="txtDOB" runat="server" />
+                                            <cc1:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtDOB" Format="dd/MM/yyyy"/>
                                             <asp:TextBox ID="txtOldPW" runat="server" Text="" />
                                             <asp:TextBox ID="txtNewPW" runat="server" Text="" />
                                             <asp:TextBox ID="txtConPW" runat="server" Text="" /> <p></p>
@@ -110,6 +115,7 @@
                 <span class="glyphicon glyphicon-star"></span>
                 <span class="glyphicon glyphicon-star"></span>
                 <p>Average Rating:<asp:Label ID="lblRating" runat="server" Text="No Rating Found" /></p>
+                <%--<cc1:Rating ID="Rating1" runat="server"></cc1:Rating>--%>
             </div>
             <div class="col-md-4">
                 <h2><asp:Label ID="lblSiteManagement" runat="server" Text="Site Management" Visible="false"/></h2>
