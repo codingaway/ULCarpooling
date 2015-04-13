@@ -26,7 +26,7 @@
 
                         <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> 
                                             <%#Eval("frm_place") %> to <%#Eval("to_place")%>
-                        <asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Cancel" />
+                        <asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandArgument='<%#Eval("id") %>' CommandName="ItemCommand" runat="server" Text="Cancel" />
                         <%-- <a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a>--%>
 
                     </span>
