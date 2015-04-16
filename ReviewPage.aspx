@@ -40,15 +40,26 @@ height: 16px;
          <cc1:Rating ID="Rating1" AutoPostBack="true" OnChanged="OnRatingChanged" runat="server" StarCssClass="blankstar" WaitingStarCssClass="waitingstar" FilledStarCssClass="shiningstar" EmptyStarCssClass="blankstar">
          </cc1:Rating>
      </asp:TableCell>
-     <asp:TableCell VerticalAlign="Top">
-         <asp:GridView ID="grdResult" runat="server" Width="550"></asp:GridView>
-     </asp:TableCell>
+    <asp:TableCell VerticalAlign="Top">
+         <asp:GridView ID="grdResult" runat="server" Width="550px" BackColor="#CCCCCC" BorderColor="#999999" BorderStyle="Solid" BorderWidth="3px" CellPadding="4" CellSpacing="2" ForeColor="Black" onrowdatabound="grdResult_RowDataBound">
+        <FooterStyle BackColor="#CCCCCC" />
+        <HeaderStyle BackColor="Black" Font-Bold="True" ForeColor="White" />
+        <PagerStyle BackColor="#CCCCCC" ForeColor="Black" HorizontalAlign="Left" />
+        <RowStyle BackColor="White" />
+        <SelectedRowStyle BackColor="#000099" Font-Bold="True" ForeColor="White" />
+        <SortedAscendingCellStyle BackColor="#F1F1F1" />
+        <SortedAscendingHeaderStyle BackColor="#808080" />
+        <SortedDescendingCellStyle BackColor="#CAC9C9" />
+        <SortedDescendingHeaderStyle BackColor="#383838" />
+    </asp:GridView>
+     </asp:TableCell> 
    </asp:TableRow>
 </asp:Table>  
                 </fieldset>
             </div>
         </div>
     </div>
+    
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" Runat="Server">
 </asp:Content>
