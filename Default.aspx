@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Default" %>
+﻿<%@ Page Title="Welcome to UL Carpooling" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="Default" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <%@ Register Src="~/Controls/uscCustomList.ascx" TagPrefix="uc1" TagName="uscCustomList" %>
@@ -19,10 +19,6 @@
                 <div class="carousel-caption page-header">
                     <h1>UL Carpooling <small>Subtext for header</small></h1>
                 </div>
-                <%--    <div class="carousel-caption">
-                    <h3>Headline</h3>
-                    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
-                </div>--%>
             </div>
             <!-- End Item -->
             <div class="item">
@@ -110,4 +106,24 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" runat="Server">
+    <script src="Scripts/carouselControl.js"></script>
+    <script type="text/javascript">
+        $.fn.stars = function () {
+            return $(this).each(function () {
+                // Get the value
+                var val = parseFloat($(this).html());
+                //val = Math.round(val * 4) / 4; /* To round to nearest quarter */
+                // Make sure that the value is in 0 - 5 range, multiply to get width
+                var size = Math.max(0, (Math.min(5, val))) * 16;
+                // Create stars holder
+                var $span = $('<span />').width(size);
+                // Replace the numerical value with stars
+                $(this).html($span);
+            });
+        }
+
+        $(function () {
+            $('span.stars').stars();
+        });
+    </script>
 </asp:Content>

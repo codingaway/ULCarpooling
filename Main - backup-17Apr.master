@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Main.master.cs" Inherits="Main" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Main - backup-17Apr.master.cs" Inherits="Main" %>
 
 <!DOCTYPE html>
 
@@ -6,8 +6,11 @@
 <head runat="server">
     <title>UL Carpooling</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Bootstrap core CSS -->
+    <%-- <!-- Bootstrap core CSS -->
+  <%--  <link href="Content/bootstrap.min.css" rel="stylesheet" />--%>
+    <%--    <link href="Content/bootstrap.min.ORG.css" rel="stylesheet" />--%>
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap-toggle.min.css" rel="stylesheet" />
     <link href="Content/sticky-footer.css" rel="stylesheet" />
     <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="Content/customStyles.css" rel="stylesheet" />
@@ -45,10 +48,10 @@
                             <asp:HyperLink ID="hlSearch" runat="server" NavigateUrl="~/Search.aspx"  CssClass="rounded-button blue-button"><span class="glyphicon glyphicon-search"></span> Search </asp:HyperLink>
                         </li>
                         <li class="form-group">
-                            <asp:HyperLink ID="lbtnAddReq" runat="server" NavigateUrl="~/AddOffer.aspx" CssClass="rounded-button blue-button"><span class="glyphicon glyphicon-plus-sign"></span> Add Request </asp:HyperLink>
+                            <asp:LinkButton ID="lbtnAddReq" runat="server" CssClass="rounded-button blue-button" data-toggle="modal" data-target="#addReqModal"><span class="glyphicon glyphicon-plus-sign"></span> Add Request </asp:LinkButton>
                         </li>
                         <li class="form-group">
-                            <asp:HyperLink ID="lbtnAddOffer" runat="server" NavigateUrl="~/AddRequest.aspx" CssClass="rounded-button blue-button"><span class="glyphicon glyphicon-plus-sign"></span> Add Offer </asp:HyperLink>
+                            <asp:LinkButton ID="lbtnAddOffer" runat="server" CssClass="rounded-button blue-button" data-toggle="modal" data-target="#addOfferModal"><span class="glyphicon glyphicon-plus-sign"></span> Add Offer </asp:LinkButton>
                         </li>
                     </ul>
 
@@ -57,13 +60,13 @@
                     <ul class="nav navbar-nav pull-right">
                         <asp:LoginView ID="LoginView1" runat="server">
                             <AnonymousTemplate>
-                                <asp:Label CssClass="navbar-text" runat="server">Hello visitor!</asp:Label>
+                                <asp:Label CssClass="navbar-text" runat="server"> Hello Guest! </asp:Label>
                                 <li class="navbar--list-item">
                                     <asp:HyperLink ID="hlRegister" NavigateUrl="~/Register.aspx" runat="server"><span class="glyphicon glyphicon-user"></span> Register</asp:HyperLink>
                                 </li>
                             </AnonymousTemplate>
                             <LoggedInTemplate>
-                                <asp:Label CssClass="navbar-text" runat="server"> Welcome</asp:Label>
+                                <asp:Label CssClass="navbar-text" runat="server"> Welcome </asp:Label>
                                 <li>
                                     <asp:HyperLink ID="HyperLink1" NavigateUrl="~/Dashboard.aspx" runat="server">
                                         <asp:LoginName ID="LoginName2" runat="server" />
@@ -75,6 +78,15 @@
                         <li>
                             <asp:LoginStatus ID="LoginStatus1" LoginText="<span class='glyphicon glyphicon-log-in'></span> Sign in" LogoutText="<span class='glyphicon glyphicon-log-out'></span> Sign out" runat="server" />
                         </li>
+                        <%--<li>
+                            <asp:LoginName ID="LoginName1" runat="server" />
+                        </li>
+                          <li class="navbar--list-item">
+                            <asp:LinkButton CssClass="rounded-button blue-button" ID="lbtnLogin" runat="server" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span> Login</asp:LinkButton>
+                        </li>
+                        <li class="navbar--list-item">
+                            <asp:LinkButton ID="lbtnRegister" runat="server"><span class="glyphicon glyphicon-user"></span> Register</asp:LinkButton>
+                        </li>--%>
                     </ul>
 
                 </div>
@@ -82,6 +94,69 @@
             </div>
         </nav>
         <div class="container top-buffer">
+            <!--Search Modal -->
+
+            <%--Add offer modal --Starts----%>
+
+            <div class="modal fade" id="addOfferModal" tabindex="-1" role="dialog" aria-labelledby="addOfferlLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="addOfferlLabel">Add an Offer</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="well bs-component">
+                                <div class="form-horizontal">
+                                    <fieldset>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="DDdepartLoc">Depart Location</label>
+                                                <div class="col-md-8">
+                                                    <asp:DropDownList ID="DDdepartLoc" CssClass="form-control" runat="server">
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="DDarrivalLoc">Arrival Location</label>
+                                                <div class="col-md-8">
+                                                    <asp:DropDownList ID="DDarrivalLoc" CssClass="form-control" runat="server">
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="txtDate">Date - Time</label>
+                                                <div class="col-md-8">
+                                                    <div class='input-group date'>
+                                                        <asp:TextBox ID="txtDate" CssClass="form-control" runat="server" TextMode="DateTimeLocal"></asp:TextBox>
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4" for="txtSeats">Number Of Seats</label>
+                                                <div class="col-md-8">
+                                                    <asp:TextBox ID="txtSeats" CssClass="form-control" runat="server"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <asp:Button ID="btnOfferSubmit" CssClass="btn btn-primary" runat="server" Text="Add Offer" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%--Add offer modal --Ends----%>
 
             <%--Main content area starts here--%>
             </div>
@@ -96,9 +171,8 @@
                             <ul class="footer--list">
                                 <li><a href="Register.aspx">Register</a></li>
                                 <li><a href="login.aspx">Sign-in</a></li>
-                                <li><a href="Search.aspx">Search</a></li>
-                                <li><a href="AddOffer.aspx">Add Offer</a></li>
-                                <li><a href="AddRequest.aspx">Add Request</a></li>
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
                             </ul>
                         </div>
 
@@ -107,8 +181,6 @@
                                 <li><a href="#">About</a></li>
                                 <li><a href="#">Contact us</a></li>
                                 <li><a href="#">Feedback</a></li>
-                                <li><a href="#">Terms of Use</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
                             </ul>
                         </div>
 
@@ -137,6 +209,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="Scripts/jquery-1.9.0.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/carouselControl.js"></script>
     <script src="Scripts/moment.min.js"></script>
     <script src="Scripts/bootstrap-datetimepicker.min.js"></script>
     <asp:ContentPlaceHolder ID="cphScripts" runat="server"></asp:ContentPlaceHolder>

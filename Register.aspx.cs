@@ -10,23 +10,16 @@ public partial class RegisterPage : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        //ASP.login_ascx login = (ASP.login_ascx)LoadControl("~/Login.ascx");
-        //plhLogin.Controls.Add(login);
-
-        //string chkBoxScrpit = "function isChkTermsChecked(sender, e){e.IsValid = $('#<%=valSummary.ClientID%>').is(':checked');}";
-        //ClientScript.RegisterOnSubmitStatement(this.GetType(), "isChkTermsChecked", chkBoxScrpit);
+        if(Request.IsAuthenticated) //If user already has logged in then redirect from this page
+        {
+            Response.Redirect("~/Default.aspx");
+        }
 
         if(IsPostBack)
         {
 
         }
     }
-
-    //protected void CheckBoxRequired_ServerValidate(object sender, ServerValidateEventArgs e)
-    //{
-    //    e.IsValid = chkTerms.Checked;
-    //}
-
 
     /* Server validation method to check if supplied email is unique to the database */
     protected void serverValIsUniqueEmail(object sender, ServerValidateEventArgs args)
