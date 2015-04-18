@@ -55,4 +55,17 @@ public partial class ReviewPage : System.Web.UI.Page
     {
         
     }
+
+    protected void grdResult_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.Header)
+        {
+            e.Row.Cells[0].Text = "Depart";
+            e.Row.Cells[1].Text = "Arrive";
+            e.Row.Cells[2].Text = "First Name";
+            e.Row.Cells[3].Text = "Surname";
+            e.Row.Cells[4].Text = "Rating";
+            e.Row.Cells[5].Text = "Comment";
+        }
+    }
 }
