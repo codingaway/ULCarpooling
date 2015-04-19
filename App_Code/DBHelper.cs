@@ -14,6 +14,8 @@ public class DBHelper
     public const int OFFER_LIST = 0;
     public const int REQ_LIST = 1;
 
+    
+
     //public const string connectionString = "Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True";
 	private DBHelper()
 	{
@@ -25,8 +27,9 @@ public class DBHelper
         bool isUnique = false;
         try
         {
+            string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+            conn.ConnectionString = conString; //ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
             conn.Open();
             SqlCommand cmd = new SqlCommand("select count(*) from users where email =@Email", conn);
             SqlParameter param = new SqlParameter();
@@ -88,6 +91,46 @@ public class DBHelper
     public static void CreatePendingOffer(string userID, string requestID)
     {
 
+    }
+
+    public static string[] getUserReview(string userID)
+    {
+        string [] review = null;
+
+        SqlConnection conn;
+        SqlCommand cmd;
+
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+        conn = new SqlConnection();
+        conn.ConnectionString = conString;
+        cmd = new SqlCommand("select average, total from vReviewCountAvg where user_id =" + userID, conn);
+        //SqlParameter param = new SqlParameter();
+        //param.ParameterName = "@userID";
+        //param.Value = userID;
+        //cmd.Parameters.Add(param);
+
+        SqlDataAdapter da = new SqlDataAdapter(cmd);
+        DataTable dt = new DataTable();
+
+        try
+        {
+            conn.Open();
+            da.Fill(dt);
+            
+            if(dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+                review = new string[2];
+                review[0] = row["average"].ToString();
+                review[1] = row["total"].ToString();
+            }
+        }
+        finally
+        {
+            da.Dispose();
+            conn.Dispose();
+        }
+        return review;
     }
 
 

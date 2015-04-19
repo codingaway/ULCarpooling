@@ -11,17 +11,19 @@ using Subgurim.Controls;
 using Subgurim.Web;
 using System.Globalization;
 
-public partial class AddRequestCtrl : System.Web.UI.UserControl
+
+public partial class AddOfferCtrl : System.Web.UI.UserControl
 {
     SqlConnection con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True");
     SqlCommand cmd1;
     SqlDataAdapter adpt1;
     protected void Page_Load(object sender, EventArgs e)
     {
-        tb_fromPoint.Style.Add("visibility", "hidden");
-        tb_endPoint.Style.Add("visibility", "hidden");
-
+          tb_fromPoint.Style.Add("visibility", "hidden");
+          tb_endPoint.Style.Add("visibility", "hidden");
+        
         GMap1.Key = "GoogleKey";
+        Page.DataBind();
         if (!this.IsPostBack)
         {
             fillDepartList();
@@ -54,7 +56,7 @@ public partial class AddRequestCtrl : System.Web.UI.UserControl
         con1.Close();
         //Adding "Please select" option in dropdownlist for validation
         DDdepartCounty.Items.Insert(0, new ListItem("Please select", "0"));
-   }
+    }
 
     protected void DDdepartCounty_SelectedIndexChanged1(object sender, EventArgs e)
     {
@@ -116,7 +118,7 @@ public partial class AddRequestCtrl : System.Web.UI.UserControl
         int count = 0;
         string str1 = DDdepartPlaces.SelectedItem.Value;
         string str4 = DDarrivalPlaces.SelectedItem.Value;
-
+     
         //Convert DateTime in microsoftSql Format
         string DateString = txtDate.Text;
         DateTime date = new DateTime();
@@ -126,25 +128,25 @@ public partial class AddRequestCtrl : System.Web.UI.UserControl
         //Suppose User Id = 2
         int userID = 2;
 
-        using (cmd1 = new SqlCommand("select count(*) from req_rec", con1))
+        using (cmd1 = new SqlCommand("select count(*) from offer_rec", con1))
         {
             count = (int)cmd1.ExecuteScalar();
             count++;
         }
 
-        using (cmd1 = new SqlCommand("insert into req_rec values(@Request_id,@user_id,@from,@to,@date_time)", con1))
+        using (cmd1 = new SqlCommand("insert into offer_rec values(@offer_id,@user_id,@from,@to,@date_time,@seats)", con1))
         {
-            cmd1.Parameters.AddWithValue("@Request_id", count.ToString());
+            cmd1.Parameters.AddWithValue("@offer_id", count.ToString());
             cmd1.Parameters.AddWithValue("@user_id", userID.ToString());
             cmd1.Parameters.AddWithValue("@from", str1);
             cmd1.Parameters.AddWithValue("@to", str4);
             cmd1.Parameters.AddWithValue("@date_time", dateTime);
-
+            cmd1.Parameters.AddWithValue("@seats", txtSeats.Text);
             cmd1.ExecuteNonQuery();
         }
-
-        con1.Close();
+        con1.Close(); 
     }
+    
     protected void DDarrivalPlaces_SelectedIndexChanged1(object sender, EventArgs e)
     {
         tb_endPoint.Text = DDarrivalPlaces.SelectedItem.Text + ", " + DDarrivalCounty.SelectedItem.Text;

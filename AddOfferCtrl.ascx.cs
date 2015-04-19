@@ -18,8 +18,8 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
     SqlDataAdapter adpt1;
     protected void Page_Load(object sender, EventArgs e)
     {
-        tb_fromPoint.Style.Add("visibility", "hidden");
-        tb_endPoint.Style.Add("visibility", "hidden");
+          tb_fromPoint.Style.Add("visibility", "hidden");
+          tb_endPoint.Style.Add("visibility", "hidden");
         
         GMap1.Key = "GoogleKey";
         Page.DataBind();
@@ -45,33 +45,84 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
     {
         con1.Open();
 
-        adpt1 = new SqlDataAdapter("Select * from places", con1);
+        adpt1 = new SqlDataAdapter("Select * from County", con1);
         DataTable dt = new DataTable();
         adpt1.Fill(dt);
-        DDdepartLoc.DataSource = dt;
-        DDdepartLoc.DataTextField = "place_name";
-        DDdepartLoc.DataValueField = "Place_id";
-        DDdepartLoc.DataBind();
+        DDdepartCounty.DataSource = dt;
+        DDdepartCounty.DataTextField = "Name";
+        DDdepartCounty.DataValueField = "c_code";
+        DDdepartCounty.DataBind();
         con1.Close();
         //Adding "Please select" option in dropdownlist for validation
-        DDdepartLoc.Items.Insert(0, new ListItem("Please select", "0"));
+        DDdepartCounty.Items.Insert(0, new ListItem("Please select", "0"));
+    }
 
+    protected void DDdepartCounty_SelectedIndexChanged1(object sender, EventArgs e)
+    {
+        con1.Open();
+        string selectSQL = "SELECT * FROM places ";
+        selectSQL += "WHERE c_code='" + DDdepartCounty.SelectedItem.Value + "'";
+        DDdepartPlaces.Enabled = true;
+        adpt1 = new SqlDataAdapter(selectSQL, con1);
+        DataTable dt = new DataTable();
+        adpt1.Fill(dt);
+        DDdepartPlaces.DataSource = dt;
+        DDdepartPlaces.DataTextField = "place_name";
+        DDdepartPlaces.DataValueField = "Place_id";
+        DDdepartPlaces.DataBind();
+        con1.Close();
+        //Adding "Please select" option in dropdownlist for validation
+        DDdepartPlaces.Items.Insert(0, new ListItem("Please select", "0"));
+    }
+
+    protected void DDdepartPlaces_SelectedIndexChanged1(object sender, EventArgs e)
+    {
+        con1.Open();
+        string selectSQL = "SELECT * FROM County ";
+        DDarrivalCounty.Enabled = true;
+        adpt1 = new SqlDataAdapter(selectSQL, con1);
+        DataTable dt = new DataTable();
+        adpt1.Fill(dt);
+        DDarrivalCounty.DataSource = dt;
+        DDarrivalCounty.DataTextField = "Name";
+        DDarrivalCounty.DataValueField = "c_code";
+        DDarrivalCounty.DataBind();
+        con1.Close();
+        //Adding "Please select" option in dropdownlist for validation
+        DDarrivalCounty.Items.Insert(0, new ListItem("Please select", "0"));
+        tb_fromPoint.Text = DDdepartPlaces.SelectedItem.Text + ", " + DDdepartCounty.SelectedItem.Text;
+    }
+
+    protected void DDarrivalCounty_SelectedIndexChanged1(object sender, EventArgs e)
+    {
+        con1.Open();
+        string selectSQL = "SELECT * FROM places ";
+        selectSQL += "WHERE c_code='" + DDarrivalCounty.SelectedItem.Value + "' AND place_name != '" + DDdepartPlaces.SelectedItem.Text + "'";
+        DDarrivalPlaces.Enabled = true;
+        adpt1 = new SqlDataAdapter(selectSQL, con1);
+        DataTable dt = new DataTable();
+        adpt1.Fill(dt);
+        DDarrivalPlaces.DataSource = dt;
+        DDarrivalPlaces.DataTextField = "place_name";
+        DDarrivalPlaces.DataValueField = "Place_id";
+        DDarrivalPlaces.DataBind();
+        con1.Close();
+        //Adding "Please select" option in dropdownlist for validation
+        DDarrivalPlaces.Items.Insert(0, new ListItem("Please select", "0"));
     }
 
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         con1.Open();
         int count = 0;
-        string str1 = DDdepartLoc.SelectedItem.Value;
-        string str4 = DDarrivalLoc.SelectedItem.Value;
+        string str1 = DDdepartPlaces.SelectedItem.Value;
+        string str4 = DDarrivalPlaces.SelectedItem.Value;
 
         using (cmd1 = new SqlCommand("select count(*) from offer_rec", con1))
         {
             count = (int)cmd1.ExecuteScalar();
             count++;
         }
-
-
 
         using (cmd1 = new SqlCommand("insert into offer_rec values(@Request_id,@from,@to,@date_time,@seats)", con1))
         {
@@ -83,34 +134,11 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
             cmd1.Parameters.AddWithValue("@seats", txtSeats.Text);
             cmd1.ExecuteNonQuery();
         }
-
-
-        //command1.Dispose();
-
         con1.Close(); 
     }
-
-
-    protected void DDdepartLoc_SelectedIndexChanged1(object sender, EventArgs e)
+    
+    protected void DDarrivalPlaces_SelectedIndexChanged1(object sender, EventArgs e)
     {
-        con1.Open();
-        string selectSQL = "SELECT * FROM places ";
-        selectSQL += "WHERE Place_id!='" + DDdepartLoc.SelectedItem.Value + "'";
-
-        adpt1 = new SqlDataAdapter(selectSQL, con1);
-        DataTable dt = new DataTable();
-        adpt1.Fill(dt);
-        DDarrivalLoc.DataSource = dt;
-        DDarrivalLoc.DataTextField = "place_name";
-        DDarrivalLoc.DataValueField = "Place_id";
-        DDarrivalLoc.DataBind();
-        con1.Close();
-        //Adding "Please select" option in dropdownlist for validation
-        DDarrivalLoc.Items.Insert(0, new ListItem("Please select", "0"));
-        tb_fromPoint.Text = DDdepartLoc.SelectedItem.Text;
-    }
-    protected void DDarrivalLoc_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        tb_endPoint.Text = DDarrivalLoc.SelectedItem.Text;
+        tb_endPoint.Text = DDarrivalPlaces.SelectedItem.Text + ", " + DDarrivalCounty.SelectedItem.Text;
     }
 }

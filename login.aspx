@@ -1,11 +1,10 @@
 ﻿<%@ Page Title="Sign in" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="login.aspx.cs" Inherits="login" %>
 
-<%--<%@ Reference Control="~/Login.ascx" %>--%>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <%-- <asp:PlaceHolder ID="plhLogin" runat="server"></asp:PlaceHolder>--%>
-    <div class="container">
+    <div class="container top-buffer">
+            <asp:Panel runat="server" ID="pnlAnonymous" Visible="true">
         <div class="form-signin">
             <h3 class="form-signin-heading">Please sign in</h3>
             <asp:Label ID="lblEmail" CssClass="sr-only" runat="server" Text="Email"></asp:Label>
@@ -41,6 +40,15 @@
             <br />
             <asp:Label ID="lblErrorMsg" CssClass="text-danger text-right" runat="server" Text="Label" Visible="false"></asp:Label>
         </div>
+            </asp:Panel>
+            <asp:Panel runat="server" ID="pnlLoggedin" Visible="false">
+                <p>
+                    You are logged is as <asp:LoginName ID="LoginName1" CssClass="text-primary" runat="server" />
+                </p>
+                <p>
+                    If you would like to sign out then you can do so by clicking <asp:LoginStatus ID="LoginStatus1" LogoutText="Sign out" runat="server" />
+                </p>
+            </asp:Panel>
     </div>
 
 </asp:Content>

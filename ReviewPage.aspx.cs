@@ -10,20 +10,41 @@ using AjaxControlToolkit;
 
 public partial class ReviewPage : System.Web.UI.Page
 {
-    SqlConnection con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True");
+    SqlConnection con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True;MultipleActiveResultSets=True;");
     SqlCommand cmd1;
     SqlDataAdapter adp1;
+    SqlDataReader rd1;
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
             BindRatings();
-
+            int countRows = 0;
             con1.Open();
-            using (cmd1 = new SqlCommand("SELECT trip_rec.place_from,trip_rec.place_to,users.FName,users.SName,Reviews.rating,Reviews.comment FROM Reviews JOIN trip_rec ON trip_rec.trip_id=Reviews.trip_id JOIN users ON Reviews.reviewed_by = users.User_ID WHERE Reviews.user_id=5", con1));
+            using (cmd1 = new SqlCommand("SELECT count(*) from Reviews WHERE user_id = 1", con1))
             {
-                grdResult.DataSource = cmd1.ExecuteReader();
-                grdResult.DataBind();
+                countRows = (int)cmd1.ExecuteScalar();
+                numberUserRating.Text = "("+ countRows.ToString() +")";
+            }
+            using (cmd1 = new SqlCommand("SELECT FName,SName from users WHERE User_ID = 1", con1))
+            {
+                rd1 = cmd1.ExecuteReader();
+                if (rd1.Read())
+                {
+                    userName.Text = rd1["FName"].ToString() + " " + rd1["SName"].ToString();
+                }
+            }
+            using (cmd1 = new SqlCommand("SELECT TOP 2 comment FROM Reviews WHERE user_id=4 ORDER BY submitDate", con1));
+            {
+                if (cmd1.ExecuteReader().Read())
+                {
+                    grdResult.DataSource = cmd1.ExecuteReader();
+                    grdResult.DataBind();
+                }
+                else
+                {
+                    lblGrdResult.Text = "No Comments For this User";
+                }
             }
             con1.Close();
         }
@@ -54,5 +75,13 @@ public partial class ReviewPage : System.Web.UI.Page
     protected void OnRatingChanged(object sender, RatingEventArgs e)
     {
         
+    }
+
+    protected void grdResult_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.Header)
+        {
+            e.Row.Cells[0].Text = "Comments By Other Users";
+        }
     }
 }
