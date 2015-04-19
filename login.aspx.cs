@@ -13,8 +13,11 @@ public partial class login : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        //ASP.login_ascx login = (ASP.login_ascx)LoadControl("~/Login.ascx");
-        //plhLogin.Controls.Add(login);
+        if(Request.IsAuthenticated)
+        {
+            pnlAnonymous.Visible = false;
+            pnlLoggedin.Visible = true;
+        }
     }
 
     protected void btnLogin_Click(object sender, EventArgs e)

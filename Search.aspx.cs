@@ -8,11 +8,11 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 public partial class Search : System.Web.UI.Page
 {
-    protected const int FROM_LIST = 0;
-    protected const int TO_LIST =  1;
+    protected int searchType;
 
     protected void Page_Init(object sender, EventArgs e)
     {
@@ -21,13 +21,17 @@ public partial class Search : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        
         if(!IsPostBack)
         {
-            fillDdlData(ddlTripFrom, FROM_LIST);
-            fillDdlData(ddlTripTo, TO_LIST);
+            rblSearchOption.SelectedIndex = 0;
+            initFromList();
+            initToList();
         }
         else
         {
+            searchType = rblSearchOption.SelectedIndex == 0 ? DBHelper.OFFER_LIST : DBHelper.REQ_LIST;
+            ResultList.listType = searchType;
 
         }
 
@@ -41,9 +45,9 @@ public partial class Search : System.Web.UI.Page
             Panel1.Visible = true;
             DateTime startDate, endDate;
             string placeFrom = null, placeTo = null;
-            if (Convert.ToInt32(ddlTripFrom.SelectedValue) > 0)
+            if (ddlTripFrom.SelectedIndex > 0)
                 placeFrom = ddlTripFrom.SelectedValue;
-            if (Convert.ToInt32(ddlTripTo.SelectedValue) > 0)
+            if (ddlTripTo.SelectedIndex > 0)
                 placeTo = ddlTripTo.SelectedValue;
 
             string formatString = "dd/MM/yyyy HH:mm";
@@ -51,51 +55,50 @@ public partial class Search : System.Web.UI.Page
             bool startDateExist = DateTime.TryParseExact(txtStartDate.Text, formatString, CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
             bool endDateExist = DateTime.TryParseExact(txtEndDate.Text, formatString, CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate);
 
-            if (chkSearchType.Checked) //Request
+            
+            if (rblSearchOption.SelectedIndex == 1) //Offers
             {
                 resultTable = "vRequestDetails";
-                lblHeading.Text = "Search results: Requests";
             }
-            else //Offers
+            else
             {
                 resultTable = "vOfferDetails";
-                lblHeading.Text = "Search results: Offers";
             }
 
-            string selectCommand = "select * from " + resultTable;
+            string searchQuery = "SELECT * FROM " + resultTable + " WHERE 1 = 1";
 
+            if (placeFrom != null)
+                searchQuery += " AND frm_id = " + placeFrom;
+            
+            if (placeTo != null)
+                searchQuery += " AND to_id = " + placeTo;
+            
+            if (startDateExist)
+                searchQuery += " AND date_time >= '" + startDate.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+            
+            if (endDateExist)
+                searchQuery += " AND date_time <= '" + endDate.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+            
 
-            if (placeFrom != null || placeTo != null || startDateExist || endDateExist)
+            ListView listView = (ListView)ResultList.FindControl("ListView1");
+            string ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+            SqlConnection myConnection = new SqlConnection(ConnectionString);
+            SqlCommand cmd = new SqlCommand(searchQuery, myConnection);
+            try
             {
-                selectCommand += " where";
-                bool firstFilter = true;
-                if (placeFrom != null)
-                {
-                    selectCommand += " frm_id = " + placeFrom;
-                    firstFilter = false;
-                }
-                if (placeTo != null)
-                {
-                    if (!firstFilter)
-                        selectCommand += " and ";
-                    selectCommand += " to_id = " + placeTo;
-                    firstFilter = false;
-                }
-                if (startDateExist)
-                {
-                    if (!firstFilter)
-                        selectCommand += " and ";
-                    selectCommand += " date_time >= '" + startDate.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                    firstFilter = false;
-                }
-                if (endDateExist)
-                {
-                    if (!firstFilter)
-                        selectCommand += " and ";
-                    selectCommand += " date_time <= '" + endDate.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-                }
+                myConnection.Open();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                listView.DataSource = ds;
+                listView.DataBind();
             }
-            SqlDataSource1.SelectCommand = selectCommand;
+            finally
+            {
+                cmd.Dispose();
+                myConnection.Dispose();
+
+            }
         }
     }
 
@@ -104,85 +107,93 @@ public partial class Search : System.Web.UI.Page
     {
     }
 
-    protected void ListView1_ItemCommand(object sender, ListViewCommandEventArgs e)
-    {
+    //protected void ListView1_ItemCommand(object sender, ListViewCommandEventArgs e)
+    //{
 
-    }
+    //}
 
-    protected void ListView1_ItemDataBound(object sender, ListViewItemEventArgs e)
-    {
-        if(!chkSearchType.Checked) //Offer List
-        {
-            Label lblSeats = (Label)e.Item.FindControl("lblSeats");
-            lblSeats.Enabled = true;
-            lblSeats.Visible = true;
-            DataRowView rowView = (DataRowView)e.Item.DataItem;
-            lblSeats.Text += rowView["seats"].ToString();
+    //protected void ListView1_ItemDataBound(object sender, ListViewItemEventArgs e)
+    //{
+
+    //    if(rblSearchOption.SelectedIndex == 0)
+    //    {
+    //        Label lblSeats = (Label)e.Item.FindControl("lblSeats");
+    //        lblSeats.Enabled = true;
+    //        lblSeats.Visible = true;
+    //        DataRowView rowView = (DataRowView)e.Item.DataItem;
+    //        lblSeats.Text += rowView["seats"].ToString();
             
-            Button btn = (Button)e.Item.FindControl("btnCmd");
-            btn.Text = "Send Offer";
+    //        Button btn = (Button)e.Item.FindControl("btnCmd");
+    //        btn.Text = "Send Offer";
 
             
 
-        }
+    //    }
 
-        if (Request.IsAuthenticated)
-        {
+    //    //If user is logged in then show buttons to send response to the offer/request
+    //    if (Request.IsAuthenticated)
+    //    {
 
-            Panel p1 = (Panel)e.Item.FindControl("pnlAnonymous");
-            Panel p2 = (Panel)e.Item.FindControl("pnlLoggedIn");
+    //        Panel p1 = (Panel)e.Item.FindControl("pnlAnonymous");
+    //        Panel p2 = (Panel)e.Item.FindControl("pnlLoggedIn");
 
-            p1.Visible = false;
-            p2.Visible = true;
-        }
+    //        p1.Visible = false;
+    //        p2.Visible = true;
+    //    }
 
 
-    }
+    //}
 
-    protected void CheckBox_CheckedChanged(object sender, EventArgs e)
+    protected void btnFrmHidden_Click(object sender, EventArgs e)
     {
-        fillDdlData(ddlTripFrom, FROM_LIST);
-        fillDdlData(ddlTripTo, TO_LIST);
+        initFromList();
     }
 
+    protected void initFromList()
+    {
+        string tableName = rblSearchOption.SelectedIndex == 0 ? "vOfferFromPlace" : "vReqFromPlace";
+
+        string aQuery = "select * from " + tableName;
+        SqlDataSource2.SelectCommand = aQuery;
+        ddlTripFrom.Items.Clear();
+        ddlTripFrom.DataBind();
+        ddlTripFrom.Items.Insert(0, new ListItem("", "0"));
+    }
+
+    protected void rblSearchOption_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        initFromList();
+        initToList();
+    }
+
+    protected void initToList()
+    {
+        string tableName = rblSearchOption.SelectedIndex == 0 ? "vOfferToPlace" : "vReqToPlace";
+        string aQuery;
+        if (ddlTripFrom.SelectedIndex > 0)
+        {
+            aQuery = "select pname, place_id from " + tableName + " WHERE frm_id = "
+                        + ddlTripFrom.SelectedValue;
+        }
+        else
+        {
+            aQuery = "select pname, place_id from " + tableName;
+        }
+        SqlDataSource3.SelectCommand = aQuery;
+        ddlTripTo.Items.Clear();
+        ddlTripTo.DataBind();
+        ddlTripTo.Items.Insert(0, new ListItem("", "0"));
+    }
     protected void ddlTripFrom_SelectedIndexChanged(object sender, EventArgs e)
     {
-        fillDdlData(ddlTripTo, TO_LIST);		
+        initToList();
     }
-
-    protected void fillDdlData(DropDownList ddl, int listType)
+    protected void btnReset_Click(object sender, EventArgs e)
     {
-        string selectTable = chkSearchType.Checked ? "req_rec" : "offer_rec";
-  
-        string ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
-        SqlConnection myConnection = new SqlConnection(ConnectionString);
-
-        string aQuery = "select places.place_name + ', ' + [County].[Name] as p_name, " + selectTable;
-        aQuery += listType == FROM_LIST ? ".place_from " : ".place_to "; 
-        aQuery += " as p_id from places inner join " + selectTable + " on places.Place_id = " + selectTable;
-        aQuery += listType == FROM_LIST? ".place_from" : ".place_to";
-        aQuery +=" inner join County on places.c_code = County.c_code";
-        aQuery += listType == FROM_LIST? "": " WHERE " + selectTable + ".place_from = " + ddlTripFrom.SelectedValue;
-        aQuery += " order by County.Name, places.place_name";
-
-        SqlCommand aCommand = new SqlCommand(aQuery, myConnection);
-
-        try
-        {
-            myConnection.Open();
-            SqlDataReader aReader = aCommand.ExecuteReader();
-            ddl.DataSource = aReader;
-            ddl.DataTextField = "p_name";
-            ddl.DataValueField = "p_id";
-            ddl.Items.Clear();
-            ddl.DataBind();
-            aReader.Close();
-        }
-        finally
-        {
-            aCommand.Dispose();
-            myConnection.Dispose();
-
-        }
+        rblSearchOption.SelectedIndex = 0;
+        initFromList();
+        initToList();
+        txtEndDate.Text = "";
+        txtStartDate.Text = "";
     }
 }
