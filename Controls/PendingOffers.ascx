@@ -1,7 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="PendingOffers.ascx.cs" Inherits="PendingOffers" %>
 
-<%--<%@ Reference Page="~/Dashboard.aspx" %>--%>
-
 <asp:SqlDataSource ID="SqlDataSource2" runat="server"
     ConnectionString="<%$ ConnectionStrings:DbConnString%>">
     </asp:SqlDataSource>
@@ -9,7 +7,7 @@
 <div class="row">
     <div class="col-md-12">
         <asp:ListView ID="ListView2" 
-            runat="server" DataSourceID="SqlDataSource2" OnItemCommand="ListView2_ItemCommand">
+            runat="server" DataSourceID="SqlDataSource2" OnItemCommand="ListView2_ItemCommand" OnItemDataBound="ListView2_ItemDataBound" ViewStateMode="Inherit">
             <LayoutTemplate>
                 <div runat="server">
                     <div id="itemPlaceholder" runat="server" />
@@ -22,14 +20,8 @@
             </LayoutTemplate>
             <ItemTemplate>
                 <div class="well">
-                    <span id="panel-title" class="panel-title">
-
-                        <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> 
-                                            <%#Eval("frm_place") %> to <%#Eval("to_place")%>
-                        <asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandArgument='<%#Eval("id") %>' CommandName="ItemCommand" runat="server" Text="Cancel" />
-                        <%-- <a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a>--%>
-
-                    </span>
+                      <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> <%#Eval("frm_place") %> to <%#Eval("to_place")%>
+                      <asp:Button CssClass="btn btn-info pull-right" ID="btnCancelOffer" CommandName="CancelOffer" runat="server" Text="Cancel" />
                 </div>
             </ItemTemplate>
         </asp:ListView>
