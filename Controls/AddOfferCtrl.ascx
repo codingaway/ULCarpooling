@@ -22,7 +22,8 @@
    <div class="row">
     <div class="col-md-6">
      <div class="form-horizontal">
-      <fieldset>                       
+      <fieldset> 
+                         
 <div class="boxed">
       <h4> <label for="Depart">Select Start Location</label> </h4>
        <div class="row">
@@ -74,7 +75,7 @@
    <label class="control-label col-md-3" for="Date">Date N Time :</label>
     <div class="col-md-8">
      <div class='input-group date' id='datetimepicker1'>
-      <asp:TextBox ID="txtDate" CssClass="form-control date" runat="server"></asp:TextBox>                            
+      <asp:TextBox ID="txtDate" CssClass="form-control date" runat="server" TextMode="DateTime"></asp:TextBox>                            
        <span class="input-group-addon">
         <span class="glyphicon glyphicon-calendar">
         </span>
@@ -105,7 +106,7 @@
  <div class="row">
   <div class="boxValidation">
    <asp:RequiredFieldValidator ID="RFVseats" runat="server" ControlToValidate="txtSeats" ErrorMessage="* Please select number of seats offering *" ForeColor="Red" ValidationGroup="AddOffer"></asp:RequiredFieldValidator><br />
-   <asp:RangeValidator ID="RangeValidatorSeats" runat="server" ErrorMessage="* Must be in range(0-4) *" ValidationGroup="AddOffer" ControlToValidate="txtSeats" ForeColor="Red"></asp:RangeValidator>
+   <asp:RangeValidator ID="RangeValidatorSeats" runat="server" ErrorMessage="* Must be in range(0-4) *" ValidationGroup="AddOffer" ControlToValidate="txtSeats" ForeColor="Red" MinimumValue="0" MaximumValue="4" Type="Integer"></asp:RangeValidator>
   </div>
  </div> 
 </div>

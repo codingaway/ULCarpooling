@@ -62,7 +62,7 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
         con1.Open();
         string selectSQL = "SELECT * FROM places ";
         selectSQL += "WHERE c_code='" + DDdepartCounty.SelectedItem.Value + "'";
-
+        DDdepartPlaces.Enabled = true;
         adpt1 = new SqlDataAdapter(selectSQL, con1);
         DataTable dt = new DataTable();
         adpt1.Fill(dt);
@@ -79,7 +79,7 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
     {
         con1.Open();
         string selectSQL = "SELECT * FROM County ";
-
+        DDarrivalCounty.Enabled = true;
         adpt1 = new SqlDataAdapter(selectSQL, con1);
         DataTable dt = new DataTable();
         adpt1.Fill(dt);
@@ -98,7 +98,7 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
         con1.Open();
         string selectSQL = "SELECT * FROM places ";
         selectSQL += "WHERE c_code='" + DDarrivalCounty.SelectedItem.Value + "' AND place_name != '" + DDdepartPlaces.SelectedItem.Text + "'";
-
+        DDarrivalPlaces.Enabled = true;
         adpt1 = new SqlDataAdapter(selectSQL, con1);
         DataTable dt = new DataTable();
         adpt1.Fill(dt);
