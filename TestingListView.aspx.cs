@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
@@ -19,6 +22,27 @@ public partial class TestingListView : System.Web.UI.Page
             //Code to get User_ID from cookie
             getUserID();
         }
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ToString();
+        DataSet dataset = new DataSet();
+        string aQuery = "SELECT FName + ' ' + SName AS uname FROM users";
+        SqlConnection conn = new SqlConnection(conString);
+        SqlCommand cmd = new SqlCommand(aQuery, conn);
+
+        SqlDataAdapter da = new SqlDataAdapter();
+        da.SelectCommand = cmd;
+        try{
+            conn.Open();
+            da.Fill(dataset);
+            DataList1.DataSource = dataset;
+            DataList1.DataBind();
+        }
+        finally
+        {   
+            da.Dispose();
+            cmd.Dispose();
+        }
+
+
     }
 
         protected void getUserID()
