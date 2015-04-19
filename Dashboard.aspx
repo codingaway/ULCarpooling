@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     <p></p>
-                    <asp:Button ID="btnBlock" CssClass="btn btn-primary" runat="server" Text="Block a user" data-toggle="modal" data-target="#blockUserModal" />
+                    <asp:Button ID="btnBlock" CssClass="btn btn-primary" runat="server" Text="Blocked users" data-toggle="modal" data-target="#blockUserModal"/>
                     <div class="modal fade" id="blockUserModal" tabindex="-1" role="dialog" aria-labelledby="blockUserModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -81,7 +81,7 @@
                                     <h4 class="modal-title" id="blockUserModalLabel">Block a User</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="row">
+                                    <%--<div class="row">
                                         <div class="col-md-4">
                                         
                                             <p>Name of user to block: </p>
@@ -89,7 +89,7 @@
                                         <div class="col-md-8">
                                             <asp:TextBox ID="TextBox1" runat="server" Text="" />
                                         </div>
-                                    </div>
+                                    </div>--%>
                                     <div class="row">
                                         <div class="col-md-4"><p>Select and remove to unblock</p></div>
                                         <div class="col-md-4">
@@ -99,7 +99,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <asp:Button ID="Button1" CssClass="btn btn-primary" runat="server" OnClick="btnBlock_Click" Text="Submit"></asp:Button>
+                                    <%--<asp:Button ID="Button1" CssClass="btn btn-primary" runat="server" OnClick="btnBlock_Click" Text="Submit"></asp:Button>--%>
                                     <asp:Button ID="Button3" CssClass="btn btn-primary" runat="server" OnClick="btnUnBlock_Click" Text="Remove"></asp:Button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
@@ -108,13 +108,12 @@
                     </div>
                 </div>
                 <h2>My Feedback</h2>
+                <%--<span class="glyphicon glyphicon-star"></span>
                 <span class="glyphicon glyphicon-star"></span>
                 <span class="glyphicon glyphicon-star"></span>
                 <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star"></span>--%>
                 <p>Average Rating:<asp:Label ID="lblRating" runat="server" Text="No Rating Found" /></p>
-                <%--<cc1:Rating ID="Rating1" runat="server"></cc1:Rating>--%>
             </div>
             <div class="col-md-4">
                 <h2><asp:Label ID="lblSiteManagement" runat="server" Text="Site Management" Visible="false"/></h2>

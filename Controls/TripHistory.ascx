@@ -4,12 +4,18 @@
     ConnectionString="<%$ ConnectionStrings:DbConnString%>">
     </asp:SqlDataSource>
 
+<asp:SqlDataSource ID="SqlDataSource5" runat="server"
+    ConnectionString="<%$ ConnectionStrings:DbConnString%>">
+    </asp:SqlDataSource>
+
+
 <div class="row">
     <div class="col-md-12">
         <asp:ListView ID="ListView4" 
             runat="server" DataSourceID="SqlDataSource4" OnItemCommand="ListView4_ItemCommand">
             <LayoutTemplate>
                 <div runat="server">
+                    <h3>Offers Completed</h3>
                     <div id="itemPlaceholder" runat="server" />
                     <asp:DataPager ID="pager1" PageSize="3" runat="server">
                         <Fields>
@@ -20,16 +26,49 @@
             </LayoutTemplate>
             <ItemTemplate>
                 <div class="well">
-                    <span id="panel-title" class="panel-title">
-
+                    <div class="row">
                         <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> 
-                                            <%#Eval("place_from") %> to <%#Eval("place_to")%>
-                        <asp:Button CssClass="btn btn-info pull-right" ID="Button2" CommandArgument='<%#Eval("trip_id") %>' CommandName="ItemCommand" runat="server" Text="Report" />
-                        <asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandArgument='<%#Eval("trip_id") %>' CommandName="ItemCommand" runat="server" Text="Review" />
+                                            <%#Eval("frm_place") %> to <%#Eval("to_place")%>
+                    </div>
+                    <div class="row">
+                        <asp:Button CssClass="btn btn-info pull-right" ID="Button2" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Report" />
+                        <asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Review" />
                         
                         <%-- <a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a>--%>
+                    </div>
+                </div>
+            </ItemTemplate>
+        </asp:ListView>
+    </div>
+</div>
 
-                    </span>
+<div class="row">
+    <div class="col-md-12">
+        <asp:ListView ID="ListView5" 
+            runat="server" DataSourceID="SqlDataSource5" OnItemCommand="ListView5_ItemCommand">
+            <LayoutTemplate>
+                <div runat="server">
+                    <h3>Requests Completed</h3>
+                    <div id="itemPlaceholder" runat="server" />
+                    <asp:DataPager ID="pager1" PageSize="3" runat="server">
+                        <Fields>
+                            <asp:NumericPagerField />
+                        </Fields>
+                    </asp:DataPager>
+                </div>
+            </LayoutTemplate>
+            <ItemTemplate>
+                <div class="well">
+                    <div class="row">
+                        <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> 
+                                            <%#Eval("frm_place") %> to <%#Eval("to_place")%>
+                    </div>
+                    <div class="row">
+                        <asp:Button CssClass="btn btn-info pull-right" ID="Button2" CommandArgument='<%#Eval("Request_id") %>' CommandName="ItemCommand" runat="server" Text="Report" />
+                        <asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandArgument='<%#Eval("Request_id") %>' CommandName="ItemCommand" runat="server" Text="Review" />
+                        
+                        <%-- <a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a>--%>
+                    </div>
                 </div>
             </ItemTemplate>
         </asp:ListView>

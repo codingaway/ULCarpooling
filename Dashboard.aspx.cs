@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Data;
 using System.Configuration;
 using System.Web.Security;
 using System.Web.UI.HtmlControls;
+
 
 public partial class Dashboard : System.Web.UI.Page
 {
@@ -28,14 +30,15 @@ public partial class Dashboard : System.Web.UI.Page
             pageInit();
         }
 
-        /*if (!IsPostBack)
+        if (!IsPostBack)
         {
-            
+            fillModalForm();
+            fillBlockedUsersForm();
         }
         else
         {
             
-        }*/
+        }
     }
 
     protected void pageInit()
@@ -68,12 +71,8 @@ public partial class Dashboard : System.Web.UI.Page
         //Need a command to load users image from DB and display to profileImage
 
         //Need commands to load name, email and phone from DB and display to txtName, txtEmail, txtPhone
-        if (Request.IsAuthenticated) //Check first if request is authenticated 
+        using (SqlCommand cmd = new SqlCommand("Select * from users Where User_ID =" + userID, conn))
         {
-            //Code to get User_ID from cookie
-
-            using (SqlCommand cmd = new SqlCommand("Select * from users Where User_ID =" + userID, conn))
-            {
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.Connection = conn;
 
@@ -85,26 +84,14 @@ public partial class Dashboard : System.Web.UI.Page
                 {
                     while (reader.Read())
                     {
-                        lblName.Text = reader.GetString(1) + " " + reader.GetString(2);
-                        lblEmail.Text = reader.GetString(3);
-                        lblPhone.Text = reader.GetString(4);
-                        string[] dob = (reader["dob"].ToString()).Split(new Char[] { ' ' });
-                        lblDOB.Text = dob[0];
-                        if (!(bool)reader["gender"])
-                            lblGender.Text = "Male";
-                        else
-                            lblGender.Text = "Female";
-                        if (!(bool)reader["Smoker"])
-                            checkBoxSmoker.Checked = false;
-                        else
-                            checkBoxSmoker.Checked = true;
-                        profileImage.ImageUrl = "~/GetImage.aspx?ImageID=" + userID;
-                        if (!IsPostBack)
-                        {
-                            //txtName.Text = reader.GetString(1) + " " + reader.GetString(2);
-                            //txtPhone.Text = reader.GetString(4);
-                        }
-                            
+                            lblName.Text = reader.GetString(1) + " " + reader.GetString(2);
+                            lblEmail.Text = reader.GetString(3);
+                            lblPhone.Text = reader.GetString(4);
+                            string[] dob = (reader["dob"].ToString()).Split(new Char[] { ' ' });
+                            lblDOB.Text = dob[0];
+                            lblGender.Text = reader["gender"].Equals("m") ? "Male" : "Female";
+                            checkBoxSmoker.Checked = reader["Smoker"].Equals("y") ? true : false;
+                            profileImage.ImageUrl = "~/GetImage.aspx?ImageID=" + userID;
                     }
                 }
                 else
@@ -113,29 +100,9 @@ public partial class Dashboard : System.Web.UI.Page
                 }
                 reader.Close();
             }
+            //Populate the blocked list of users
 
-
-
-            // Ban a user/ view list of banned users
-
-            using (SqlCommand cmd = new SqlCommand("SELECT FName, Sname FROM users Join blocked_user on User_ID = blocked_user.blocked_user Where blocked_user.blocked_by =" + userID, conn))
-            {
-                cmd.CommandType = System.Data.CommandType.Text;
-                //cmd.Parameters.Add("@id", SqlDbType.Int).Value = userID;
-                cmd.Connection = conn;
-
-                SqlDataAdapter reader = new SqlDataAdapter(cmd);
-                DataSet myDS = new DataSet();
-                reader.Fill(myDS, "BlockedUsers");
-                DataTable myDataTable = myDS.Tables[0];
-                DataRow tempRow = null;
-
-                foreach (DataRow tempRow_Variable in myDataTable.Rows)
-                {
-                    tempRow = tempRow_Variable;
-                    bannedUserLB.Items.Add((tempRow["FName"] + " " + tempRow["SName"]));
-                }
-            }
+            
 
             //Need a command to load feedback from DB to feedbackImage
             using (SqlCommand cmd = new SqlCommand("SELECT AVG(rating) FROM Reviews WHERE user_id =" + userID, conn))
@@ -157,11 +124,41 @@ public partial class Dashboard : System.Web.UI.Page
             //Need a command to load Notifications from DB
 
             conn.Close();
-        }
-        else
+        
+    }
+
+    protected void fillModalForm()
+    {
+        txtName.Text = lblName.Text;
+        txtPhone.Text = lblPhone.Text;
+        genderDDL.SelectedIndex = lblGender.Text.Equals("Male") ? 0 : 1;
+        chkBoxSmoker.Checked = checkBoxSmoker.Checked ? true : false;
+        txtDOB.Text = lblDOB.Text;
+
+    }
+
+    protected void fillBlockedUsersForm()
+    {
+        SqlConnection conn = new SqlConnection();
+        conn.ConnectionString = connection;
+        using (SqlCommand cmd = new SqlCommand("SELECT FName, Sname, blocked_user.blocked_user as blocked FROM users Join blocked_user on User_ID = blocked_user.blocked_user Where blocked_user.blocked_by =" + userID, conn))
         {
-            conn.Close();
-            Response.Redirect("~/login.aspx");
+            cmd.CommandType = System.Data.CommandType.Text;
+            //cmd.Parameters.Add("@id", SqlDbType.Int).Value = userID;
+            cmd.Connection = conn;
+
+            SqlDataAdapter reader = new SqlDataAdapter(cmd);
+            DataSet myDS = new DataSet();
+            reader.Fill(myDS, "BlockedUsers");
+            DataTable myDataTable = myDS.Tables[0];
+            DataRow tempRow = null;
+
+            foreach (DataRow tempRow_Variable in myDataTable.Rows)
+            {
+                tempRow = tempRow_Variable;
+                bannedUserLB.Items.Add((tempRow["FName"] + " " + tempRow["SName"] + " (" + tempRow["blocked"] + ")"));
+
+            }
         }
     }
 
@@ -211,39 +208,63 @@ public partial class Dashboard : System.Web.UI.Page
             InsertUpdateData(cmd2);
         }
 
-        string strQuery = "UPDATE users SET FName = @FName, SName = @Sname, Mobile = @Mobile, gender = @Gender, Smoker = @Smoker WHERE User_ID =" + userID;
+        string strQuery = "UPDATE users SET FName = @FName, SName = @Sname, Mobile = @Mobile, dob = @DOB, gender = @Gender, Smoker = @Smoker WHERE User_ID =" + userID;
         SqlCommand cmd = new SqlCommand(strQuery);
 
+        bool valid = true;
         string[] name;
         string mobile;
+
         if (!txtName.Text.Equals(""))
         {
             name = (txtName.Text).Split(new Char[] { ' ' });
             cmd.Parameters.Add("@FName", SqlDbType.VarChar).Value = name[0];
             cmd.Parameters.Add("@SName", SqlDbType.VarChar).Value = name[1];
         }
+        else
+        {
+            valid = false;
+        }
+
         if (!txtPhone.Text.Equals(""))
         {
             mobile = txtPhone.Text;
             cmd.Parameters.Add("@Mobile", SqlDbType.Char).Value = mobile;
         }
+        else
+        {
+            valid = false;
+        }
+
         string selectedGender = genderDDL.SelectedItem.Text;
-        bool smoker;
+        string smoker;
         if (!selectedGender.Equals(""))
         {
             if (selectedGender.Equals("Male"))
-                cmd.Parameters.Add("@Gender", SqlDbType.Bit).Value = 0;
+                cmd.Parameters.AddWithValue("@Gender", "m");
             else
-                cmd.Parameters.Add("@Gender", SqlDbType.Bit).Value = 1;
+                cmd.Parameters.AddWithValue("@Gender", "f");
         }
         if (chkBoxSmoker.Checked)
-            smoker = true;
+            smoker = "y";
         else
-            smoker = false;
-        cmd.Parameters.Add("@Smoker", SqlDbType.Bit).Value = smoker;
-        
-        InsertUpdateData(cmd);
-        Page_Load(sender, e);
+            smoker = "n";
+        cmd.Parameters.AddWithValue("@Smoker", smoker);
+
+        if(!txtDOB.Text.Equals(""))
+        {
+            cmd.Parameters.AddWithValue("@DOB", txtDOB.Text);
+        }
+        else
+        {
+            valid = false;
+        }
+
+        if (valid)
+        {
+            InsertUpdateData(cmd);
+            Page_Load(sender, e);
+        }
     }
 
     private Boolean InsertUpdateData(SqlCommand cmd)
@@ -270,14 +291,26 @@ public partial class Dashboard : System.Web.UI.Page
         }
     }
 
-    protected void btnBlock_Click(object sender, EventArgs e)
-    {
-        // block user to user
-    }
+    //protected void btnBlock_Click(object sender, EventArgs e)
+    //{
+    //    // block user to user
+    //}
 
     protected void btnUnBlock_Click(object sender, EventArgs e)
     {
-        // unblock user to user
+        if(bannedUserLB.SelectedItem != null)
+        {
+            //SqlConnection conn = new SqlConnection();
+            //conn.ConnectionString = connection;
+
+            string item = bannedUserLB.SelectedItem.ToString();
+            int index = item.IndexOf("(");
+            int blockedUser = Int32.Parse(item.Substring((index + 1), 1));
+            //Debug.WriteLine("Blocked userID: " + blockedUser);
+            SqlCommand cmd = new SqlCommand("DELETE FROM blocked_user WHERE blocked_by =" + userID + " AND blocked_user = " + blockedUser);
+            InsertUpdateData(cmd);
+
+        }
     }
 
     protected void btnBan_Click(object sender, EventArgs e)
