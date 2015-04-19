@@ -10,7 +10,6 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-    <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 
@@ -108,12 +107,12 @@
                     </div>
                 </div>
                 <h2>My Feedback</h2>
-                <%--<span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>--%>
-                <p>Average Rating:<asp:Label ID="lblRating" runat="server" Text="No Rating Found" /></p>
+                <div>
+                    <p>Average Rating:</p>
+                    <div>
+                        <asp:Label ID="lblRating" runat="server" Text="No Rating Found" CssClass="stars"/> (<asp:Label ID="lblRatingCount" runat="server" Text="0"/>)
+                    </div>
+                </div>
             </div>
             <div class="col-md-4">
                 <h2><asp:Label ID="lblSiteManagement" runat="server" Text="Site Management" Visible="false"/></h2>
