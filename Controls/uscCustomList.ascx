@@ -50,9 +50,9 @@
 
                             <asp:Panel ID="pnlAnonymous" runat="server">
                                 <span>Please 
-                                                <asp:Hyperlink ID="lbtnLogin" NavigateUrl="~/login.aspx" runat="server">Sign in</asp:Hyperlink>
+                                                <asp:HyperLink ID="lbtnLogin" NavigateUrl="~/login.aspx" runat="server">Sign in</asp:HyperLink>
                                     to respond to any listing. Not registered yet? 
-                                                <asp:Hyperlink ID="lbtnRegister" NavigateUrl="~/Register.aspx" runat="server">Sign up</asp:Hyperlink>
+                                                <asp:HyperLink ID="lbtnRegister" NavigateUrl="~/Register.aspx" runat="server">Sign up</asp:HyperLink>
                                     for free.
                                 </span>
                             </asp:Panel>
@@ -69,6 +69,14 @@
                                 <div class="col-md-7">
                                     <asp:Label ID="lblSeats" runat="server" CssClass="small text-success pull-right" Text="Seats: " Enabled="false" Visible="false"></asp:Label><br />
                                     <asp:Button CssClass="btn btn-info pull-right" ID="btnCmd" CommandName="ItemCommand" runat="server" Text="Send request" />
+                                    <asp:DataList ID="DataList1" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                                        <HeaderTemplate>
+                                            <asp:Label ID="lblHeading" Text="People confirmed this trip:" runat="server" />
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <%#Eval("uname") %>
+                                        </ItemTemplate>
+                                    </asp:DataList>
                                 </div>
                             </asp:Panel>
                         </div>

@@ -13,7 +13,7 @@ public partial class login : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if(Request.IsAuthenticated)
+        if(Request.IsAuthenticated)//If user is already logged in then hide login form
         {
             pnlAnonymous.Visible = false;
             pnlLoggedin.Visible = true;
