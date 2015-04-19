@@ -173,7 +173,7 @@
             BindControlEvents();
         });
     </script>
-      <script type="text/javascript">
+   <%--   <script type="text/javascript">
           $.fn.stars = function () {
               return $(this).each(function () {
                   // Get the value
@@ -191,6 +191,6 @@
           $(function () {
               $('span.stars').stars();
           });
-    </script>
+    </script>--%>
 </asp:Content>
 
