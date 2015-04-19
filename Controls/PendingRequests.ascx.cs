@@ -17,7 +17,7 @@ public partial class PendingRequests : System.Web.UI.UserControl
     protected void Page_Load(object sender, EventArgs e)
     {
         DataBind();
-        string query = "Select * FROM vRequestDetails WHERE User_ID =" + userID;
+        string query = "Select * FROM vRequestDetails WHERE User_ID =" + userID + " AND date_time >= GETDATE()";
         SqlDataSource3.SelectCommand = query;
         ListView3.DataBind();
     }

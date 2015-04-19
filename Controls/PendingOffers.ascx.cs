@@ -17,7 +17,7 @@ public partial class PendingOffers : System.Web.UI.UserControl
     protected void Page_Load(object sender, EventArgs e)
     {
         DataBind();
-        string query = "Select * FROM vOfferDetails WHERE User_ID =" + userID;
+        string query = "Select * FROM vOfferDetails WHERE User_ID =" + userID + " AND date_time >= GETDATE()";
         SqlDataSource2.SelectCommand = query;
         ListView2.DataBind();
     }

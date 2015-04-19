@@ -17,12 +17,22 @@ public partial class TripHistory : System.Web.UI.UserControl
     protected void Page_Load(object sender, EventArgs e)
     {
         DataBind();
-        string query = "SELECT trip_rec.date_time, a.place_name as place_from, b.place_name as place_to, trip_rec.trip_id FROM trip_rec Join places a on a.Place_id = trip_rec.place_from Join places b on b.Place_id = trip_rec.place_to WHERE trip_rec.driver =" + userID;
-        SqlDataSource4.SelectCommand = query;
+        string query1 = "Select * FROM vCompletedOffers WHERE driver_id =" + userID + " AND date_time < GETDATE()";
+        SqlDataSource4.SelectCommand = query1;
         ListView4.DataBind();
+
+        string query2 = "Select * FROM vCompletedRequests WHERE passenger_id =" + userID + " AND date_time < GETDATE()";
+        SqlDataSource5.SelectCommand = query2;
+        ListView5.DataBind();
+        
     }
 
     protected void ListView4_ItemCommand(object sender, ListViewCommandEventArgs e)
+    {
+
+    }
+
+    protected void ListView5_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
 
     }
