@@ -29,15 +29,15 @@ public partial class Dashboard : System.Web.UI.Page
             getUserID();
             pageInit();
         }
+        else
+        {
+            Response.Redirect("~/Default.aspx");
+        }
 
         if (!IsPostBack)
         {
             fillModalForm();
             fillBlockedUsersForm();
-        }
-        else
-        {
-            
         }
     }
 
@@ -99,31 +99,23 @@ public partial class Dashboard : System.Web.UI.Page
                     Response.Write("No data found");
                 }
                 reader.Close();
-            }
-            //Populate the blocked list of users
+        }
+        //Populate the blocked list of users
 
             
 
-            //Need a command to load feedback from DB to feedbackImage
-            using (SqlCommand cmd = new SqlCommand("SELECT AVG(rating) FROM Reviews WHERE user_id =" + userID, conn))
-            {
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.Connection = conn;
-
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    lblRating.Text = reader.GetValue(0).ToString();
-                }
-
-                reader.Close();
-            }
+        //Need a command to load feedback from DB to feedbackImage
+        string[] ratingInfo = DBHelper.getUserReview(userID);
+        if(ratingInfo != null)
+        {
+            lblRating.Text = ratingInfo[0];
+            lblRatingCount.Text = ratingInfo[1];
+        }
 
 
-            //Need a command to load Notifications from DB
+        //Need a command to load Notifications from DB
 
-            conn.Close();
+        conn.Close();
         
     }
 
@@ -157,7 +149,6 @@ public partial class Dashboard : System.Web.UI.Page
             {
                 tempRow = tempRow_Variable;
                 bannedUserLB.Items.Add((tempRow["FName"] + " " + tempRow["SName"] + " (" + tempRow["blocked"] + ")"));
-
             }
         }
     }
@@ -309,7 +300,6 @@ public partial class Dashboard : System.Web.UI.Page
             //Debug.WriteLine("Blocked userID: " + blockedUser);
             SqlCommand cmd = new SqlCommand("DELETE FROM blocked_user WHERE blocked_by =" + userID + " AND blocked_user = " + blockedUser);
             InsertUpdateData(cmd);
-
         }
     }
 
