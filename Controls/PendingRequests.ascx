@@ -8,7 +8,7 @@
     <div class="col-md-12">
         
         <asp:ListView ID="ListView3" 
-            runat="server" DataSourceID="SqlDataSource3" OnItemCommand="ListView3_ItemCommand" ViewStateMode="Inherit">
+            runat="server" DataSourceID="SqlDataSource3" OnItemCommand="ListView3_ItemCommand" OnItemDataBound="ListView3_ItemDataBound" ViewStateMode="Inherit">
             <LayoutTemplate>
                 <div runat="server">
                     <div id="itemPlaceholder" runat="server" />
@@ -22,7 +22,7 @@
             <ItemTemplate>
                 <div class="well">
                     <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> <%#Eval("frm_place") %> to <%#Eval("to_place")%>
-                    <asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandName="ItemCommand" runat="server" Text="Cancel" />
+                    <asp:Button CssClass="btn btn-info pull-right" ID="btnCancelRequest" CommandName="CancelRequest" runat="server" Text="Cancel" />
                 </div>
             </ItemTemplate>
         </asp:ListView>
