@@ -22,23 +22,27 @@ public partial class Dashboard : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        
-        if (Request.IsAuthenticated) //Check first if request is authenticated 
-        {
-            //Code to get User_ID from cookie
-            getUserID();
-            pageInit();
-        }
-        else
+        if (!Request.IsAuthenticated)
         {
             Response.Redirect("~/Default.aspx");
         }
-
         if (!IsPostBack)
         {
+            //Code to get User_ID from cookie
+            getUserID();
+            ViewState["userID"] = userID;
+            ViewState["AccessID"]= accLevel;
+            pageInit();
+
             fillModalForm();
             fillBlockedUsersForm();
         }
+        else
+        {
+            userID = ViewState["userID"].ToString();
+            accLevel = ViewState["AccessID"].ToString();
+        }
+        DataBind();
     }
 
     protected void pageInit()
@@ -106,7 +110,7 @@ public partial class Dashboard : System.Web.UI.Page
 
         //Need a command to load feedback from DB to feedbackImage
         string[] ratingInfo = DBHelper.getUserReview(userID);
-        if(ratingInfo != null)
+        if (ratingInfo != null)
         {
             lblRating.Text = ratingInfo[0];
             lblRatingCount.Text = ratingInfo[1];
@@ -136,7 +140,6 @@ public partial class Dashboard : System.Web.UI.Page
         using (SqlCommand cmd = new SqlCommand("SELECT FName, Sname, blocked_user.blocked_user as blocked FROM users Join blocked_user on User_ID = blocked_user.blocked_user Where blocked_user.blocked_by =" + userID, conn))
         {
             cmd.CommandType = System.Data.CommandType.Text;
-            //cmd.Parameters.Add("@id", SqlDbType.Int).Value = userID;
             cmd.Connection = conn;
 
             SqlDataAdapter reader = new SqlDataAdapter(cmd);
@@ -242,7 +245,7 @@ public partial class Dashboard : System.Web.UI.Page
             smoker = "n";
         cmd.Parameters.AddWithValue("@Smoker", smoker);
 
-        if(!txtDOB.Text.Equals(""))
+        if (!txtDOB.Text.Equals(""))
         {
             cmd.Parameters.AddWithValue("@DOB", txtDOB.Text);
         }
@@ -291,13 +294,9 @@ public partial class Dashboard : System.Web.UI.Page
     {
         if(bannedUserLB.SelectedItem != null)
         {
-            //SqlConnection conn = new SqlConnection();
-            //conn.ConnectionString = connection;
-
             string item = bannedUserLB.SelectedItem.ToString();
             int index = item.IndexOf("(");
             int blockedUser = Int32.Parse(item.Substring((index + 1), 1));
-            //Debug.WriteLine("Blocked userID: " + blockedUser);
             SqlCommand cmd = new SqlCommand("DELETE FROM blocked_user WHERE blocked_by =" + userID + " AND blocked_user = " + blockedUser);
             InsertUpdateData(cmd);
         }

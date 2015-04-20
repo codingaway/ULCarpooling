@@ -16,7 +16,6 @@ public partial class TripHistory : System.Web.UI.UserControl
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        DataBind();
         string query1 = "Select * FROM vCompletedOffers WHERE driver_id =" + userID + " AND date_time < GETDATE()";
         SqlDataSource4.SelectCommand = query1;
         ListView4.DataBind();
