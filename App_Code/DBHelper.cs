@@ -5,6 +5,7 @@ using System.Web;
 using System.Configuration; /*Required for reading connection string from Web.config */
 using System.Data;
 using System.Data.SqlClient;
+using System.Web.Helpers;
 
 /// <summary>
 /// Summary description for DBHelper
@@ -133,7 +134,54 @@ public class DBHelper
         return review;
     }
 
+    public static bool verifyUser(string email, string pass)
+    {
+        bool varified = false;
+        string hash = null;
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+        SqlConnection conn = new SqlConnection(conString);
+        SqlCommand cmd = new SqlCommand("Select user_pass from user_secret inner join users on " +
+            "users.User_ID = user_secret.User_ID where users.Email = @email", conn);
+        cmd.Parameters.AddWithValue("@email", email);
+        try
+        {
+            conn.Open();
+            hash = cmd.ExecuteScalar().ToString();
+        }
+        finally
+        {
+            conn.Dispose();
+            cmd.Dispose();
+        }
 
+        if (hash != null && Crypto.VerifyHashedPassword(hash, pass))
+            varified = true;
+        return varified;
+    }
+
+    public static void changePassword(string email, string pass)
+    {
+        string hash = Crypto.HashPassword(pass);
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+        SqlConnection conn = new SqlConnection(conString);
+
+        string aQuery = "UPDATE user_secret SET user_pass = @hash WHERE User_ID IN " +
+            "(Select user_secret.User_ID FROM user_secret INNER JOIN users on " +
+            "users.User_ID = user_secret.User_ID WHERE users.Email = @email)";
+        SqlCommand cmd = new SqlCommand(aQuery, conn);
+        cmd.Parameters.AddWithValue("@hash", hash);
+        cmd.Parameters.AddWithValue("@email", email);
+        try
+        {
+            conn.Open();
+            cmd.ExecuteNonQuery();
+        }
+        finally
+        {
+            conn.Dispose();
+            cmd.Dispose();
+        }
+    }
 
 
 }
