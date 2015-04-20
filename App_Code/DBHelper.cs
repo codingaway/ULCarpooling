@@ -90,16 +90,18 @@ public class DBHelper
         return success;
      }
 
-
-    public static void CreatePendingRequest(string userID, string offerID)
+    public static bool processResponse(string userID, string listID, int listingType)
     {
+        bool success = false;
 
+        string responseTbl = listingType == DBHelper.OFFER_LIST ? "offer_response" : "req_response";
+
+        
+
+        return success;
     }
 
-    public static void CreatePendingOffer(string userID, string requestID)
-    {
 
-    }
 
     public static string[] getUserReview(string userID)
     {
@@ -112,10 +114,6 @@ public class DBHelper
         conn = new SqlConnection();
         conn.ConnectionString = conString;
         cmd = new SqlCommand("select average, total from vReviewCountAvg where user_id =" + userID, conn);
-        //SqlParameter param = new SqlParameter();
-        //param.ParameterName = "@userID";
-        //param.Value = userID;
-        //cmd.Parameters.Add(param);
 
         SqlDataAdapter da = new SqlDataAdapter(cmd);
         DataTable dt = new DataTable();

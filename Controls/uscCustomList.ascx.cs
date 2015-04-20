@@ -31,13 +31,17 @@ public partial class uscCustomList : System.Web.UI.UserControl
     }
     protected void ListView1_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
-
+        bool success = false;
         switch (e.CommandName)
         {
-            case "SendRequest": DBHelper.CreatePendingRequest(userID, e.CommandArgument.ToString()); 
+            case "SendRequest":
+                {
+                    //Check if user already has a pending offer for this listing
+                    success = DBHelper.processResponse(userID, e.CommandArgument.ToString(), DBHelper.REQ_LIST); 
+                }
                 break;
 
-            case "SendOffer": DBHelper.CreatePendingOffer(userID, e.CommandArgument.ToString());
+            case "SendOffer": //DBHelper.CreatePendingOffer(userID, e.CommandArgument.ToString());
                 break;
         }
        
@@ -115,7 +119,7 @@ public partial class uscCustomList : System.Web.UI.UserControl
             if(this.listType == DBHelper.REQ_LIST)
             {
                 btn.CommandName = "SendOffer";
-                btn.CommandArgument = rowView["id"].ToString();
+                btn.CommandArgument = rowView["id"].ToString(); //
                 btn.Text = "Send Offer";
             }
 
