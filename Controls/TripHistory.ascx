@@ -27,14 +27,11 @@
             <ItemTemplate>
                 <div class="well">
                     <div class="row">
-                        <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> 
-                                            <%#Eval("frm_place") %> to <%#Eval("to_place")%>
+                        <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> <%#Eval("frm_place") %> to <%#Eval("to_place")%>
                     </div>
                     <div class="row">
-                        <asp:Button CssClass="btn btn-info pull-right" ID="Button2" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Report" />
-                        <asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Review" />
-                        
-                        <%-- <a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a>--%>
+                        <asp:Button CssClass="btn btn-info pull-right" ID="btnReportOffer" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Report" />
+                        <asp:Button CssClass="btn btn-info pull-right" ID="btnReviewOffer" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Review" />
                     </div>
                 </div>
             </ItemTemplate>
@@ -60,14 +57,11 @@
             <ItemTemplate>
                 <div class="well">
                     <div class="row">
-                        <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> 
-                                            <%#Eval("frm_place") %> to <%#Eval("to_place")%>
+                        <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> <%#Eval("frm_place") %> to <%#Eval("to_place")%>
                     </div>
                     <div class="row">
-                        <asp:Button CssClass="btn btn-info pull-right" ID="Button2" CommandArgument='<%#Eval("Request_id") %>' CommandName="ItemCommand" runat="server" Text="Report" />
-                        <asp:Button CssClass="btn btn-info pull-right" ID="Button1" CommandArgument='<%#Eval("Request_id") %>' CommandName="ItemCommand" runat="server" Text="Review" />
-                        
-                        <%-- <a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a>--%>
+                        <asp:Button CssClass="btn btn-info pull-right" ID="btnReportRequest" CommandArgument='<%#Eval("Request_id") %>' CommandName="ItemCommand" runat="server" Text="Report" />
+                        <asp:Button CssClass="btn btn-info pull-right" ID="btnReviewRequest" CommandArgument='<%#Eval("Request_id") %>' CommandName="ItemCommand" runat="server" Text="Review" />
                     </div>
                 </div>
             </ItemTemplate>

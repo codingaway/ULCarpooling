@@ -137,16 +137,6 @@
     <script src="Scripts/chosen.jquery.min.js"></script>
     <script type="text/javascript">
         function BindControlEvents() {
-            $(function () {
-                $('.date').datetimepicker(
-                    {
-                        format: "DD/MM/YYYY HH:mm",
-                        stepping: 5,
-                        showClear: true,
-                        showClose: true,
-                        inline: true
-                    });
-            });
             var config = {
                 '.chosen-select': {
                     placeholder_text_single: "Select starting place",

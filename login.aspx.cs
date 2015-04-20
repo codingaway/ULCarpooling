@@ -22,76 +22,75 @@ public partial class login : System.Web.UI.Page
 
     protected void btnLogin_Click(object sender, EventArgs e)
     {
-        DataSet dsUserData = new DataSet(); //Dataset to hold UserID, User Name, Access Level
 
-        if (ValidateUser(txtEmail.Text, txtPassword.Text, dsUserData))
+        if (DBHelper.verifyUser(txtEmail.Text, txtPassword.Text))
         {
             //Create FormAuthentication ticket with user Full name
+
+            DataSet dsUserData = getUserInfo(txtEmail.Text);
+
             string userName = dsUserData.Tables["UserData"].Rows[0]["Name"].ToString();
             string userID = dsUserData.Tables["UserData"].Rows[0]["User_ID"].ToString();
             string accessLevel = dsUserData.Tables["UserData"].Rows[0]["Access_level"].ToString();
 
-            //FormsAuthentication.RedirectFromLoginPage(userName, chkRemember.Checked);
+            int accLevel = Convert.ToInt32(accessLevel);
 
-            //Create custom FormAuthentication ticket with User Name that also saves user ID for user identification purpose
-            creatAuthTicket(userName, userID + "," + accessLevel);
+            if (accLevel > 0)
+            {
+                //Create custom FormAuthentication ticket with User Name that also saves user ID for user identification purpose
+                creatAuthTicket(userName, userID + "," + accessLevel);
 
-            //Redirect user to original Returin URL 
-            string strRedirect;
-            strRedirect = Request["ReturnUrl"];
-            if (strRedirect == null)
-                strRedirect = "default.aspx";
-            Response.Redirect(strRedirect, true);
+                //Redirect user to original Return URL 
+                string strRedirect;
+                strRedirect = Request["ReturnUrl"];
+                if (strRedirect == null)
+                    strRedirect = "default.aspx";
+                Response.Redirect(strRedirect, true);
+            }
+            else //User access level is:0 = Access revoked
+            {
+                lblErrorMsg.Text = "Invalid User ID or Password.";
+                lblErrorMsg.Visible = true;
+            }
         }
         else
         {
             //Authentication failed, show error message
-            //optionally redirect user 
             lblErrorMsg.Text = "Invalid User ID or Password.";
             lblErrorMsg.Visible = true;
         }
     }
 
-    private bool ValidateUser(string userEmail, string passwordInput, DataSet dsUserData)
+    private DataSet getUserInfo(string userEmail)
     {
-        if (userEmail == null || userEmail.Length == 0 || passwordInput == null || passwordInput.Length == 0)
-        {
-            return false;
-        }
+        DataSet dsUserData = new DataSet();
+
+        /*Make ad DB connection object */
+        SqlConnection conn = new SqlConnection();
+
+        /* Set connection string using Web.config */
+        conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+        string aQuery = "SELECT User_ID, Name, Access_level from login_info "
+            + "WHERE Email = @email";
+        SqlCommand cmd = new SqlCommand(aQuery, conn);
+        //Add parametere
+        cmd.Parameters.Add(new SqlParameter("@email", txtEmail.Text));
+
         try
         {
-            /*Make ad DB connection object */
-            SqlConnection conn = new SqlConnection();
-
-            /* Set connection string using Web.config */
-            conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
-
-            //Create sql command that calls a stored procedure "get_user_data"
-            SqlCommand cmd = new SqlCommand("get_user_data", conn);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            //Add parameter value for the stored procedure
-            cmd.Parameters.Add(new SqlParameter("@email", txtEmail.Text));
-
             //Create Data adapter with the conn and cmd
-            SqlDataAdapter daUserData = new SqlDataAdapter();
-            daUserData.SelectCommand = cmd;
-            daUserData.SelectCommand.Connection.Open();
-            daUserData.Fill(dsUserData, "UserData");
-
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = cmd;
+            conn.Open();
+            da.Fill(dsUserData, "UserData");       
+        }
+        finally
+        {
             //Dispose sql Command and Connection
             cmd.Dispose();
             conn.Dispose();
         }
-        catch (Exception ex) { }
-
-        if (dsUserData.Tables.Count == 0 || dsUserData.Tables["UserData"].Rows.Count == 0)
-            return false; //No data found for this email
-
-        string retrivedPassword = dsUserData.Tables["UserData"].Rows[0]["user_pass"].ToString();
-
-        //Check user supplied password with actual password was extracted from database for this user
-        return (passwordInput.CompareTo(retrivedPassword) == 0);
+        return dsUserData;
     }
 
     private void creatAuthTicket(string userName, string user_ID)
