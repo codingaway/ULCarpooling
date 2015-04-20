@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="AddRequestPage.aspx.cs" Inherits="AddRequestPage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="AddRequest.aspx.cs" Inherits="AddRequest" %>
 
 <%@ Register Src="~/Controls/AddRequestCtrl.ascx" TagPrefix="uc1" TagName="AddRequestCtrl" %>
 
