@@ -131,7 +131,7 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
         using (cmd1 = new SqlCommand("select count(*) from offer_rec", con1))
         {
             count = (int)cmd1.ExecuteScalar();
-            count++;
+            count = count + 100;
         }
 
         using (cmd1 = new SqlCommand("insert into offer_rec values(@offer_id,@user_id,@from,@to,@date_time,@seats)", con1))
