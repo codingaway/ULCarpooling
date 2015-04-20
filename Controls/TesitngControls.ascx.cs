@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Data;
-using System.Data.SqlClient;
 using System.Web.UI.DataVisualization.Charting;
+using System.Web.UI.WebControls;
 
-public partial class StaticalAnalysisCtrl1 : System.Web.UI.UserControl
+public partial class Controls_TesitngControls : System.Web.UI.UserControl
 {
     SqlConnection con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True");
     protected void Page_Load(object sender, EventArgs e)
@@ -18,7 +18,7 @@ public partial class StaticalAnalysisCtrl1 : System.Web.UI.UserControl
 
         Chart1.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
         Chart1.Series["Series1"].IsValueShownAsLabel = true;
-        
+
         SqlCommand cmd1 = new SqlCommand("Select offer_rec.place_from As Place, places.place_name As PickUp, Count(*) As Occurence FROM offer_rec JOIN places on offer_rec.place_from = places.Place_id GROUP BY offer_rec.place_from,places.place_name", con1);
         cmd1.CommandType = CommandType.Text;
 
@@ -26,6 +26,7 @@ public partial class StaticalAnalysisCtrl1 : System.Web.UI.UserControl
         da.SelectCommand = cmd1;
 
         DataTable dt = new DataTable();
+
         da.Fill(dt);
 
         Chart1.DataSource = dt;

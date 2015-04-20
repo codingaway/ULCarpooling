@@ -18,7 +18,7 @@ public partial class GraphCtrlBarOfferPick : System.Web.UI.UserControl
 
         Chart1.ChartAreas["ChartArea1"].Area3DStyle.Enable3D = true;
         Chart1.Series["Series1"].IsValueShownAsLabel = true;
-        
+
         SqlCommand cmd1 = new SqlCommand("Select offer_rec.place_from As Place, places.place_name As PickUp, Count(*) As Occurence FROM offer_rec JOIN places on offer_rec.place_from = places.Place_id GROUP BY offer_rec.place_from,places.place_name", con1);
         cmd1.CommandType = CommandType.Text;
 
