@@ -30,8 +30,62 @@
                         <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> <%#Eval("frm_place") %> to <%#Eval("to_place")%>
                     </div>
                     <div class="row">
-                        <asp:Button CssClass="btn btn-info pull-right" ID="btnReportOffer" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Report" />
-                        <asp:Button CssClass="btn btn-info pull-right" ID="btnReviewOffer" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Review" />
+                        <asp:Button CssClass="btn btn-info pull-right" ID="btnReportOffer" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Report" data-toggle="modal" data-target="#ReportOfferModal"/>
+                            <div class="modal fade" id="ReportOfferModal" tabindex="-1" role="dialog" aria-labelledby="ReportOfferModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="ReportOfferModalLabel">Report Offer</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <p>Select user to report</p>
+                                                    <p>Reason for reporting</p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <asp:ListBox ID="offerUsersLB" runat="server" SelectionMode="Single" Width="174"/>
+                                                    <asp:TextBox ID="txtReportReason" runat="server" Text="" />
+                                                </div>
+                                                <div class="col-md-4"></div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <asp:Button ID="btnReportOff" CssClass="btn btn-primary" runat="server" OnClick="btnReport_Click" Text="Report"></asp:Button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <asp:Button CssClass="btn btn-info pull-right" ID="btnReviewOffer" CommandArgument='<%#Eval("offer_id") %>' CommandName="ItemCommand" runat="server" Text="Review" data-toggle="modal" data-target="#ReviewOfferModal"/>
+                            <div class="modal fade" id="ReviewOfferModal" tabindex="-1" role="dialog" aria-labelledby="ReviewOfferModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="ReviewOfferModalLabel">Review Offer</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <p>Select user to review</p>
+                                                    <p>Review comment</p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <asp:ListBox ID="reviewUsersLB" runat="server" SelectionMode="Single" Width="174"/>
+                                                    <asp:TextBox ID="txtReviewComment" runat="server" Text="" />
+                                                </div>
+                                                <div class="col-md-4"></div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <asp:Button ID="btnReviewOff" CssClass="btn btn-primary" runat="server" OnClick="btnReview_Click" Text="Review"></asp:Button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </ItemTemplate>

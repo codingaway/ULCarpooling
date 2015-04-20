@@ -88,14 +88,14 @@ public partial class Dashboard : System.Web.UI.Page
                 {
                     while (reader.Read())
                     {
-                            lblName.Text = reader.GetString(1) + " " + reader.GetString(2);
-                            lblEmail.Text = reader.GetString(3);
-                            lblPhone.Text = reader.GetString(4);
-                            string[] dob = (reader["dob"].ToString()).Split(new Char[] { ' ' });
-                            lblDOB.Text = dob[0];
-                            lblGender.Text = reader["gender"].Equals("m") ? "Male" : "Female";
-                            checkBoxSmoker.Checked = reader["Smoker"].Equals("y") ? true : false;
-                            profileImage.ImageUrl = "~/GetImage.aspx?ImageID=" + userID;
+                        lblName.Text = reader.GetString(1) + " " + reader.GetString(2);
+                        lblEmail.Text = reader.GetString(3);
+                        lblPhone.Text = reader.GetString(4);
+                        string[] dob = (reader["dob"].ToString()).Split(new Char[] { ' ' });
+                        lblDOB.Text = dob[0];
+                        lblGender.Text = reader["gender"].Equals("m") ? "Male" : "Female";
+                        checkBoxSmoker.Checked = reader["Smoker"].Equals("y") ? true : false;
+                        profileImage.ImageUrl = "~/GetImage.aspx?ImageID=" + userID;
                     }
                 }
                 else
