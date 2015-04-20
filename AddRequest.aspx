@@ -9,5 +9,21 @@
     <uc1:AddRequestCtrl runat="server" ID="AddRequestCtrl" />
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" Runat="Server">
+    
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+        <script type="text/javascript">
+            //Datetime picker
+            $(function () {
+                $('.date').datetimepicker(
+                    {
+                        format: "DD/MM/YYYY HH:mm",
+                        stepping: 5,
+                        showClear: true,
+                        showClose: true,
+                        inline: true
+                    });
+            });
+    </script>
 </asp:Content>
 
