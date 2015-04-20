@@ -8,7 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using AjaxControlToolkit;
 
-public partial class ReviewPage : System.Web.UI.Page
+public partial class OtherUserReviews : System.Web.UI.Page
 {
     SqlConnection con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True;MultipleActiveResultSets=True;");
     SqlCommand cmd1;
@@ -26,6 +26,7 @@ public partial class ReviewPage : System.Web.UI.Page
                 countRows = (int)cmd1.ExecuteScalar();
                 numberUserRating.Text = "("+ countRows.ToString() +")";
             }
+
             using (cmd1 = new SqlCommand("SELECT FName,SName from users WHERE User_ID = 1", con1))
             {
                 rd1 = cmd1.ExecuteReader();
@@ -34,16 +35,19 @@ public partial class ReviewPage : System.Web.UI.Page
                     userName.Text = rd1["FName"].ToString() + " " + rd1["SName"].ToString();
                 }
             }
-            using (cmd1 = new SqlCommand("SELECT TOP 2 comment FROM Reviews WHERE user_id=4 ORDER BY submitDate", con1));
+            rd1.Close();
+
+            using (cmd1 = new SqlCommand("SELECT TOP 2 comment FROM Reviews WHERE user_id=1 ORDER BY submit_date", con1))
             {
-                if (cmd1.ExecuteReader().Read())
+                if (countRows > 0)
                 {
                     grdResult.DataSource = cmd1.ExecuteReader();
                     grdResult.DataBind();
                 }
                 else
                 {
-                    lblGrdResult.Text = "No Comments For this User";
+                    lblGrdResult.Visible = true;
+                    lblGrdResult.Text = "No Comments For This User Yet";
                 }
             }
             con1.Close();

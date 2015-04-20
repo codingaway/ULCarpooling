@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="ReviewPage.aspx.cs" Inherits="ReviewPage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.master" AutoEventWireup="true" CodeFile="OtherUserReviews.aspx.cs" Inherits="OtherUserReviews" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
@@ -8,25 +8,31 @@
                     width: auto;
                     margin: 15px;
                    }
+.boxed {
+             width: auto;
+             border: 1px solid #42484d;
+             padding: 4px;
+             margin: 15px; 
+           }
 
-.blankstar
-{
-background-image: url(images/blank_star.png);
-width: 16px;
-height: 16px;
-}
-.waitingstar
-{
-background-image: url(images/half_star.png);
-width: 16px;
-height: 16px;
-}
-.shiningstar
-{
-background-image: url(images/shining_star.png);
-width: 16px;
-height: 16px;
-}
+        .Star
+        {
+            background-image: url(images/Star.gif);
+            height: 17px;
+            width: 17px;
+        }
+        .WaitingStar
+        {
+            background-image: url(images/WaitingStar.gif);
+            height: 17px;
+            width: 17px;
+        }
+        .FilledStar
+        {
+            background-image: url(images/FilledStar.gif);
+            height: 17px;
+            width: 17px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
@@ -52,9 +58,9 @@ height: 16px;
                     
                     <div class ="row">
                         <div class="boxValidation">
-                         <cc1:Rating ID="Rating1" AutoPostBack="true" OnChanged="OnRatingChanged" runat="server" StarCssClass="blankstar" WaitingStarCssClass="waitingstar" FilledStarCssClass="shiningstar" EmptyStarCssClass="blankstar">
+                         <cc1:Rating ID="Rating1" AutoPostBack="true" OnChanged="OnRatingChanged" runat="server" StarCssClass="Star" WaitingStarCssClass="WaitingStar" FilledStarCssClass="FilledStar" EmptyStarCssClass="Star">
                          </cc1:Rating>&nbsp;
-                            <asp:Label ID="numberUserRating" runat="server" Text=""></asp:Label>
+                            <asp:Label ID="numberUserRating" runat="server" Text="" Font-Italic="True"></asp:Label>
                         </div>
                     </div>
                     
@@ -76,19 +82,13 @@ height: 16px;
             <SortedDescendingCellStyle BackColor="#CAC9C9" />
             <SortedDescendingHeaderStyle BackColor="#383838" />
            </asp:GridView> <br />
-              <asp:Label ID="lblGrdResult" runat="server" Text="Label"></asp:Label>         
+               <asp:Label CssClass="boxed" ID="lblGrdResult" runat="server" Text="" Font-Italic="True" Visible="False"></asp:Label>
           </div>
-        </div> 
-            
+        </div>             
    </div>
   </div>
 </div>
-
-  
-
-  
-         
-    
+   
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" Runat="Server">
 </asp:Content>

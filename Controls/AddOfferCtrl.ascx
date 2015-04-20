@@ -74,7 +74,7 @@
   <div class="row">
    <label class="control-label col-md-3" for="Date">Date N Time :</label>
     <div class="col-md-8">
-     <div class='input-group date' id='datetimepicker1'>
+     <div class='input-group date'>
       <asp:TextBox ID="txtDate" CssClass="form-control date" runat="server" TextMode="DateTime"></asp:TextBox>                            
        <span class="input-group-addon">
         <span class="glyphicon glyphicon-calendar">
@@ -153,14 +153,6 @@
 <script src="Scripts/moment.min.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="Scripts/bootstrap-datetimepicker.min.js"></script>
-
-    <%--Scrpits for date time picker--%>
-    <script type="text/javascript">
-        $(function () {
-            $('.date').datetimepicker();
-        });
-
-    </script>
 
 <script src="Scripts/dateValidation.js"></script>
 
