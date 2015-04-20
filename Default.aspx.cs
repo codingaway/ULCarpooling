@@ -43,8 +43,6 @@ public partial class Default : System.Web.UI.Page
 
     protected void loadRequests()
     {
-        //requestList = (ASP.CustomList)LoadControl("~/Controls/uscCustomList.ascx");
-        //ListView listView = (ListView)requestList.FindControl("ListView1");
 
         RequestList.listType = DBHelper.REQ_LIST;
         ListView listView = (ListView)RequestList.FindControl("ListView1");
@@ -61,7 +59,6 @@ public partial class Default : System.Web.UI.Page
             da.Fill(ds);
             listView.DataSource = ds;
             listView.DataBind();
-            //PlaceHolder2.Controls.Add(requestList);
         }
         finally
         {
@@ -74,9 +71,6 @@ public partial class Default : System.Web.UI.Page
 
     protected void loadOffers()
     {
-        //offerList = (ASP.CustomList)LoadControl("~/Controls/uscCustomList.ascx");
-        //ListView listView = (ListView)offerList.FindControl("ListView1");
-
         OfferList.listType = DBHelper.OFFER_LIST;
         ListView listView = (ListView)OfferList.FindControl("ListView1");
         string ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
@@ -91,7 +85,6 @@ public partial class Default : System.Web.UI.Page
             da.Fill(ds);
             listView.DataSource = ds;
             listView.DataBind();
-            //PlaceHolder1.Controls.Add(offerList);
         }
         finally
         {

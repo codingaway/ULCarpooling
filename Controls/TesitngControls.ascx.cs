@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Data;
-using System.Data.SqlClient;
 using System.Web.UI.DataVisualization.Charting;
+using System.Web.UI.WebControls;
 
-public partial class GraphCtrlBarOfferPick : System.Web.UI.UserControl
+public partial class Controls_TesitngControls : System.Web.UI.UserControl
 {
     SqlConnection con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True");
     protected void Page_Load(object sender, EventArgs e)

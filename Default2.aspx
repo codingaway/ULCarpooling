@@ -13,10 +13,10 @@
 
     <%--<uc2:AddOfferCtrl runat="server" ID="AddOfferCtrl" />--%>
     <%--<uc2:AddRequestCtrl runat="server" ID="AddRequestCtrl" />--%>
-    <%--<uc2:GraphCtrlBarOfferPick runat="server" ID="GraphCtrlBarOfferPick" />--%>
-    <%--<uc2:GraphCtrlDounutOfferDrop runat="server" ID="GraphCtrlDounutOfferDrop" />--%>
-    <%--<uc2:GraphCtrlDounutRequestPick runat="server" ID="GraphCtrlDounutRequestPick" />--%>
-    <%--<uc2:GraphCtrlBarRequestDrop runat="server" ID="GraphCtrlBarRequestDrop" />--%>
+<uc2:GraphCtrlBarOfferPick runat="server" ID="GraphCtrlBarOfferPick" />
+    <uc2:GraphCtrlDounutOfferDrop runat="server" ID="GraphCtrlDounutOfferDrop" />
+    <uc2:GraphCtrlDounutRequestPick runat="server" ID="GraphCtrlDounutRequestPick" />
+    <uc2:GraphCtrlBarRequestDrop runat="server" ID="GraphCtrlBarRequestDrop" />
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" Runat="Server">

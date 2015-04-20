@@ -45,10 +45,10 @@
                             <asp:HyperLink ID="hlSearch" runat="server" NavigateUrl="~/Search.aspx"  CssClass="rounded-button blue-button"><span class="glyphicon glyphicon-search"></span> Search </asp:HyperLink>
                         </li>
                         <li class="form-group">
-                            <asp:HyperLink ID="lbtnAddReq" runat="server" NavigateUrl="~/AddOffer.aspx" CssClass="rounded-button blue-button"><span class="glyphicon glyphicon-plus-sign"></span> Add Request </asp:HyperLink>
+                            <asp:HyperLink ID="lbtnAddReq" runat="server" NavigateUrl="~/AddRequest.aspx" CssClass="rounded-button blue-button"><span class="glyphicon glyphicon-plus-sign"></span> Add Request </asp:HyperLink>
                         </li>
                         <li class="form-group">
-                            <asp:HyperLink ID="lbtnAddOffer" runat="server" NavigateUrl="~/AddRequest.aspx" CssClass="rounded-button blue-button"><span class="glyphicon glyphicon-plus-sign"></span> Add Offer </asp:HyperLink>
+                            <asp:HyperLink ID="lbtnAddOffer" runat="server" NavigateUrl="~/AddOffer.aspx" CssClass="rounded-button blue-button"><span class="glyphicon glyphicon-plus-sign"></span> Add Offer </asp:HyperLink>
                         </li>
                     </ul>
 

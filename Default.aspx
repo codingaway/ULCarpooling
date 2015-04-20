@@ -61,9 +61,6 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="">
-                 <%--   <asp:SqlDataSource ID="SqlDataSource1" runat="server"
-                        ConnectionString="<%$ ConnectionStrings:DbConnString%>"
-                        SelectCommand="select * from vOfferDetails" />--%>
                     <div class="row">
                         <cc1:TabContainer ID="TabContainer1" runat="server" CssClass="mainTab">
                             <cc1:TabPanel runat="server" ID="tabOfferList">
