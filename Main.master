@@ -157,18 +157,6 @@
     $(function () {
         $('span.stars').stars();
     });
-
-        //Datetime picker
-    $(function () {
-        $('.date').datetimepicker(
-            {
-                format: "DD/MM/YYYY HH:mm",
-                stepping: 5,
-                showClear: true,
-                showClose: true,
-                inline: true
-            });
-    });
     </script>
     <asp:ContentPlaceHolder ID="cphScripts" runat="server"></asp:ContentPlaceHolder>
 

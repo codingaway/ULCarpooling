@@ -96,12 +96,27 @@
                                         </span>
                                     </div>
                                     <asp:CustomValidator
-                                        ID="CustomValidator1" runat="server"
+                                        ID="valEndDate" runat="server"
                                         ControlToValidate="txtEndDate"
                                         ErrorMessage="End Date-time is not valid."
+                                        ClientValidationFunction="isValidDateValue"
+                                        ValidationGroup="searchPage" Display="Dynamic">X
+                                    </asp:CustomValidator>
+                                    <asp:CustomValidator
+                                        ID="valCompareEndDate" runat="server"
+                                        ControlToValidate="txtEndDate"
+                                        ErrorMessage="End Date-time must be after start date."
                                         ClientValidationFunction="compareDateValues"
                                         ValidationGroup="searchPage" Display="Dynamic">X
                                     </asp:CustomValidator>
+                                </div>
+                            </div>
+                             <div class="form-group">
+
+                                <div class="col-md-8 pull-right">
+                                    <asp:Button ID="btnReset" type="reset" runat="server" CssClass="btn btn-default" Text="Reset" OnClick="btnReset_Click" />
+                                    <asp:Button ID="btnSearch" CausesValidation="true" CssClass="btn btn-primary" ValidationGroup="searchPage" runat="server" Text="Search" OnClick="btnSearch_Click" />
+
                                 </div>
                             </div>
                             </ContentTemplate>
@@ -110,14 +125,7 @@
                              <asp:AsyncPostBackTrigger ControlID="btnReset" EventName="Click" />
                         </Triggers>
                     </asp:UpdatePanel>
-                            <div class="form-group">
-
-                                <div class="col-md-8 pull-right">
-                                    <asp:Button ID="btnReset" type="reset" runat="server" CssClass="btn btn-default" Text="Reset" OnClick="btnReset_Click" />
-                                    <asp:Button ID="btnSearch" CssClass="btn btn-primary" ValidationGroup="searchPage" runat="server" Text="Search" OnClick="btnSearch_Click" />
-
-                                </div>
-                            </div>
+                           
                         
 
                 </fieldset>
@@ -150,10 +158,24 @@
             for (var selector in config) {
                 $(selector).chosen(config[selector]);
             }
+
+            //Datetime picker
+            $(function () {
+                $('.date').datetimepicker(
+                    {
+                        format: "DD/MM/YYYY HH:mm",
+                        stepping: 5,
+                        showClear: true,
+                        showClose: true,
+                        inline: true
+                    });
+            });
         }
         //Initial bind
         $(document).ready(function () {
             BindControlEvents();
+
+
         });
 
         //Re-bind for callbacks
@@ -162,6 +184,7 @@
         prm.add_endRequest(function () {
             BindControlEvents();
         });
+
     </script>
    <%--   <script type="text/javascript">
           $.fn.stars = function () {
