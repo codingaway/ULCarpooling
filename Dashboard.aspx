@@ -300,16 +300,16 @@
                     </div>
                     <p></p>
                 <h2>My Active Offers</h2>
-                <uc1:PendingOffers runat="server" ID="PendingOffers" userID="<%#userID%>"/>
+                <uc1:PendingOffers runat="server" ID="PendingOffers"/>
                 <h2>My Active Requests</h2>
-                <uc2:PendingRequests runat="server" ID="PendingRequests" userID="<%#userID%>"/>
+                <uc2:PendingRequests runat="server" ID="PendingRequests"/>
             </div>
             <div class="col-md-4">
                 <h2>Notifications</h2>
                 <p>Notifications to go in here with Decline or Confirm buttons</p>
 
                 <h2>Trip History</h2>
-                <uc3:TripHistory runat="server" id="TripHistory" userID="<%#userID%>"/>
+                <%--<uc3:TripHistory runat="server" id="TripHistory" />--%>
             </div>
 
         </div>

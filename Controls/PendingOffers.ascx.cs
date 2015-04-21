@@ -8,38 +8,39 @@ using System.Data;
 using System.Web.Security;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Diagnostics;
 
 
 public partial class PendingOffers : System.Web.UI.UserControl
 {
-    public string userID { get; set; }
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        DataBind();
-        string query = "Select * FROM vOfferDetails WHERE User_ID =" + userID + " AND date_time >= GETDATE()";
-        SqlDataSource2.SelectCommand = query;
-        ListView2.DataBind();
+        
     }
 
-    protected void ListView2_ItemCommand(object sender, ListViewCommandEventArgs e)
+    protected void pendingOffersLV_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
-        if(e.CommandName == "CancelOffer")
+        if (e.CommandName == "ItemCommand")
         {
             if (e.CommandArgument != null)
             {
+                Debug.WriteLine("Hopefully the offer_id: " + e.CommandArgument);
                 SqlCommand cmd = new SqlCommand("UPDATE offer_rec SET active = @active Where offer_id =" + e.CommandArgument);
                 cmd.Parameters.AddWithValue("@active", "n");
                 InsertUpdateData(cmd);
 
+
+                Debug.WriteLine("Hopefully the offer_id: " + e.CommandArgument);
                 SqlCommand cmd2 = new SqlCommand("UPDATE offer_response SET status = @status Where offer_id =" + e.CommandArgument);
-                cmd.Parameters.AddWithValue("@status", "Cancelled");
+                cmd2.Parameters.AddWithValue("@status", "Cancelled");
                 InsertUpdateData(cmd2);
             }
         }
     }
 
-    protected void ListView2_ItemDataBound(object sender, ListViewItemEventArgs e)
+    protected void pendingOffersLV_ItemDataBound(object sender, ListViewItemEventArgs e)
     {
         Button btn = (Button)e.Item.FindControl("btnCancelOffer");
         DataRowView rowView = (DataRowView)e.Item.DataItem;
