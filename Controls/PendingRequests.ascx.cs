@@ -12,19 +12,15 @@ using System.Configuration;
 
 public partial class PendingRequests : System.Web.UI.UserControl
 {
-    public string userID { get; set; }
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        DataBind();
-        string query = "Select * FROM vRequestDetails WHERE User_ID =" + userID + " AND date_time >= GETDATE()";
-        SqlDataSource3.SelectCommand = query;
-        ListView3.DataBind();
+        
     }
 
-    protected void ListView3_ItemCommand(object sender, ListViewCommandEventArgs e)
+    protected void pendingRequestsLV_ItemCommand(object sender, ListViewCommandEventArgs e)
     {
-        if (e.CommandName == "CancelRequest")
+        if (e.CommandName == "ItemCommand")
         {
             if (e.CommandArgument != null)
             {
@@ -33,13 +29,13 @@ public partial class PendingRequests : System.Web.UI.UserControl
                 InsertUpdateData(cmd);
 
                 SqlCommand cmd2 = new SqlCommand("UPDATE req_response SET status = @status Where req_id =" + e.CommandArgument);
-                cmd.Parameters.AddWithValue("@status", "Cancelled");
+                cmd2.Parameters.AddWithValue("@status", "Cancelled");
                 InsertUpdateData(cmd2);
             }
         }
     }
 
-    protected void ListView3_ItemDataBound(object sender, ListViewItemEventArgs e)
+    protected void pendingRequestsLV_ItemDataBound(object sender, ListViewItemEventArgs e)
     {
         Button btn = (Button)e.Item.FindControl("btnCancelRequest");
         DataRowView rowView = (DataRowView)e.Item.DataItem;

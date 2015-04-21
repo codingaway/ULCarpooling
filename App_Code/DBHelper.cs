@@ -60,8 +60,8 @@ public class DBHelper
 
         SqlConnection conn = new SqlConnection();
         conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
-        conn.Open();
         SqlCommand cmd = new SqlCommand();
+        cmd.Connection = conn;
         cmd.CommandType = CommandType.StoredProcedure;
         cmd.CommandText = "uspCreateNewUser";
         cmd.Parameters.Add(new SqlParameter("@FName", fName));
@@ -84,8 +84,8 @@ public class DBHelper
         }
         finally
         {
-            cmd.Dispose();
             conn.Dispose();
+            cmd.Dispose();
         }
         return success;
      }

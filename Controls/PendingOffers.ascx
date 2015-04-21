@@ -1,13 +1,9 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="PendingOffers.ascx.cs" Inherits="PendingOffers" %>
 
-<asp:SqlDataSource ID="SqlDataSource2" runat="server"
-    ConnectionString="<%$ ConnectionStrings:DbConnString%>">
-    </asp:SqlDataSource>
 
 <div class="row">
     <div class="col-md-12">
-        <asp:ListView ID="ListView2" 
-            runat="server" DataSourceID="SqlDataSource2" OnItemCommand="ListView2_ItemCommand" OnItemDataBound="ListView2_ItemDataBound" ViewStateMode="Inherit">
+        <asp:ListView ID="pendingOffersLV" runat="server"  OnItemCommand="pendingOffersLV_ItemCommand" OnItemDataBound="pendingOffersLV_ItemDataBound">
             <LayoutTemplate>
                 <div runat="server">
                     <div id="itemPlaceholder" runat="server" />
@@ -21,7 +17,7 @@
             <ItemTemplate>
                 <div class="well">
                       <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> <%#Eval("frm_place") %> to <%#Eval("to_place")%>
-                      <asp:Button CssClass="btn btn-info pull-right" ID="btnCancelOffer" CommandName="CancelOffer" runat="server" Text="Cancel" />
+                      <asp:Button CssClass="btn btn-info pull-right" ID="btnCancelOffer" CommandName="ItemCommand" runat="server" Text="Cancel" />
                 </div>
             </ItemTemplate>
         </asp:ListView>
