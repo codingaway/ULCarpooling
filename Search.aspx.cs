@@ -196,4 +196,69 @@ public partial class Search : System.Web.UI.Page
         txtEndDate.Text = "";
         txtStartDate.Text = "";
     }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        if (Page.IsValid)
+        {
+            string resultTable;
+
+            Panel1.Visible = true;
+            DateTime startDate, endDate;
+            string placeFrom = null, placeTo = null;
+            if (ddlTripFrom.SelectedIndex > 0)
+                placeFrom = ddlTripFrom.SelectedValue;
+            if (ddlTripTo.SelectedIndex > 0)
+                placeTo = ddlTripTo.SelectedValue;
+
+            string formatString = "dd/MM/yyyy HH:mm";
+
+            bool startDateExist = DateTime.TryParseExact(txtStartDate.Text, formatString, CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
+            bool endDateExist = DateTime.TryParseExact(txtEndDate.Text, formatString, CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate);
+
+
+            if (rblSearchOption.SelectedIndex == 1) //Offers
+            {
+                resultTable = "vRequestDetails";
+            }
+            else
+            {
+                resultTable = "vOfferDetails";
+            }
+
+            string searchQuery = "SELECT * FROM " + resultTable + " WHERE 1 = 1";
+
+            if (placeFrom != null)
+                searchQuery += " AND frm_id = " + placeFrom;
+
+            if (placeTo != null)
+                searchQuery += " AND to_id = " + placeTo;
+
+            if (startDateExist)
+                searchQuery += " AND date_time >= '" + startDate.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+
+            if (endDateExist)
+                searchQuery += " AND date_time <= '" + endDate.ToString("yyyy-MM-dd HH:mm:ss") + "'";
+
+
+            ListView listView = (ListView)ResultList.FindControl("ListView1");
+            string ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+            SqlConnection myConnection = new SqlConnection(ConnectionString);
+            SqlCommand cmd = new SqlCommand(searchQuery, myConnection);
+            try
+            {
+                myConnection.Open();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                listView.DataSource = ds;
+                listView.DataBind();
+            }
+            finally
+            {
+                cmd.Dispose();
+                myConnection.Dispose();
+
+            }
+        }
+    }
 }
