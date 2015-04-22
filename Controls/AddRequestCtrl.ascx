@@ -11,10 +11,11 @@
            }
     .boxValidation {
                     width: auto;
-                    margin: 15px;
+                    margin: 5px;
                    }
 </style>
 
+<asp:Panel ID="panelLoginUser" runat="server" Visible="False">
 <div class="container top-buffer">
  <div class="well bs-component">
   <h3 class="text-center modal-header"><em><strong>Add An Request</strong></em></h3>
@@ -39,8 +40,8 @@
   </div>
   <div class="row">
    <div class="boxValidation">
-    <asp:RequiredFieldValidator ID="RFVdepartCounty" runat="server" ControlToValidate="DDdepartCounty" ErrorMessage="* Please Select County from Start Location *"  ValidationGroup="AddRequest" ForeColor="Red" ></asp:RequiredFieldValidator><br />
-    <asp:RequiredFieldValidator ID="RFVdepartPlaces" runat="server" ControlToValidate="DDdepartPlaces" ErrorMessage="* Please Select Places from Start Location *"  ValidationGroup="AddRequest" ForeColor="Red" ></asp:RequiredFieldValidator>
+    <asp:RequiredFieldValidator ID="RFVdepartCounty" InitialValue="0" runat="server" ControlToValidate="DDdepartCounty" ErrorMessage="* Please Select County from Start Location *"  ValidationGroup="AddRequest" ForeColor="Red" ></asp:RequiredFieldValidator><br />
+    <asp:RequiredFieldValidator ID="RFVdepartPlaces" InitialValue="0" runat="server" ControlToValidate="DDdepartPlaces" ErrorMessage="* Please Select Places from Start Location *"  ValidationGroup="AddRequest" ForeColor="Red" ></asp:RequiredFieldValidator>
    </div>
   </div> 
 </div> 
@@ -72,7 +73,7 @@
  <h4></h4>
   <div class="row">
    <label class="control-label col-md-3" for="Date">Date N Time :</label>
-    <div class="col-md-8">
+    <div class="col-md-3">
      <div class='input-group' id='datetimepicker1'>
       <asp:TextBox ID="txtDate" CssClass="form-control date" runat="server"></asp:TextBox>                            
        <span class="input-group-addon">
@@ -130,3 +131,11 @@
   </div>
  </div>
 </div>
+
+</asp:Panel>
+
+<asp:Panel ID="panelGostUser" runat="server" Visible="False">
+    <asp:Label ID="Label1" runat="server" Text="You Need to"></asp:Label>
+    <asp:HyperLink ID="hp1" NavigateUrl="~/login.aspx" Text="Log In" runat="server" />
+</asp:Panel>
+

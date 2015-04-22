@@ -9,6 +9,8 @@ using System.Data.SqlClient;
 using Subgurim.Controles;
 using Subgurim.Controls;
 using Subgurim.Web;
+using System.Web.Security;
+using System.Configuration;
 using System.Globalization;
 
 public partial class AddRequestCtrl : System.Web.UI.UserControl
@@ -16,8 +18,28 @@ public partial class AddRequestCtrl : System.Web.UI.UserControl
     SqlConnection con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True");
     SqlCommand cmd1;
     SqlDataAdapter adpt1;
+
+    public string userID { get; set; }
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Request.IsAuthenticated) //Check first if request is authenticated 
+        {
+            //Get user ID from FormAuthentocation Ticket
+            string[] userData;
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+            userData = ticket.UserData.Split(',');
+            userID = userData[0];
+            panelLoginUser.Visible = true;
+            panelGostUser.Visible = false;
+        }
+        else 
+        {
+            panelGostUser.Visible = true;
+            panelLoginUser.Visible = false;
+        }
+
         tb_fromPoint.Style.Add("visibility", "hidden");
         tb_endPoint.Style.Add("visibility", "hidden");
 

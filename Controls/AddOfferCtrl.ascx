@@ -40,8 +40,8 @@
        </div>
     <div class="row">
         <div class="boxValidation">
-     <asp:RequiredFieldValidator ID="RFVdepartCounty" runat="server" ControlToValidate="DDdepartCounty" ErrorMessage="* Please Select County from Start Location *"  ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator><br />
-     <asp:RequiredFieldValidator ID="RFVdepartPlaces" runat="server" ControlToValidate="DDdepartPlaces" ErrorMessage="* Please Select Places from Start Location *"  ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator>
+     <asp:RequiredFieldValidator ID="RFVdepartCounty" InitialValue="0" runat="server" ControlToValidate="DDdepartCounty" ErrorMessage="* Please Select County from Start Location *"  ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator><br />
+     <asp:RequiredFieldValidator ID="RFVdepartPlaces" InitialValue="0" runat="server" ControlToValidate="DDdepartPlaces" ErrorMessage="* Please Select Places from Start Location *"  ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator>
         </div>
     </div> 
 </div> 
@@ -62,8 +62,8 @@
      </div>
     <div class="row">
      <div class="boxValidation">
-      <asp:RequiredFieldValidator ID="RFVarrivalCounty" runat="server" ControlToValidate="DDarrivalCounty" ErrorMessage="* Please Select County from End Location *" ValidationGroup="AddOffer" ForeColor="Red" InitialValue="0"></asp:RequiredFieldValidator><br />       
-      <asp:RequiredFieldValidator ID="RFVarrivalPlaces" runat="server" ControlToValidate="DDarrivalPlaces" ErrorMessage="* Please Select Places from End Location *" ValidationGroup="AddOffer" ForeColor="Red" InitialValue="0"></asp:RequiredFieldValidator>
+      <asp:RequiredFieldValidator ID="RFVarrivalCounty" InitialValue="0" runat="server" ControlToValidate="DDarrivalCounty" ErrorMessage="* Please Select County from End Location *" ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator><br />       
+      <asp:RequiredFieldValidator ID="RFVarrivalPlaces" InitialValue="0" runat="server" ControlToValidate="DDarrivalPlaces" ErrorMessage="* Please Select Places from End Location *" ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator>
      </div>
     </div>
 </div>
@@ -73,7 +73,7 @@
  <h4></h4>
   <div class="row">
    <label class="control-label col-md-3" for="Date">Date N Time :</label>
-    <div class="col-md-8">
+    <div class="col-md-5">
      <div class='input-group date'>
       <asp:TextBox ID="txtDate" CssClass="form-control date" runat="server" TextMode="DateTime"></asp:TextBox>                            
        <span class="input-group-addon">
@@ -98,7 +98,7 @@
  <h4></h4>
   <div class="row">
    <label class="control-label col-md-3" for="Spaces">No. Of seats :</label>
-    <div class="col-md-8">
+    <div class="col-md-5">
      <asp:TextBox ID="txtSeats" CssClass="form-control" runat="server"></asp:TextBox>
     </div>
   </div>
@@ -120,8 +120,7 @@
     </fieldset>
    </div>
  </div>
-        
-           
+            
 <div class="col-md-6">
 <div class="boxed">
  <div class="row">
@@ -133,8 +132,8 @@
   </div>
  </div>
  <div class="row">
-  <div class="boxValidation">
-   <cc1:GMap ID="GMap1" runat="server" />
+  <div class="boxed">
+   <cc1:GMap ID="GMap1" runat="server" CssClass=""/>
   </div>
  </div>
  <div class="row">
@@ -147,6 +146,4 @@
    </div>
   </div>
 </div>
-
-     <%--Scripts Start From here--%> 
 
