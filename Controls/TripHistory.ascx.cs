@@ -35,4 +35,14 @@ public partial class TripHistory : System.Web.UI.UserControl
     {
 
     }
+
+    protected void btnReport_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnReview_Click(object sender, EventArgs e)
+    {
+
+    }
 }

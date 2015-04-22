@@ -17,7 +17,7 @@
 
 <div class="container top-buffer">
  <div class="well bs-component">
-  <h3 class="text-center modal-header"><em><strong>Add An Offer</strong></em></h3>
+  <h3 class="text-center modal-header"><em><strong>Add An Request</strong></em></h3>
    <div class="row">
     <div class="col-md-6">
      <div class="form-horizontal">

@@ -26,6 +26,7 @@ public partial class Dashboard : System.Web.UI.Page
         {
             Response.Redirect("~/Default.aspx");
         }
+
         if (!IsPostBack)
         {
             //Code to get User_ID from cookie
@@ -34,6 +35,9 @@ public partial class Dashboard : System.Web.UI.Page
             ViewState["AccessID"]= accLevel;
             pageInit();
 
+            dataBindActiveOffersOrRequests(1);
+            dataBindActiveOffersOrRequests(2);
+
             fillModalForm();
             fillBlockedUsersForm();
         }
@@ -41,8 +45,10 @@ public partial class Dashboard : System.Web.UI.Page
         {
             userID = ViewState["userID"].ToString();
             accLevel = ViewState["AccessID"].ToString();
+            dataBindActiveOffersOrRequests(1);
+            dataBindActiveOffersOrRequests(2);
         }
-        DataBind();
+        //DataBind();
     }
 
     protected void pageInit()
@@ -88,14 +94,14 @@ public partial class Dashboard : System.Web.UI.Page
                 {
                     while (reader.Read())
                     {
-                            lblName.Text = reader.GetString(1) + " " + reader.GetString(2);
-                            lblEmail.Text = reader.GetString(3);
-                            lblPhone.Text = reader.GetString(4);
-                            string[] dob = (reader["dob"].ToString()).Split(new Char[] { ' ' });
-                            lblDOB.Text = dob[0];
-                            lblGender.Text = reader["gender"].Equals("m") ? "Male" : "Female";
-                            checkBoxSmoker.Checked = reader["Smoker"].Equals("y") ? true : false;
-                            profileImage.ImageUrl = "~/GetImage.aspx?ImageID=" + userID;
+                        lblName.Text = reader.GetString(1) + " " + reader.GetString(2);
+                        lblEmail.Text = reader.GetString(3);
+                        lblPhone.Text = reader.GetString(4);
+                        string[] dob = (reader["dob"].ToString()).Split(new Char[] { ' ' });
+                        lblDOB.Text = dob[0];
+                        lblGender.Text = reader["gender"].Equals("m") ? "Male" : "Female";
+                        checkBoxSmoker.Checked = reader["Smoker"].Equals("y") ? true : false;
+                        profileImage.ImageUrl = "~/GetImage.aspx?ImageID=" + userID;
                     }
                 }
                 else
@@ -116,11 +122,45 @@ public partial class Dashboard : System.Web.UI.Page
             lblRatingCount.Text = ratingInfo[1];
         }
 
-
         //Need a command to load Notifications from DB
 
         conn.Close();
         
+    }
+
+    protected void dataBindActiveOffersOrRequests(int num)
+    {
+        //ListView active;
+        string query = "";
+        ListView active;
+
+        if (num == 1)
+        {
+            query = "Select * FROM vOfferDetails WHERE User_ID =" + userID + " AND date_time >= GETDATE()";
+            active = (ListView)PendingOffers.FindControl("pendingOffersLV");
+        }
+        else
+        {
+            query = "Select * FROM vRequestDetails WHERE User_ID =" + userID + " AND date_time >= GETDATE()";
+            active = (ListView)PendingRequests.FindControl("pendingRequestsLV");
+        }
+
+        SqlConnection myConnection = new SqlConnection(connection);
+        SqlCommand cmd = new SqlCommand(query, myConnection);
+        try
+        {
+            myConnection.Open();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            active.DataSource = ds;
+            active.DataBind();
+        }
+        finally
+        {
+            cmd.Dispose();
+            myConnection.Dispose();
+        }
     }
 
     protected void fillModalForm()
