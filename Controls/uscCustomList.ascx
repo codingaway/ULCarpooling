@@ -69,12 +69,12 @@
                                 <div class="col-md-7">
                                     <asp:Label ID="lblSeats" runat="server" CssClass="small text-success pull-right" Text="Seats: " Enabled="false" Visible="false"></asp:Label><br />
                                     <asp:Button CssClass="btn btn-info pull-right" ID="btnCmd" CommandName="ItemCommand" runat="server" Text="Send request" />
-                                    <asp:DataList ID="DataList1" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                                    <asp:DataList ID="DataList1" runat="server" RepeatDirection="Horizontal" Enabled="false" RepeatLayout="Flow">
                                         <HeaderTemplate>
                                             <asp:Label ID="lblHeading" Text="People confirmed this trip:" runat="server" />
                                         </HeaderTemplate>
                                         <ItemTemplate>
-                                            <%#Eval("uname") %>
+                                            <a href="/Overview.aspx?id=<%#Eval("user_id")%>"><%#Eval("uname") %></a>
                                         </ItemTemplate>
                                     </asp:DataList>
                                 </div>

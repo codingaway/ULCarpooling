@@ -37,11 +37,13 @@ public partial class RegisterPage : System.Web.UI.Page
             dateInfo.ShortDatePattern = "dd/MM/yyyy";
             DateTime dob = Convert.ToDateTime(txtDoB.Text, dateInfo);
 
-            string smoker = rblSmoker.SelectedIndex.ToString();
-            string gender = rblGender.SelectedIndex.ToString();
+            string smoker = rblSmoker.SelectedIndex == 1 ? "y" : "n";
+            string gender = rblGender.SelectedIndex == 1? "m" : "f";
 
             //Read form inputs and create a new user
-            bool insertSuccess = DBHelper.addNewUser(txtFName.Text, txtSName.Text, txtEmail.Text, dob, txtPassword.Text, txtQuestion.Text, txtAnswer.Text, txtPhone.Text, rblUserType.SelectedIndex + 1, smoker, gender);
+            bool insertSuccess = DBHelper.addNewUser(txtFName.Text, txtSName.Text, txtEmail.Text, dob, 
+                txtPassword.Text, txtQuestion.Text, txtAnswer.Text, txtPhone.Text,
+                rblUserType.SelectedValue, rblSmoker.SelectedValue, rblGender.SelectedValue);
 
             //On success show message confirming that user is registered 
             if (insertSuccess)
@@ -55,9 +57,34 @@ public partial class RegisterPage : System.Web.UI.Page
                 lblPageHeader.Text = "Error processing";
                 lblFormMessage.Text = "Registration is not complete.";
                 lblFormMessage.ForeColor = System.Drawing.Color.Red;
-                //pnlFormInput.Visible = false;
             }
         }
 
+    }
+    protected void btnReset_Click(object sender, EventArgs e)
+    {
+        Response.Redirect(Request.RawUrl);
+        //clearFormFields(Page.Controls);
+    }
+
+    private void clearFormFields(ControlCollection controls)
+    {
+
+        foreach (Control c in controls)
+        {
+            foreach (Control childc in c.Controls)
+            {
+                if (childc is TextBox)
+                {
+                    ((TextBox)childc).Text = string.Empty;
+                }
+
+                if (childc is RadioButtonList)
+                {
+                    ((RadioButtonList)childc).ClearSelection();
+                }
+                clearFormFields(childc.Controls); //Recursive calls for any child controls
+            }
+        }
     }
 }
