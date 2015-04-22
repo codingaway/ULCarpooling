@@ -26,6 +26,7 @@ public class DBHelper
     public static bool isEmailUnique(string email)
     {
         bool isUnique = false;
+
         try
         {
             string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
@@ -51,54 +52,78 @@ public class DBHelper
         return isUnique;
     }
 
-    public static bool addNewUser(string fName, string sName, string email, DateTime dob, string password, string question, string answer, string mobile, int category, string smoker, string gender)
+    public static bool addNewUser(string fName, string sName, string email, DateTime dob, string password, string question, string answer, string mobile, string category, string smoker, string gender)
      {
-         bool success = false;
+         //bool success = false;
+         int result = 0;
 
          string passHash = Crypto.HashPassword(password); //Encrypt password
          string answerHash = Crypto.HashPassword(answer); //Encrypt secret question's answer
 
         SqlConnection conn = new SqlConnection();
         conn.ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
-        SqlCommand cmd = new SqlCommand();
-        cmd.Connection = conn;
+        SqlCommand cmd = new SqlCommand("uspCreateNewUser", conn);
         cmd.CommandType = CommandType.StoredProcedure;
-        cmd.CommandText = "uspCreateNewUser";
-        cmd.Parameters.Add(new SqlParameter("@FName", fName));
-        cmd.Parameters.Add(new SqlParameter("@SName", sName));
-        cmd.Parameters.Add(new SqlParameter("@Email", email));
-        cmd.Parameters.Add(new SqlParameter("@DoB", dob));
-        cmd.Parameters.Add(new SqlParameter("@Password", passHash));
-        cmd.Parameters.Add(new SqlParameter("@Question", question));
-        cmd.Parameters.Add(new SqlParameter("@Answer", answerHash));
-        cmd.Parameters.Add(new SqlParameter("@Mobile", mobile));
-        cmd.Parameters.Add(new SqlParameter("@Smoker", smoker));
-        cmd.Parameters.Add(new SqlParameter("@Category", category));
-        cmd.Parameters.Add(new SqlParameter("@Gender", gender));
+        cmd.Parameters.AddWithValue("@FName", fName);
+        cmd.Parameters.AddWithValue("@SName", sName);
+        cmd.Parameters.AddWithValue("@Email", email);
+        cmd.Parameters.AddWithValue("@DoB", dob);
+        cmd.Parameters.AddWithValue("@Password", passHash);
+        cmd.Parameters.AddWithValue("@Question", question);
+        cmd.Parameters.AddWithValue("@Answer", answerHash);
+        cmd.Parameters.AddWithValue("@Mobile", mobile);
+        cmd.Parameters.AddWithValue("@Smoker", smoker);
+        cmd.Parameters.AddWithValue("@Category", category);
+        cmd.Parameters.AddWithValue("@Gender", gender);
+
+        var returnParameter = cmd.Parameters.Add("@success", SqlDbType.Int);
+        returnParameter.Direction = ParameterDirection.ReturnValue;
 
         try
         {
             conn.Open();
-            cmd.ExecuteNonQuery(); 
-            success = true;
+            cmd.ExecuteNonQuery();
+            result = Convert.ToInt32(returnParameter.Value);
         }
         finally
         {
             conn.Dispose();
             cmd.Dispose();
         }
-        return success;
+        return (result == 1);
      }
 
     public static bool processResponse(string userID, string listID, int listingType)
     {
-        bool success = false;
+        SqlConnection conn;
+        SqlCommand cmd;
+        int result = 0;
 
-        string responseTbl = listingType == DBHelper.OFFER_LIST ? "offer_response" : "req_response";
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+        conn = new SqlConnection();
+        conn.ConnectionString = conString;
+        cmd = new SqlCommand("spCreateResponse", conn);
+        cmd.Parameters.AddWithValue("@userID", userID);
+        cmd.Parameters.AddWithValue("@listID", listID);
+        cmd.Parameters.AddWithValue("@listType", listingType);
+        cmd.CommandType = CommandType.StoredProcedure;
 
-        
+        var returnParameter = cmd.Parameters.Add("@success", SqlDbType.Int);
+        returnParameter.Direction = ParameterDirection.ReturnValue;
 
-        return success;
+        try
+        {
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            result = Convert.ToInt32(returnParameter.Value);
+        }
+        finally
+        {
+            conn.Close();
+            cmd.Dispose();
+        }
+
+        return (result == 1);
     }
 
 
