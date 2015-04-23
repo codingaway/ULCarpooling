@@ -176,7 +176,13 @@ public class DBHelper
         try
         {
             conn.Open();
-            hash = cmd.ExecuteScalar().ToString();
+            var returnValue = cmd.ExecuteScalar();
+            if(returnValue != null )
+            hash = returnValue.ToString();
+        }
+        catch(NullReferenceException ex)
+        {
+            varified = false;
         }
         finally
         {

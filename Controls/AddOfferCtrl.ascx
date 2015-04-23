@@ -18,7 +18,28 @@
 
  <div class="container top-buffer">
   <div class="well bs-component">
-      <h3 class="text-center modal-header"><em><strong>Add An Offer</strong></em></h3>
+      <div class="row">
+           <h3 class="text-center modal-header"><em><strong>Add An Offer</strong></em></h3>
+          <div class="col-md-6">
+              <div class="form-inline">
+                  <div class="form-group">
+                      <label for="Depart">Select Start Location</label> </h4>
+       
+                     <label for="Depart">County :</label>
+                       <asp:DropDownList ID="DropDownList1" CssClass="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DDdepartCounty_SelectedIndexChanged1">
+                       </asp:DropDownList>
+                  </div>
+                  <div class="form-group">
+
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+
+          </div>
+      </div>
+     
    <div class="row">
     <div class="col-md-6">
      <div class="form-horizontal">
@@ -134,7 +155,7 @@
  </div>
  <div class="row">
   <div class="boxValidation">
-   <cc1:GMap ID="GMap1" runat="server" />
+   <cc1:GMap ID="GMap1" runat="server" style="height:auto; width:50%"/>
   </div>
  </div>
  <div class="row">
