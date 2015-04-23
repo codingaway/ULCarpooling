@@ -15,7 +15,7 @@ public partial class GraphCtrlDounutRequestPick : System.Web.UI.UserControl
     {
         Chart1.Series["PickUpRequesting"].ChartType = SeriesChartType.Doughnut;
 
-        SqlCommand cmd1 = new SqlCommand("Select req_rec.place_to As Place, places.place_name As PickUp, Count(*) As Occurence FROM req_rec JOIN places on req_rec.place_to = places.Place_id GROUP BY req_rec.place_to,places.place_name", con1);
+        SqlCommand cmd1 = new SqlCommand("Select TOP 7 req_rec.place_to As Place, places.place_name As PickUp, Count(*) As Occurence FROM req_rec JOIN places on req_rec.place_to = places.Place_id GROUP BY req_rec.place_to,places.place_name ORDER BY Count(*) DESC", con1);
         cmd1.CommandType = CommandType.Text;
 
         SqlDataAdapter da = new SqlDataAdapter();

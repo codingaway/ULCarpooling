@@ -9,6 +9,8 @@ using System.Data.SqlClient;
 using Subgurim.Controles;
 using Subgurim.Controls;
 using Subgurim.Web;
+using System.Web.Security;
+using System.Configuration;
 using System.Globalization;
 
 
@@ -17,10 +19,30 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
     SqlConnection con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True");
     SqlCommand cmd1;
     SqlDataAdapter adpt1;
+
+    public string userID{ get; set; }
+
     protected void Page_Load(object sender, EventArgs e)
     {
-          tb_fromPoint.Style.Add("visibility", "hidden");
-          tb_endPoint.Style.Add("visibility", "hidden");
+        if (Request.IsAuthenticated) //Check first if request is authenticated 
+        {
+            //Get user ID from FormAuthentocation Ticket
+            string[] userData;
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+            userData = ticket.UserData.Split(',');
+            userID = userData[0];
+            panelLoginUser.Visible = true;
+            panelGostUser.Visible = false;
+        }
+        else
+        {
+            panelGostUser.Visible = true;
+            panelLoginUser.Visible = false;
+        }
+
+        tb_fromPoint.Style.Add("visibility", "hidden");
+        tb_endPoint.Style.Add("visibility", "hidden");
         
         GMap1.Key = "GoogleKey";
         Page.DataBind();
@@ -126,18 +148,18 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
         string dateTime = date.ToString("MM/dd/yyyy HH:mm:ss");
 
         //Suppose User Id = 2
-        int userID = 2;
+        
 
-        using (cmd1 = new SqlCommand("select count(*) from offer_rec", con1))
+        using (cmd1 = new SqlCommand("select MAX(offer_id) from offer_rec", con1))
         {
             count = (int)cmd1.ExecuteScalar();
-            count = count + 100;
+            count = count++;
         }
 
-        using (cmd1 = new SqlCommand("insert into offer_rec values(@offer_id,@user_id,@from,@to,@date_time,@seats)", con1))
+        using (cmd1 = new SqlCommand("insert into [offer_rec]([offer_id][user_id][place_from][place_to][date_time][seats]) values(@offer_id,@user_id,@from,@to,@date_time,@seats)", con1))
         {
             cmd1.Parameters.AddWithValue("@offer_id", count.ToString());
-            cmd1.Parameters.AddWithValue("@user_id", userID.ToString());
+            cmd1.Parameters.AddWithValue("@user_id", userID);
             cmd1.Parameters.AddWithValue("@from", str1);
             cmd1.Parameters.AddWithValue("@to", str4);
             cmd1.Parameters.AddWithValue("@date_time", dateTime);

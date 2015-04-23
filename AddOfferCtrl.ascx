@@ -147,20 +147,19 @@
   </div>
 </div>
 
-     <%--Scripts Start From here--%> 
+    <%--Scripts Start From here--%> 
 
-<script src="Scripts/moment.min.js"></script>
+<%--<script src="Scripts/moment.min.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script src="Scripts/bootstrap-datetimepicker.min.js"></script>
+<script src="Scripts/bootstrap-datetimepicker.min.js"></script>--%>
 
     <%--Scrpits for date time picker--%>
-    <script type="text/javascript">
+ <%--   <script type="text/javascript">
         $(function () {
             $('.date').datetimepicker();
         });
 
     </script>
 
-<script src="Scripts/dateValidation.js"></script>
-
+<script src="Scripts/dateValidation.js"></script>--%>
 

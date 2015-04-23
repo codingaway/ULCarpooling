@@ -148,13 +148,13 @@ public partial class AddRequestCtrl : System.Web.UI.UserControl
         //Suppose User Id = 2
         int userID = 2;
 
-        using (cmd1 = new SqlCommand("select count(*) from req_rec", con1))
+        using (cmd1 = new SqlCommand("select MAX(Request_id) from req_rec", con1))
         {
             count = (int)cmd1.ExecuteScalar();
             count++;
         }
 
-        using (cmd1 = new SqlCommand("insert into req_rec values(@Request_id,@user_id,@from,@to,@date_time)", con1))
+        using (cmd1 = new SqlCommand("insert into [req_rec]([Request_id],[user_id],[place_from],[place_to],[date_time]) values(@Request_id,@user_id,@from,@to,@date_time)", con1))
         {
             cmd1.Parameters.AddWithValue("@Request_id", count.ToString());
             cmd1.Parameters.AddWithValue("@user_id", userID.ToString());

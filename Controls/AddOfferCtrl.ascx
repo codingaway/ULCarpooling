@@ -1,6 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="AddOfferCtrl.ascx.cs" Inherits="AddOfferCtrl" %>
 <%@ Register Assembly="GMaps" Namespace="Subgurim.Controles" TagPrefix="cc1" %>
-<%@ Register Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" tagPrefix="ajax" %>
 
 <style>
     .boxed {
@@ -16,6 +15,7 @@
                    }
 </style>
 
+<asp:Panel ID="panelLoginUser" runat="server" Visible="False">
  <div class="container top-buffer">
   <div class="well bs-component">
       <h3 class="text-center modal-header"><em><strong>Add An Offer</strong></em></h3>
@@ -71,18 +71,17 @@
 <div class="boxed">
 <div class="form-group">
  <h4></h4>
-  <div class="row">
+<div class="row">
    <label class="control-label col-md-3" for="Date">Date N Time :</label>
     <div class="col-md-5">
      <div class='input-group date'>
-      <asp:TextBox ID="txtDate" CssClass="form-control date" runat="server" TextMode="DateTime"></asp:TextBox>                            
+      <asp:TextBox ID="txtDate" CssClass="form-control" runat="server" TextMode="DateTime"></asp:TextBox>                            
        <span class="input-group-addon">
-        <span class="glyphicon glyphicon-calendar">
-        </span>
+        <span class="glyphicon glyphicon-calendar"></span>
       </span>
      </div>
     </div>
-   </div>
+   </div>                   
 </div>
  <div class="row">
   <div class="boxValidation">
@@ -110,7 +109,7 @@
   </div>
  </div> 
 </div>
-                                                     
+                                                              
 <div class="form-group">
  <div class="col-md-4 col-md-offset-4">
   <asp:Button ID="btnSubmit" CssClass="btn btn-primary" runat="server" Text="Submit" ValidationGroup="AddOffer" OnClick="btnSubmit_Click" />
@@ -122,9 +121,8 @@
  </div>
             
 <div class="col-md-6">
-<div class="boxed">
  <div class="row">
-  <div class="boxValidation">
+  <div class="boxValidation col-md-12">
    <asp:TextBox ID="tb_fromPoint" runat="server" CssClass="col-md-2"></asp:TextBox>
    <button type="button" class="btn btn-primary col-md-8" id="bt_Go" value="Let Go !">Check Distance & Time Here</button>
    <%--<input type="button" id="bt_Go" value="Let Go !" />--%>
@@ -132,18 +130,27 @@
   </div>
  </div>
  <div class="row">
-  <div class="boxed">
-   <cc1:GMap ID="GMap1" runat="server" CssClass=""/>
+  <div class="boxValidation col-md-12">
+   <cc1:GMap ID="GMap1" runat="server"/>
   </div>
  </div>
  <div class="row">
-  <div class="boxValidation">
+  <div class="boxValidation col-md-12">
     <div id="div_directions" style="height: 390px;overflow: auto"></div>
   </div>
  </div>
- </div>
+
 </div>
    </div>
   </div>
 </div>
+</asp:Panel>
 
+<asp:Panel ID="panelGostUser" runat="server" Visible="False">
+    <div class="boxValidation">
+      <asp:Label ID="Label1" runat="server" Text="You Need to"></asp:Label>
+      <asp:HyperLink ID="hp1" NavigateUrl="~/login.aspx" Text="Log In" runat="server" />
+    </div>
+</asp:Panel>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
