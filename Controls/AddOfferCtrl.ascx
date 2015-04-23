@@ -16,6 +16,7 @@
 </style>
 
 <asp:Panel ID="panelLoginUser" runat="server" Visible="False">
+    
  <div class="container top-buffer">
   <div class="well bs-component">
       <h3 class="text-center modal-header"><em><strong>Add An Offer</strong></em></h3>
@@ -23,7 +24,7 @@
     <div class="col-md-6">
      <div class="form-horizontal">
       <fieldset> 
-                         
+                       
 <div class="boxed">
       <h4> <label for="Depart">Select Start Location</label> </h4>
        <div class="row">

@@ -19,47 +19,54 @@ public partial class AddRequestCtrl : System.Web.UI.UserControl
     SqlCommand cmd1;
     SqlDataAdapter adpt1;
 
-    public string userID { get; set; }
+    public string userID;
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request.IsAuthenticated) //Check first if request is authenticated 
-        {
-            //Get user ID from FormAuthentocation Ticket
-            string[] userData;
-            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
-            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
-            userData = ticket.UserData.Split(',');
-            userID = userData[0];
-            panelLoginUser.Visible = true;
-            panelGostUser.Visible = false;
-        }
-        else 
+        if (!Request.IsAuthenticated) //Check first if request is authenticated 
         {
             panelGostUser.Visible = true;
             panelLoginUser.Visible = false;
+
+
         }
-
-        tb_fromPoint.Style.Add("visibility", "hidden");
-        tb_endPoint.Style.Add("visibility", "hidden");
-
-        GMap1.Key = "GoogleKey";
-        if (!this.IsPostBack)
+        else
         {
-            fillDepartList();
-            GMap1.GZoom = 9;
-            GMap1.Add(new GControl(GControl.preBuilt.LargeMapControl));
+            panelLoginUser.Visible = true;
+            panelGostUser.Visible = false;
 
-            GDirection direction = new GDirection();
-            direction.autoGenerate = false;
-            direction.buttonElementId = "bt_Go";
-            direction.fromElementId = tb_fromPoint.ClientID;
-            direction.toElementId = tb_endPoint.ClientID;
-            direction.divElementId = "div_directions";
-            direction.clearMap = true;
+            getUserID();
 
-            GMap1.Add(direction);
+            tb_fromPoint.Style.Add("visibility", "hidden");
+            tb_endPoint.Style.Add("visibility", "hidden");
+
+            GMap1.Key = "GoogleKey";
+            if (!this.IsPostBack)
+            {
+                fillDepartList();
+                GMap1.GZoom = 9;
+                GMap1.Add(new GControl(GControl.preBuilt.LargeMapControl));
+
+                GDirection direction = new GDirection();
+                direction.autoGenerate = false;
+                direction.buttonElementId = "bt_Go";
+                direction.fromElementId = tb_fromPoint.ClientID;
+                direction.toElementId = tb_endPoint.ClientID;
+                direction.divElementId = "div_directions";
+                direction.clearMap = true;
+
+                GMap1.Add(direction);
+            }
         }
+    }
+    protected void getUserID()
+    {
+        //Get user ID from FormAuthentocation Ticket
+        string[] userData;
+        HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+        FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+        userData = ticket.UserData.Split(',');
+        userID = userData[0];
     }
 
     private void fillDepartList()
@@ -135,6 +142,7 @@ public partial class AddRequestCtrl : System.Web.UI.UserControl
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         con1.Open();
+        string uID = userID;
         int count = 0;
         string str1 = DDdepartPlaces.SelectedItem.Value;
         string str4 = DDarrivalPlaces.SelectedItem.Value;
@@ -145,19 +153,15 @@ public partial class AddRequestCtrl : System.Web.UI.UserControl
         date = DateTime.ParseExact(DateString, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
         string dateTime = date.ToString("MM/dd/yyyy HH:mm:ss");
 
-        //Suppose User Id = 2
-        int userID = 2;
-
         using (cmd1 = new SqlCommand("select MAX(Request_id) from req_rec", con1))
         {
-            count = (int)cmd1.ExecuteScalar();
-            count++;
+            count = (int)cmd1.ExecuteScalar() + 1;
         }
 
         using (cmd1 = new SqlCommand("insert into [req_rec]([Request_id],[user_id],[place_from],[place_to],[date_time]) values(@Request_id,@user_id,@from,@to,@date_time)", con1))
         {
             cmd1.Parameters.AddWithValue("@Request_id", count.ToString());
-            cmd1.Parameters.AddWithValue("@user_id", userID.ToString());
+            cmd1.Parameters.AddWithValue("@user_id", uID);
             cmd1.Parameters.AddWithValue("@from", str1);
             cmd1.Parameters.AddWithValue("@to", str4);
             cmd1.Parameters.AddWithValue("@date_time", dateTime);

@@ -73,7 +73,7 @@
  <h4></h4>
   <div class="row">
    <label class="control-label col-md-3" for="Date">Date N Time :</label>
-    <div class="col-md-6">
+    <div class="col-md-5">
      <div class='input-group date'>
       <asp:TextBox ID="txtDate" CssClass="form-control date" runat="server"></asp:TextBox>                            
        <span class="input-group-addon">
