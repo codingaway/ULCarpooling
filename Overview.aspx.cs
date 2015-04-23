@@ -8,7 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using AjaxControlToolkit;
 
-public partial class OtherUserReviews : System.Web.UI.Page
+public partial class Overview : System.Web.UI.Page
 {
     SqlConnection con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True;MultipleActiveResultSets=True;");
     SqlCommand cmd1;
@@ -16,6 +16,9 @@ public partial class OtherUserReviews : System.Web.UI.Page
     SqlDataReader rd1;
     protected void Page_Load(object sender, EventArgs e)
     {
+        string userAge = "";
+        string user_id = Request.QueryString["id"].ToString();
+
         if (!IsPostBack)
         {
             BindRatings();
@@ -26,30 +29,49 @@ public partial class OtherUserReviews : System.Web.UI.Page
                 countRows = (int)cmd1.ExecuteScalar();
                 numberUserRating.Text = "("+ countRows.ToString() +")";
             }
-
-            using (cmd1 = new SqlCommand("SELECT FName,SName from users WHERE User_ID = 1", con1))
+            
+            using (cmd1 = new SqlCommand("SELECT FName,SName,dob,Smoker,Gender,User_category.Description As Category from users JOIN User_category on users.cat_no = User_category.Cat_no WHERE User_ID ="+user_id, con1))
             {
                 rd1 = cmd1.ExecuteReader();
                 if (rd1.Read())
                 {
                     userName.Text = rd1["FName"].ToString() + " " + rd1["SName"].ToString();
-                }
-            }
-            rd1.Close();
+                    userAge = rd1["dob"].ToString();
+                    DateTime dt = Convert.ToDateTime(userAge);
+                    
+                    DateTime now = DateTime.Today;
+                    int age = now.Year - dt.Year;
+                    if(now < dt.AddYears(age))
+                        age --;
+                    lblUserAge.Text = age.ToString()+" age";
 
-            using (cmd1 = new SqlCommand("SELECT TOP 2 comment FROM Reviews WHERE user_id=1 ORDER BY submit_date", con1))
-            {
-                if (countRows > 0)
-                {
-                    grdResult.DataSource = cmd1.ExecuteReader();
-                    grdResult.DataBind();
+                    //To check if smoker
+                    if (rd1["Smoker"].ToString().Equals("y"))
+                    {
+                        lblisSmoker.Text = "Smoker";
+                    }
+                    else 
+                    {
+                        lblisSmoker.Text = "Non Smoker";
+                    }
+
+                    //To check if Non Smoker
+                    if (rd1["Gender"].ToString().Equals("m"))
+                    {
+                        lblGender.Text = "Male";
+                    }
+                    else
+                    {
+                        lblGender.Text = "Female";
+                    }
+
+                    lblUserCat.Text = rd1["Category"].ToString();
+                    
                 }
-                else
-                {
-                    lblGrdResult.Visible = true;
-                    lblGrdResult.Text = "No Comments For This User Yet";
-                }
+                rd1.Close();
             }
+            
+
             con1.Close();
         }
     }
@@ -79,13 +101,5 @@ public partial class OtherUserReviews : System.Web.UI.Page
     protected void OnRatingChanged(object sender, RatingEventArgs e)
     {
         
-    }
-
-    protected void grdResult_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        if (e.Row.RowType == DataControlRowType.Header)
-        {
-            e.Row.Cells[0].Text = "Comments By Other Users";
-        }
     }
 }

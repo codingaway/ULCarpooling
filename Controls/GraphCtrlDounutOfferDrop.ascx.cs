@@ -15,7 +15,7 @@ public partial class GraphCtrlDounutOfferDrop : System.Web.UI.UserControl
     {
         Chart1.Series["DropOffOffering"].ChartType = SeriesChartType.Doughnut;
 
-        SqlCommand cmd1 = new SqlCommand("Select offer_rec.place_to As Place, places.place_name As PickUp, Count(*) As Occurence FROM offer_rec JOIN places on offer_rec.place_to = places.Place_id GROUP BY offer_rec.place_to,places.place_name", con1);
+        SqlCommand cmd1 = new SqlCommand("Select TOP 7 offer_rec.place_to As Place, places.place_name As PickUp, Count(*) As Occurence FROM offer_rec JOIN places on offer_rec.place_to = places.Place_id GROUP BY offer_rec.place_to,places.place_name ORDER BY Count(*) DESC", con1);
         cmd1.CommandType = CommandType.Text;
 
         SqlDataAdapter da = new SqlDataAdapter();
