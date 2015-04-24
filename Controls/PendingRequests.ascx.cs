@@ -31,6 +31,8 @@ public partial class PendingRequests : System.Web.UI.UserControl
                 SqlCommand cmd2 = new SqlCommand("UPDATE req_response SET status = @status Where req_id =" + e.CommandArgument);
                 cmd2.Parameters.AddWithValue("@status", "Cancelled");
                 InsertUpdateData(cmd2);
+
+                Response.Redirect(Request.RawUrl);
             }
         }
     }
