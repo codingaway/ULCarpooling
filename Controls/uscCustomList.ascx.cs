@@ -124,9 +124,15 @@ public partial class uscCustomList : System.Web.UI.UserControl
                     btn.Enabled = false;
 
             }
-           
 
-            if (awaitingConfirm(id, listingID))
+
+            if (isOwnListing(id, listingID )) //Check if this is user own listing
+            {
+                btn.Text = "Send Offer";
+                btn.Enabled = false;
+            }
+
+            else if (awaitingConfirm(id, listingID))
             {
                 btn.Text = "Awaiting Confirmation";
                 btn.Enabled = false;
@@ -190,6 +196,45 @@ public partial class uscCustomList : System.Web.UI.UserControl
             return true;
         else
             return false;        
+    }
+
+    private bool isOwnListing(string id, string listingID)
+    {
+        int row = 0;
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ToString();
+
+        string aQuery;
+        if (listType == DBHelper.OFFER_LIST)
+        {
+            aQuery = "SELECT count(*) FROM offer_rec"
+                + " WHERE offer_id = @list_id"
+                + " AND user_id = @userID";
+        }
+        else
+        {
+            aQuery = "SELECT count(*) FROM req_rec"
+                + " WHERE Request_id = @list_id"
+                + " AND user_id = @userID";
+        }
+        SqlConnection conn = new SqlConnection(conString);
+        SqlCommand cmd = new SqlCommand(aQuery, conn);
+        cmd.Parameters.AddWithValue("@list_id", listingID);
+        cmd.Parameters.AddWithValue("@userID", id);
+
+        try
+        {
+            conn.Open();
+            row = Convert.ToInt32(cmd.ExecuteScalar());
+        }
+        finally
+        {
+            conn.Dispose();
+            cmd.Dispose();
+        }
+        if (row > 0)
+            return true;
+        else
+            return false;
     }
 
     /* Medhods that returns a dataset of confiremd user given an offer_id*/

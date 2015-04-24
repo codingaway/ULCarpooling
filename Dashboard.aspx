@@ -37,34 +37,66 @@
                                     <h4 class="modal-title" id="editDetailsModalLabel">Edit Details</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <p>Name: </p>
-                                            <p>Phone: </p>
-                                            <p>Smoker: </p>
-                                            <p>Gender: </p>
-                                            <p>Date of Birth: </p>
-                                            <p>Old Password: </p>
-                                            <p>New Password: </p>
-                                            <p>Confirm Password: </p>
-                                            <p>Change Image: </p>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <asp:TextBox ID="txtName" runat="server" Text="" />
-                                            <asp:TextBox ID="txtPhone" runat="server" Text="" /> <p></p>
-                                            <asp:CheckBox ID="chkBoxSmoker" runat="server" checked="false"/> <p></p>
-                                            <asp:DropDownList ID="genderDDL" runat="server" >
+                                    <div class="form-horizontal">
+                                          <div class="form-group">
+                                            <label for="txtName" class="col-sm-4 control-label">Name: </label>
+                                            <div class="col-sm-8">
+                                                 <asp:TextBox ID="txtName" runat="server" Text="" />
+                                            </div>
+                                          </div>
+                                        <div class="form-group">
+                                            <label for="txtPhone" class="col-sm-4 control-label">Phone: </label>
+                                            <div class="col-sm-8">
+                                                   <asp:TextBox ID="txtPhone" runat="server" Text="" />
+                                            </div>
+                                          </div>
+                                        <div class="form-group">
+                                            <label for="chkBoxSmoker" class="col-sm-4 control-label">Smoker: </label>
+                                            <div class="col-sm-8">
+                                                   <asp:CheckBox ID="chkBoxSmoker" runat="server" checked="false"/>
+                                            </div>
+                                          </div>
+                                        <div class="form-group">
+                                            <label for="genderDDL" class="col-sm-4 control-label">Gender: </label>
+                                            <div class="col-sm-8">
+                                                  <asp:DropDownList ID="genderDDL" runat="server" >
                                                 <asp:ListItem>Male</asp:ListItem>
                                                 <asp:ListItem>Female</asp:ListItem>
-                                            </asp:DropDownList> <p></p>
-                                            <asp:TextBox ID="txtDOB" runat="server" />
-                                            <cc1:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtDOB" Format="dd/MM/yyyy"/>
-                                            <asp:TextBox ID="txtOldPW" runat="server" Text="" />
-                                            <asp:TextBox ID="txtNewPW" runat="server" Text="" />
-                                            <asp:TextBox ID="txtConPW" runat="server" Text="" /> <p></p>
-                                            <asp:FileUpload ID="imageUpload" runat="server" />
-                                        </div>
-                                    </div>
+                                            </asp:DropDownList>
+                                            </div>
+                                          </div>
+                                        <div class="form-group">
+                                            <label for="txtDOB" class="col-sm-4 control-label">Date of Birth: </label>
+                                            <div class="col-sm-8">
+                                                   <asp:TextBox ID="txtDOB" runat="server" />
+                                                 <cc1:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtDOB" Format="dd/MM/yyyy"/>
+                                            </div>
+                                          </div>
+                                        <div class="form-group">
+                                            <label for="txtOldPW" class="col-sm-4 control-label">Old Password: </label>
+                                            <div class="col-sm-8">
+                                                 <asp:TextBox ID="txtOldPW" runat="server" Text="" />
+                                            </div>
+                                          </div>
+                                        <div class="form-group">
+                                            <label for="txtNewPW" class="col-sm-4 control-label">New Password: </label>
+                                            <div class="col-sm-8">
+                                                   <asp:TextBox ID="txtNewPW" runat="server" Text="" />
+                                            </div>
+                                          </div>
+                                        <div class="form-group">
+                                            <label for="txtConPW" class="col-sm-4 control-label">Confirm Password: </label>
+                                            <div class="col-sm-8">
+                                                   <asp:TextBox ID="txtConPW" runat="server" Text="" />
+                                            </div>
+                                          </div>
+                                        <div class="form-group">
+                                            <label for="imageUpload" class="col-sm-4 control-label">Change Image: </label>
+                                            <div class="col-sm-8">
+                                                 <asp:FileUpload ID="imageUpload" runat="server" />
+                                            </div>
+                                          </div>
+                                    </div>   
                                 </div>
                                 <div class="modal-footer">
                                     <asp:Button ID="editDetails" CssClass="btn btn-primary" runat="server" OnClick="saveDetails_Click" Text="Save Changes"></asp:Button>

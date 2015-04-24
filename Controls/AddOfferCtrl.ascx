@@ -19,7 +19,7 @@
     
  <div class="container top-buffer">
   <div class="well bs-component">
-      <h3 class="text-center modal-header"><em><strong>Add An Offer</strong></em></h3>
+      <h3 class="text-center modal-header">Add an Offer</h3>
    <div class="row">
     <div class="col-md-6">
      <div class="form-horizontal">
@@ -88,6 +88,7 @@
    <asp:RequiredFieldValidator ID="RFVdate" runat="server" ControlToValidate="txtDate" ErrorMessage="* Please Select Date *"  ValidationGroup="AddOffer" ForeColor="Red"></asp:RequiredFieldValidator><br />          
    <asp:CustomValidator ID="valStartDate" runat="server" ControlToValidate="txtDate" ErrorMessage="* Date-time is not valid *" ClientValidationFunction="isValidDateValue" ValidationGroup="AddOffer" ForeColor="Red">
    </asp:CustomValidator>
+      <asp:CompareValidator ID="CompareDate" runat="server" ErrorMessage="* Invalid Date *" ControlToValidate="txtDate" ValueToCompare="<%# DateTime.Today.ToString() %>" Operator="GreaterThanEqual" ValidationGroup="AddOffer"></asp:CompareValidator>
   </div>     
 </div>
  </div>
@@ -97,15 +98,21 @@
   <div class="row">
       <div class="col-md-11">
         <label class="col-md-4" for="Spaces">No. Of seats :</label>
-        <asp:TextBox ID="txtSeats" CssClass="form-control" runat="server"></asp:TextBox>
+       <%-- <asp:TextBox ID="txtSeats" CssClass="form-control" runat="server" TextMode="Number"></asp:TextBox>--%>
+          <asp:DropDownList ID="ddlSeats" runat="server">
+              <asp:ListItem Value="1" Text="1" Selected="True" />
+              <asp:ListItem Value="2" Text="2" />
+              <asp:ListItem Value="3" Text="3" />
+              <asp:ListItem Value="4" Text="4" />
+          </asp:DropDownList>
      </div>
   </div>
 
  <div class="row">
   <div class="boxValidation">
-   <asp:RequiredFieldValidator ID="RFVseats" runat="server" ControlToValidate="txtSeats" ErrorMessage="* Please select number of seats offering *" ForeColor="Red" ValidationGroup="AddOffer"></asp:RequiredFieldValidator><br />
-   <asp:RangeValidator ID="RangeValidatorSeats" runat="server" ErrorMessage="* Must be in range(0-4) *" ValidationGroup="AddOffer" ControlToValidate="txtSeats" ForeColor="Red" MinimumValue="0" MaximumValue="4" Type="Integer"></asp:RangeValidator>
-  </div>
+   <%--<asp:RequiredFieldValidator ID="RFVseats" runat="server" ControlToValidate="txtSeats" ErrorMessage="* Please select number of seats offering *" ForeColor="Red" ValidationGroup="AddOffer"></asp:RequiredFieldValidator><br />
+   <asp:RangeValidator ID="RangeValidatorSeats" runat="server" ErrorMessage="* Must be in range(1-4) *" ValidationGroup="AddOffer" ControlToValidate="txtSeats" ForeColor="Red" MinimumValue="1" MaximumValue="4" Type="Integer"></asp:RangeValidator>
+  --%></div>
  </div> 
 </div>
                                                               

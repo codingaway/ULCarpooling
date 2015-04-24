@@ -67,7 +67,8 @@
                     Operator="Equal" runat="server" ErrorMessage="Passwords do not match">*</asp:CompareValidator>
                 <br />
 
-                <asp:Button ID="btnChangePassword" CssClass="btn btn-primary pull-right" runat="server" Text="Submit" ValidationGroup="Recovery" OnClick="btnChangePassword_Click" />
+                <asp:Button ID="btnChangePassword" CssClass="btn btn-primary pull-right" runat="server" Text="Submit" ValidationGroup="Recovery" OnClick="btnChangePassword_Click" /><br />
+                <asp:Label ID="lblMessage" runat="server" Text="" ></asp:Label>
             </asp:Panel>
 
             <asp:Label ID="lblProblemRecovery" runat="server" Text="Problem recovering password?"></asp:Label>

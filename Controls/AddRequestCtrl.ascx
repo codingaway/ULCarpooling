@@ -18,7 +18,7 @@
 <asp:Panel ID="panelLoginUser" runat="server" Visible="False">
 <div class="container top-buffer">
  <div class="well bs-component">
-  <h3 class="text-center modal-header"><em><strong>Add An Request</strong></em></h3>
+  <h3 class="text-center modal-header">Add a Request</h3>
    <div class="row">
     <div class="col-md-6">
      <div class="form-horizontal">
@@ -86,6 +86,7 @@
    <asp:RequiredFieldValidator ID="RFVdate" runat="server" ControlToValidate="txtDate" ErrorMessage="* Please Select Date *"  ValidationGroup="AddRequest" ForeColor="Red"></asp:RequiredFieldValidator><br />          
    <asp:CustomValidator ID="valStartDate" runat="server" ControlToValidate="txtDate" ErrorMessage="* Date-time is not valid *" ClientValidationFunction="isValidDateValue" ValidationGroup="AddRequest" ForeColor="Red">
    </asp:CustomValidator>
+  <asp:CompareValidator ID="CompareDate" runat="server" ErrorMessage="* Invalid Date *" ControlToValidate="txtDate" ValueToCompare="<%# DateTime.Today.ToString() %>" Operator="GreaterThanEqual" ValidationGroup="AddRequest"></asp:CompareValidator>
   </div>     
 </div>
 </div>

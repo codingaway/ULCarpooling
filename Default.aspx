@@ -99,6 +99,7 @@
 
                     <h2>Welcome to UL Carpooling</h2>
                     <p>ULCarpooling is a website which offers reliable car sharing opportunities for the University of Limerick community that is fast, efficient and easy to access. You can use our service via the web currently, with a mobile version of the service to be launched soon. With just a few clicks, drivers can offer available seats and passengers can book a ride.</p>
+                    <asp:HyperLink ID="linkStatistic" runat="server" NavigateUrl="~/SiteStatistic.aspx">View our site statistics</asp:HyperLink>
                </div>
 
             </div>

@@ -100,7 +100,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-md-4" for="<%=rblUserType.ClientID%>">User Categorie</label>
+                                <label class="control-label col-md-4" for="<%=rblUserType.ClientID%>">User Category</label>
                                 <div class="col-md-7">
                                     <div class="radioButtonList">
                                         <asp:RadioButtonList CssClass="form-control" ID="rblUserType" runat="server"

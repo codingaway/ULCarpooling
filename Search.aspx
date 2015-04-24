@@ -102,7 +102,7 @@
                                         ID="CustomValidator1" runat="server"
                                         ControlToValidate="txtEndDate"
                                         ErrorMessage="End Date-time is not valid."
-                                        ClientValidationFunction="isValidDateValue"
+                                        ClientValidationFunction="compareDateValues"
                                         ValidationGroup="searchPage" Display="Dynamic">
                                     </asp:CustomValidator>
                                   
@@ -181,37 +181,31 @@
 
         //This funtion called from custome validation control that passes two arguments, sender and args
         //It validates a control by comparing date values from calling control with value from other control that has an ID 'txtStartDate'
-        function compareDateValues(sender, args) {
+        function compareDateValues(sender, args)
+        {
+            console.log("Running comparison method");
             var date1, date2, now;
             now = new Date();
-            var dateString1 = document.getElementById('<%=txtStartDate.ClientID%>').value;
-            var dateString2 = args.Value;
-
-            if (dateString1 == "") //If only end-date specified then only check if end-date is not in the past
+            date1 = stringToDate(document.getElementById('ContentPlaceHolder1_txtStartDate').value);
+            date2 = stringToDate(args.Value);
+            if (date1 == null)
             {
-                if (!isValidDate(dateString2) || (stringToDate(dateString2) < now))
-                    args.IsValid = false;
-                else
-                    args.IsValid = true;
-            }
-
-                //There is value in start-date do we need to compare both dates
-            else if (isValidDate(dateString1) && isValidDate(dateString2))
-            {
-                date1 = stringToDate(dateString1);
-                date2 = stringToDate(dateString2);
-                if (date1 < now)
-                    args.IsValid = false;
-                else if (date2 < date1)
-                    args.IsValid = false;
-                else
-                    args.IsValid = true;
+                console.log("Date is null");
+                date1 = now;
             }
             else
-                args.IsValid = false;
+            {
+                console.log("Date is not null");
+            }
+            if (date2 < date1)
+                 args.IsValid = false;
+             else
+                 args.IsValid = true;
         }
 
         function isValidDate(dateString) {
+
+            console.log("Running isVAlidDate method");
             var dateVal = dateString;
             if (dateVal == "") //Check if empty string
                 return false;
@@ -249,19 +243,21 @@
 
         //A function that returns date object from a validated date string as 'dd/MM/yyyy HH:mm' format
         function stringToDate(dateString) {
-
-            var delimiter = /\/|\:|\s/;
-            var dtArray = dateString.split(delimiter);
-            var date = new Date();
-            //Date string is  "dd/mm/yyyy HH:mm" format.
-            var day = dtArray[0];
-            var month = dtArray[1];
-            var year = dtArray[2];
-            var hours = dtArray[3];
-            var minutes = dtArray[4];
-            date.setFullYear(year, month - 1, day);
-            date.setHours(hours);
-            date.setMinutes(minutes);
+            var date = null;
+            if (dateString != null) {
+                var delimiter = /\/|\:|\s/;
+                var dtArray = dateString.split(delimiter);
+                var date = new Date();
+                //Date string is  "dd/mm/yyyy HH:mm" format.
+                var day = dtArray[0];
+                var month = dtArray[1];
+                var year = dtArray[2];
+                var hours = dtArray[3];
+                var minutes = dtArray[4];
+                date.setFullYear(year, month - 1, day);
+                date.setHours(hours);
+                date.setMinutes(minutes);
+            }
             return date;
         }
 

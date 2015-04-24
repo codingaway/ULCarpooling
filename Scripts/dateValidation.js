@@ -6,11 +6,12 @@ function compareDateValues(sender, args)
 {
     var date1, date2, now;
     now = new Date();
-    var dateString1 = document.getElementById('ContentPlaceHolder1_txtEndDate').value;
+    var dateString = null;
+    dateString1 = document.getElementById('ContentPlaceHolder1_txtEndDate').value;
     //var dateString2 = document.getElementById('ContentPlaceHolder1_txtEndDate').value;
     var dateString2 = args.Value;
 
-    if (dateString1 == "") //If only end-date specified then only check if end-date is not in the past
+    if (dateString1 == null) //If only end-date specified then only check if end-date is not in the past
     {
         if (!isValidDate(dateString2) || (stringToDate(dateString2) < now))
             args.IsValid = false;
@@ -18,7 +19,7 @@ function compareDateValues(sender, args)
             args.IsValid = true;
     }
 
-        //There is value in start-date do we need to compare both dates
+    //There is value in start-date do we need to compare both dates
     else if (isValidDate(dateString1) && isValidDate(dateString2))
     {
         date1 = stringToDate(dateString1);

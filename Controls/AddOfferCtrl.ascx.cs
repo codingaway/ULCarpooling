@@ -165,15 +165,17 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
 
         using (cmd1 = new SqlCommand("insert into [offer_rec]([offer_id],[user_id],[place_from],[place_to],[date_time],[seats]) values(@offer_id,@user_ID,@from,@to,@date_time,@seats)", con1))
         {
+            
             cmd1.Parameters.AddWithValue("@offer_id", count.ToString());
             cmd1.Parameters.AddWithValue("@user_ID", uID);
             cmd1.Parameters.AddWithValue("@from", str1);
             cmd1.Parameters.AddWithValue("@to", str4);
             cmd1.Parameters.AddWithValue("@date_time", dateTime);
-            cmd1.Parameters.AddWithValue("@seats", txtSeats.Text);
+            cmd1.Parameters.AddWithValue("@seats", ddlSeats.SelectedValue.ToString());
             cmd1.ExecuteNonQuery();
         }
-        con1.Close(); 
+        con1.Close();
+        Response.Redirect(Request.RawUrl);
     }
     
     protected void DDarrivalPlaces_SelectedIndexChanged1(object sender, EventArgs e)

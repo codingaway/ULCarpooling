@@ -170,6 +170,7 @@ public partial class AddRequestCtrl : System.Web.UI.UserControl
         }
 
         con1.Close();
+        Response.Redirect(Request.RawUrl);
     }
     protected void DDarrivalPlaces_SelectedIndexChanged1(object sender, EventArgs e)
     {

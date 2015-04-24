@@ -14,7 +14,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <div class="container top-buffer">
-        <h2 class="modal-header" style="text-align:center"><strong><em>Statical Analysis For Trips</em></strong></h2>
+        <h2 class="modal-header" style="text-align:center">Statical Analysis For Trips</h2>
         <div class="row">
             <div class="col-md-6">
                 <h4>Top Pick Up Points in Offering Trips</h4>
