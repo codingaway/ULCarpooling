@@ -27,36 +27,36 @@
             <!-- End Item -->
             <div class="item">
                 <img src="Images/castle.png" />
-                <div class="carousel-caption">
+                <%--<div class="carousel-caption">
                     <h3>Headline</h3>
                     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
-                </div>
+                </div>--%>
             </div>
             <!-- End Item -->
             <div class="item">
                 <img src="Images/irishworld.png" />
-                <div class="carousel-caption">
+               <%-- <div class="carousel-caption">
                     <h3>Headline</h3>
                     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
-                </div>
+                </div>--%>
             </div>
             <!-- End Item -->
             <div class="item">
                 <img src="Images/schrodinger.png" />
-                <div class="carousel-caption">
+              <%--  <div class="carousel-caption">
                     <h3>Headline</h3>
                     <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
-                </div>
+                </div>--%>
             </div>
             <!-- End Item -->
         </div>
         <!-- End Carousel Inner -->
-        <ul class="nav nav-pills nav-justified">
+<%--        <ul class="nav nav-pills nav-justified">
             <li data-target="#myCarousel" data-slide-to="0" class="active"><a href="#">About<small>Lorem ipsum dolor sit</small></a></li>
             <li data-target="#myCarousel" data-slide-to="1"><a href="#">Projects<small>Lorem ipsum dolor sit</small></a></li>
             <li data-target="#myCarousel" data-slide-to="2"><a href="#">Portfolio<small>Lorem ipsum dolor sit</small></a></li>
             <li data-target="#myCarousel" data-slide-to="3"><a href="#">Services<small>Lorem ipsum dolor sit</small></a></li>
-        </ul>
+        </ul>--%>
 
 
     </div>
@@ -97,11 +97,9 @@
                 
                 <div class="well sidebar">
 
-                    <h2>Side column</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <h2>Side column</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                </div>
+                    <h2>Welcome to UL Carpooling</h2>
+                    <p>ULCarpooling is a website which offers reliable car sharing opportunities for the University of Limerick community that is fast, efficient and easy to access. You can use our service via the web currently, with a mobile version of the service to be launched soon. With just a few clicks, drivers can offer available seats and passengers can book a ride.</p>
+               </div>
 
             </div>
         </div>
