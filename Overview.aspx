@@ -50,7 +50,8 @@
                         <div class="row boxed">
                         <div class="col-md-3">
                         <div class="row form-group">
-                            <img alt="user picture" class="img-circle" height="150" width="130" src='<%=ResolveClientUrl("~/GetImage.aspx?ImageID=")%><%#Eval("User_ID")%>' />
+                            <asp:Image ID="imUserPic" runat="server" Height="150" Width="150" />
+                            <%--<img alt="user picture" class="img-circle" height="150" width="130" src='<%=ResolveClientUrl("~/GetImage.aspx?ImageID=")%><%#Eval("User_ID")%>' />--%>
                         </div>
                         <div class="row form-group">
                             <asp:Label ID="userName" runat="server" Text=""></asp:Label>

@@ -30,6 +30,7 @@ public partial class Overview : System.Web.UI.Page
            
             //method for listview
             BindListViewControls(user_id);
+            imUserPic.ImageUrl = "~/GetImage.aspx?ImageID=" + user_id;
 
             con1.Open();
             
