@@ -26,16 +26,18 @@ public partial class PendingOffers : System.Web.UI.UserControl
         {
             if (e.CommandArgument != null)
             {
-                Debug.WriteLine("Hopefully the offer_id: " + e.CommandArgument);
+                //Debug.WriteLine("Hopefully the offer_id: " + e.CommandArgument);
                 SqlCommand cmd = new SqlCommand("UPDATE offer_rec SET active = @active Where offer_id =" + e.CommandArgument);
                 cmd.Parameters.AddWithValue("@active", "n");
                 InsertUpdateData(cmd);
 
 
-                Debug.WriteLine("Hopefully the offer_id: " + e.CommandArgument);
+                //Debug.WriteLine("Hopefully the offer_id: " + e.CommandArgument);
                 SqlCommand cmd2 = new SqlCommand("UPDATE offer_response SET status = @status Where offer_id =" + e.CommandArgument);
                 cmd2.Parameters.AddWithValue("@status", "Cancelled");
                 InsertUpdateData(cmd2);
+
+                Response.Redirect(Request.RawUrl);
             }
         }
     }

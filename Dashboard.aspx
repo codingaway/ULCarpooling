@@ -4,7 +4,12 @@
 
 <%@ Register Src="~/Controls/PendingOffers.ascx" TagPrefix="uc1" TagName="PendingOffers" %>
 <%@ Register Src="~/Controls/PendingRequests.ascx" TagPrefix="uc2" TagName="PendingRequests" %>
-<%@ Register Src="~/Controls/TripHistory.ascx" TagPrefix="uc3" TagName="TripHistory" %>
+<%@ Register Src="~/Controls/OfferHistory.ascx" TagPrefix="uc3" TagName="OfferHistory" %>
+<%@ Register Src="~/Controls/RequestHistory.ascx" TagPrefix="uc4" TagName="RequestHistory" %>
+<%@ Register Src="~/Controls/OfferNotifications.ascx" TagPrefix="uc5" TagName="OfferNotifications" %>
+<%@ Register Src="~/Controls/RequestNotifications.ascx" TagPrefix="uc6" TagName="RequestNotifications" %>
+<%@ Register Src="~/Controls/OfferNotificationResponse.ascx" TagPrefix="uc7" TagName="OfferNotificationResponse" %>
+<%@ Register Src="~/Controls/RequestNotificationResponse.ascx" TagPrefix="uc8" TagName="RequestNotificationResponse" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
@@ -78,15 +83,6 @@
                                     <h4 class="modal-title" id="blockUserModalLabel">Block a User</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <%--<div class="row">
-                                        <div class="col-md-4">
-                                        
-                                            <p>Name of user to block: </p>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <asp:TextBox ID="TextBox1" runat="server" Text="" />
-                                        </div>
-                                    </div>--%>
                                     <div class="row">
                                         <div class="col-md-4"><p>Select and remove to unblock</p></div>
                                         <div class="col-md-4">
@@ -108,7 +104,8 @@
                 <div>
                     <p>Average Rating:</p>
                     <div>
-                        <asp:Label ID="lblRating" runat="server" Text="No Rating Found" CssClass="stars"/> (<asp:Label ID="lblRatingCount" runat="server" Text="0"/>)
+                        <asp:Label ID="lblRating" runat="server" Text="No Rating Found" CssClass="stars"/> 
+                        Number of reviews (<asp:Label ID="lblRatingCount" runat="server" Text="0"/>)
                     </div>
                 </div>
             </div>
@@ -130,8 +127,10 @@
                                             <p>Area: </p>
                                         </div>
                                         <div class="col-md-8">
-                                            <asp:TextBox ID="txtCounty" runat="server" Text="" />
+                                            <asp:DropDownList ID="ddlSelectCounty" runat="server" Width="224"></asp:DropDownList>
+                                            <p></p>
                                             <asp:TextBox ID="txtTown" runat="server" Text="" />
+                                            <p></p>
                                             <asp:TextBox ID="txtArea" runat="server" Text="" />
                                         </div>
                                     </div>
@@ -143,8 +142,9 @@
                             </div>
                         </div>
                     </div>
+                    <asp:Label ID="lblRecentlyAdded" runat="server" Text="No Recent Additions" Visible="false" />
                     <p></p>
-                <asp:Button ID="btnReviewComplaints" CssClass="btn btn-primary" runat="server" Text="Review complaints" data-toggle="modal" data-target="#reviewComplaints" Visible="false"/>
+                <%--<asp:Button ID="btnReviewComplaints" CssClass="btn btn-primary" runat="server" Text="Review complaints" data-toggle="modal" data-target="#reviewComplaints" Visible="false"/>
                     <div class="modal fade" id="reviewComplaints" tabindex="-1" role="dialog" aria-labelledby="reviewComplaintsLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -171,41 +171,41 @@
                             </div>
                         </div>
                     </div>
-                    <p></p>
+                    <p></p>--%>
                 <asp:Button ID="btnBan" CssClass="btn btn-primary" runat="server" Text="Ban a user" data-toggle="modal" data-target="#banUserModal" Visible="false"/>
                     <div class="modal fade" id="banUserModal" tabindex="-1" role="dialog" aria-labelledby="banUserModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="banUserModalLabel">Ban a User</h4>
+                                    <h4 class="modal-title" id="banUserModalLabel">Place or Remove User Ban</h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-md-4">
-                                        
-                                            <p>Name of user to ban: </p>
+                                        <div class="col-md-6">
+                                            Select user to ban
+											<asp:DropDownList ID="ddlUsers" runat="server" Width="224"></asp:DropDownList><p></p>
+                                            Duration <asp:DropDownList ID="ddlSelectDuration" runat="server">
+                                                <asp:ListItem>1 day</asp:ListItem>
+                                                <asp:ListItem>1 week</asp:ListItem>
+                                                <asp:ListItem>1 month</asp:ListItem>
+                                            </asp:DropDownList> <p></p>
+                                            <asp:Button ID="btnBanUser" CssClass="btn btn-primary" runat="server" OnClick="btnBan_Click" Text="Ban User"></asp:Button>
                                         </div>
-                                        <div class="col-md-8">
-                                            <asp:TextBox ID="TextBox4" runat="server" Text="" />
+                                        <div class="col-md-6">
+                                            Select and remove to unban
+										    <asp:DropDownList ID="ddlBannedUsers" runat="server" Width="224"></asp:DropDownList><p></p><br />
+                                            <asp:Button ID="btnUnbanUser" CssClass="btn btn-primary" runat="server" OnClick="btnUnBan_Click" Text="Unban User"></asp:Button>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4"><p>Select and remove to unban</p></div>
-                                        <div class="col-md-4">
-                                            <asp:ListBox ID="ListBox1" runat="server" SelectionMode="Single" Width="174"/>
-                                        </div>
-                                        <div class="col-md-4"></div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <asp:Button ID="Button6" CssClass="btn btn-primary" runat="server" OnClick="btnBan_Click" Text="Submit"></asp:Button>
-                                    <asp:Button ID="Button7" CssClass="btn btn-primary" runat="server" OnClick="btnUnBan_Click" Text="Remove"></asp:Button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <asp:Label ID="lblBanActivity" runat="server" Text="No Recent Activity" Visible="false" />
                     <p></p>
                 <asp:Button ID="btnRemoveUser" CssClass="btn btn-primary" runat="server" Text="Remove a user" data-toggle="modal" data-target="#removeUserModal" Visible="false"/>
                     <div class="modal fade" id="removeUserModal" tabindex="-1" role="dialog" aria-labelledby="removeUserModalLabel" aria-hidden="true">
@@ -218,11 +218,10 @@
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-4">
-                                        
-                                            <p>Name of user to remove: </p>
+                                            <p>Select user to remove: </p>
                                         </div>
                                         <div class="col-md-8">
-                                            <asp:TextBox ID="TextBox5" runat="server" Text="" />
+                                            <asp:DropDownList ID="ddlRemoveUser" runat="server" Width="224"></asp:DropDownList><p></p>
                                         </div>
                                     </div>
                                 </div>
@@ -233,6 +232,7 @@
                             </div>
                         </div>
                     </div>
+                    <asp:Label ID="lblRemoveUser" runat="server" Text="No Recent Activity" Visible="false" />
                     <p></p>
                 <asp:Button ID="btnChangeUsersPW" CssClass="btn btn-primary" runat="server" Text="Change users password" data-toggle="modal" data-target="#changeUserPWModal" Visible="false"/>
                     <div class="modal fade" id="changeUserPWModal" tabindex="-1" role="dialog" aria-labelledby="changeUserPWModalLabel" aria-hidden="true">
@@ -250,9 +250,9 @@
                                             <p>Confrim Password: </p>
                                         </div>
                                         <div class="col-md-8">
-                                            <asp:TextBox ID="TextBox6" runat="server" Text="John Doe" />
-                                            <asp:TextBox ID="TextBox7" runat="server" Text="" />
-                                            <asp:TextBox ID="TextBox8" runat="server" Text="" />
+                                            <asp:DropDownList ID="ddlUserEmail" runat="server" Width="300"></asp:DropDownList><p></p>
+                                            <asp:TextBox ID="newPass" runat="server" Text=""  Width="300"/><p></p>
+                                            <asp:TextBox ID="newPassConfirm" runat="server" Text=""  Width="300"/>
                                         </div>
                                     </div>
                                 </div>
@@ -263,6 +263,7 @@
                             </div>
                         </div>
                     </div>
+                    <asp:Label ID="lblPassActivity" runat="server" Text="No Recent Activity" Visible="false" />
                     <p></p>
                 <asp:Button ID="btnEditMod" CssClass="btn btn-primary" runat="server" Text="Edit Moderators" data-toggle="modal" data-target="#editModModal" Visible="false"/>
                     <div class="modal fade" id="editModModal" tabindex="-1" role="dialog" aria-labelledby="editModModalLabel" aria-hidden="true">
@@ -274,30 +275,29 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-md-4">
-                                        
-                                            <p>Name of moderator: </p>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                Select Moderator to Remove<br />
+											    <asp:DropDownList ID="ddlRemoveMod" runat="server" Width="224"></asp:DropDownList><p></p>
+                                                <asp:Button ID="Button1" CssClass="btn btn-primary" runat="server" OnClick="btnRemoveMod_Click" Text="Remove Moderator"></asp:Button>
+                                            </div>
                                         </div>
-                                        <div class="col-md-8">
-                                            <asp:TextBox ID="TextBox9" runat="server" Text="" />
+                                        <div class="col-md-6">
+                                            <div class="row">
+								                Select and Add as Moderators<br />
+										        <asp:DropDownList ID="ddlUsersToMod" runat="server" Width="224"></asp:DropDownList><p></p>
+                                                <asp:Button ID="Button2" CssClass="btn btn-primary" runat="server" OnClick="btnAddMod_Click" Text="Add New Moderator"></asp:Button>
+									        </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4"><p>Select and remove to clear</p></div>
-                                        <div class="col-md-4">
-                                            <asp:ListBox ID="ListBox2" runat="server" SelectionMode="Single" Width="174"/>
-                                        </div>
-                                        <div class="col-md-4"></div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <asp:Button ID="Button10" CssClass="btn btn-primary" runat="server" OnClick="btnBan_Click" Text="Submit"></asp:Button>
-                                    <asp:Button ID="Button11" CssClass="btn btn-primary" runat="server" OnClick="btnUnBan_Click" Text="Remove"></asp:Button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <asp:Label ID="editModActivity" runat="server" Text="No Recent Activity" Visible="false" />
                     <p></p>
                 <h2>My Active Offers</h2>
                 <uc1:PendingOffers runat="server" ID="PendingOffers"/>
@@ -306,16 +306,20 @@
             </div>
             <div class="col-md-4">
                 <h2>Notifications</h2>
-                <p>Notifications to go in here with Decline or Confirm buttons</p>
-
+                <h4>Offers awaiting confirmation</h4>
+                <uc5:OfferNotifications runat="server" ID="OfferNotifications" />
+                <h4>Requests awaiting confirmation</h4>
+                <uc6:RequestNotifications runat="server" ID="RequestNotifications" />
+                <h4>Responses to your offers</h4>
+                <uc8:RequestNotificationResponse runat="server" ID="RequestNotificationResponse" />
+                <h4>Responses to your requests</h4>
+                <uc7:OfferNotificationResponse runat="server" ID="OfferNotificationResponse" />
                 <h2>Trip History</h2>
-                <%--<uc3:TripHistory runat="server" id="TripHistory" />--%>
+                <uc3:OfferHistory runat="server" ID="OfferHistory" />
+                <uc4:RequestHistory runat="server" ID="RequestHistory" />
             </div>
-
         </div>
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" runat="Server">
 </asp:Content>
-
-

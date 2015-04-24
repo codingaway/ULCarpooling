@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using AjaxControlToolkit;
+using System.Configuration;
+using System.Security;
 
 public partial class Overview : System.Web.UI.Page
 {
@@ -17,19 +19,19 @@ public partial class Overview : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         string userAge = "";
-        string user_id = Request.QueryString["id"].ToString();
-        userImage.ImageUrl = "~/GetImage.aspx?ImageID=" + user_id;
+        
 
         if (!IsPostBack)
         {
-            BindRatings();
-            int countRows = 0;
+            //getting user id from request query 
+            string user_id = Request.QueryString["id"].ToString();
+
+            BindRatings(user_id);
+           
+            //method for listview
+            BindListViewControls(user_id);
+
             con1.Open();
-            using (cmd1 = new SqlCommand("SELECT count(*) from Reviews WHERE user_id = 1", con1))
-            {
-                countRows = (int)cmd1.ExecuteScalar();
-                numberUserRating.Text = "("+ countRows.ToString() +")";
-            }
             
             using (cmd1 = new SqlCommand("SELECT FName,SName,dob,Smoker,Gender,User_category.Description As Category from users JOIN User_category on users.cat_no = User_category.Cat_no WHERE User_ID ="+user_id, con1))
             {
@@ -39,12 +41,12 @@ public partial class Overview : System.Web.UI.Page
                     userName.Text = rd1["FName"].ToString() + " " + rd1["SName"].ToString();
                     userAge = rd1["dob"].ToString();
                     if (userAge == "")
-                    { lblUserAge.Text = "No DOB"; }
-                    else 
                     {
-                        lblUserAge.Text = userAge;
+                        lblUserAge.Text = "No DOB Found";
+                    }
+                    else
+                    {
                         DateTime dt = Convert.ToDateTime(userAge);
-
                         DateTime now = DateTime.Today;
                         int age = now.Year - dt.Year;
                         if (now < dt.AddYears(age))
@@ -52,7 +54,6 @@ public partial class Overview : System.Web.UI.Page
                         lblUserAge.Text = age.ToString() + " age";
                     }
                     
-
                     //To check if smoker
                     if (rd1["Smoker"].ToString().Equals("y"))
                     {
@@ -84,30 +85,35 @@ public partial class Overview : System.Web.UI.Page
         }
     }
 
-    public void BindRatings()
+
+    public void BindRatings(string userID)
     {
-        int Total = 0;
-        con1.Open();
-        cmd1 = new SqlCommand("SELECT rating FROM Reviews where user_id = 1", con1);
-        adp1 = new SqlDataAdapter(cmd1);
-        DataTable dt = new DataTable();
-        adp1.Fill(dt);
-        if (dt.Rows.Count > 0)
+        string[] ratingInfo = DBHelper.getUserReview(userID); //Get user avg rating and rating count
+
+        if (ratingInfo != null)
         {
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                Total += Convert.ToInt32(dt.Rows[i][0].ToString());
-            }
-            int Average = Total / (dt.Rows.Count);
-            Rating1.CurrentRating = Average;
-           /* Label1.Text = dt.Rows.Count + " " + "Users have rated this Product";
-            Label2.Text = "Average rating for this Product is" + " " + Convert.ToString(Average); */
+            lblStars.Text = ratingInfo[0];
+            lblCount.Text = ratingInfo[1];
         }
-        con1.Close();
+        else
+        {
+            lblStars.Text = "0";
+            lblCount.Text = "0";
+        }
     }
 
-    protected void OnRatingChanged(object sender, RatingEventArgs e)
+    private void BindListViewControls(string userID)
     {
-        
+        con1.Open();
+        string query = "Select TOP 5 comment from Reviews WHERE user_id=" + userID + " AND comment!=null ORDER BY submit_date DESC";
+
+        SqlDataAdapter da = new SqlDataAdapter(query, con1);
+        DataTable table = new DataTable();
+
+        da.Fill(table);
+
+        ListView1.DataSource = table;
+        ListView1.DataBind();
+        con1.Close();
     }
 }

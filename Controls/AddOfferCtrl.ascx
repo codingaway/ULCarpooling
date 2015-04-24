@@ -69,21 +69,20 @@
     </div>
 </div>
           
-<div class="boxed">
-<div class="form-group">
- <h4></h4>
-<div class="row">
-   <label class="control-label col-md-3" for="Date">Date N Time :</label>
-    <div class="col-md-5">
-     <div class='input-group date'>
-      <asp:TextBox ID="txtDate" CssClass="form-control" runat="server" TextMode="DateTime"></asp:TextBox>                            
-       <span class="input-group-addon">
+ <div class="boxed">
+     <h4></h4>
+     <div class="row">
+         <div class="col-md-11">
+         <asp:Label ID="Label2" runat="server" Text="Date & Time :" CssClass=""></asp:Label>
+         <div class='input-group date'>
+          <asp:TextBox ID="txtDate" CssClass="form-control" runat="server" TextMode="DateTime"></asp:TextBox>                            
+           <span class="input-group-addon">
         <span class="glyphicon glyphicon-calendar"></span>
       </span>
+      </div>
      </div>
     </div>
-   </div>                   
-</div>
+                        
  <div class="row">
   <div class="boxValidation">
    <asp:RequiredFieldValidator ID="RFVdate" runat="server" ControlToValidate="txtDate" ErrorMessage="* Please Select Date *"  ValidationGroup="AddOffer" ForeColor="Red"></asp:RequiredFieldValidator><br />          
@@ -91,18 +90,17 @@
    </asp:CustomValidator>
   </div>     
 </div>
-</div>
+ </div>
 
 <div class="boxed">
-<div class="form-group">
  <h4></h4>
   <div class="row">
-   <label class="control-label col-md-3" for="Spaces">No. Of seats :</label>
-    <div class="col-md-5">
-     <asp:TextBox ID="txtSeats" CssClass="form-control" runat="server"></asp:TextBox>
-    </div>
+      <div class="col-md-11">
+        <label class="col-md-4" for="Spaces">No. Of seats :</label>
+        <asp:TextBox ID="txtSeats" CssClass="form-control" runat="server"></asp:TextBox>
+     </div>
   </div>
-</div>
+
  <div class="row">
   <div class="boxValidation">
    <asp:RequiredFieldValidator ID="RFVseats" runat="server" ControlToValidate="txtSeats" ErrorMessage="* Please select number of seats offering *" ForeColor="Red" ValidationGroup="AddOffer"></asp:RequiredFieldValidator><br />
@@ -113,6 +111,7 @@
                                                               
 <div class="form-group">
  <div class="col-md-4 col-md-offset-4">
+     <input type="button" name="clear" value="Reset" onclick="clearForm(this.form);" class="btn btn-primary">
   <asp:Button ID="btnSubmit" CssClass="btn btn-primary" runat="server" Text="Submit" ValidationGroup="AddOffer" OnClick="btnSubmit_Click" />
  </div>
 </div>
@@ -144,7 +143,8 @@
 </div>
    </div>
   </div>
-</div>
+     </div>
+
 </asp:Panel>
 
 <asp:Panel ID="panelGostUser" runat="server" Visible="False">

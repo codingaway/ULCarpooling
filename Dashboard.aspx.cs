@@ -35,8 +35,10 @@ public partial class Dashboard : System.Web.UI.Page
             ViewState["AccessID"]= accLevel;
             pageInit();
 
-            dataBindActiveOffersOrRequests(1);
-            dataBindActiveOffersOrRequests(2);
+            for (int i = 1; i < 9; i++)
+            {
+                dataBind(i);
+            }
 
             fillModalForm();
             fillBlockedUsersForm();
@@ -45,10 +47,7 @@ public partial class Dashboard : System.Web.UI.Page
         {
             userID = ViewState["userID"].ToString();
             accLevel = ViewState["AccessID"].ToString();
-            dataBindActiveOffersOrRequests(1);
-            dataBindActiveOffersOrRequests(2);
         }
-        //DataBind();
     }
 
     protected void pageInit()
@@ -58,19 +57,33 @@ public partial class Dashboard : System.Web.UI.Page
             case ("3"):
                 {
                     btnAddPlace.Visible = true;
-                    btnReviewComplaints.Visible = true;
+                    //btnReviewComplaints.Visible = true;
                     btnBan.Visible = true;
                     btnRemoveUser.Visible = true;
                     btnChangeUsersPW.Visible = true;
                     btnEditMod.Visible = true;
                     lblSiteManagement.Visible = true;
+                    lblRecentlyAdded.Visible = true;
+                    lblBanActivity.Visible = true;
+                    lblPassActivity.Visible = true;
+                    editModActivity.Visible = true;
+                    lblRemoveUser.Visible = true;
+                    loadUserLists();
+                    loadUserEmailAdd();
+                    loadModEmailAdd();
+                    userRemovalList();
+                    loadCountyList();
                 } break;
             case ("2"):
                 {
                     btnAddPlace.Visible = true;
-                    btnReviewComplaints.Visible = true;
+                    //btnReviewComplaints.Visible = true;
                     btnBan.Visible = true;
                     lblSiteManagement.Visible = true;
+                    lblRecentlyAdded.Visible = true;
+                    lblBanActivity.Visible = true;
+                    loadUserLists();
+                    loadCountyList();
                 } break;
             default: break;
         }
@@ -110,8 +123,6 @@ public partial class Dashboard : System.Web.UI.Page
                 }
                 reader.Close();
         }
-        //Populate the blocked list of users
-
             
 
         //Need a command to load feedback from DB to feedbackImage
@@ -128,22 +139,49 @@ public partial class Dashboard : System.Web.UI.Page
         
     }
 
-    protected void dataBindActiveOffersOrRequests(int num)
+    protected void dataBind(int num)
     {
         //ListView active;
         string query = "";
-        ListView active;
+        ListView active = new ListView();
 
-        if (num == 1)
+        switch(num)
         {
-            query = "Select * FROM vOfferDetails WHERE User_ID =" + userID + " AND date_time >= GETDATE()";
-            active = (ListView)PendingOffers.FindControl("pendingOffersLV");
+            case(1):{
+                query = "Select * FROM vOfferDetails WHERE User_ID =" + userID + " AND date_time >= GETDATE()";
+                active = (ListView)PendingOffers.FindControl("pendingOffersLV");
+            } break;
+            case(2):{
+                query = "Select * FROM vRequestDetails WHERE User_ID =" + userID + " AND date_time >= GETDATE()";
+                active = (ListView)PendingRequests.FindControl("pendingRequestsLV");
+            } break;
+            case (3):{
+                query = "Select offer_rec.offer_id, p1.place_name as frm_place, p2.place_name as to_place, offer_rec.date_time FROM offer_rec join places p1 on offer_rec.place_from = p1.Place_id join places p2 on offer_rec.place_to = p2.Place_id WHERE user_id = " + userID + " AND date_time < GETDATE()";
+                active = (ListView)OfferHistory.FindControl("completedOffersLV");
+            } break;
+            case (4):{
+                query = "Select req_rec.Request_id, p1.place_name as frm_place, p2.place_name as to_place, req_rec.date_time FROM req_rec join places p1 on req_rec.place_from = p1.Place_id join places p2 on req_rec.place_to = p2.Place_id WHERE user_id = " + userID + " AND date_time < GETDATE()";
+                active = (ListView)RequestHistory.FindControl("completedRequestsLV");
+            } break;
+            case (5):{
+                query = "Select * FROM vOfferNotifications WHERE driver_id =" + userID + " AND date_time >= GETDATE()";
+                active = (ListView)OfferNotifications.FindControl("offerNotifcationsLV");
+            } break;
+            case (6):{
+                query = "Select * FROM vRequestsNotifications WHERE passenger_id =" + userID + " AND date_time >= GETDATE()";
+                active = (ListView)RequestNotifications.FindControl("requestNotifcationsLV");
+            } break;
+            case (7):{
+                query = "Select offer_id, status FROM offer_response where user_id = " + userID + " AND r_date >= (GETDATE() - 7)";
+                active = (ListView)OfferNotificationResponse.FindControl("OfferNotificationResponseLV");
+            } break;
+            case (8):{
+                query = "Select req_id, status FROM req_response where user_id = " + userID + " AND r_date >= (GETDATE() - 7)";
+                active = (ListView)RequestNotificationResponse.FindControl("RequestNotificationResponseLV");
+            } break;
+            default: break;
         }
-        else
-        {
-            query = "Select * FROM vRequestDetails WHERE User_ID =" + userID + " AND date_time >= GETDATE()";
-            active = (ListView)PendingRequests.FindControl("pendingRequestsLV");
-        }
+        
 
         SqlConnection myConnection = new SqlConnection(connection);
         SqlCommand cmd = new SqlCommand(query, myConnection);
@@ -170,7 +208,6 @@ public partial class Dashboard : System.Web.UI.Page
         genderDDL.SelectedIndex = lblGender.Text.Equals("Male") ? 0 : 1;
         chkBoxSmoker.Checked = checkBoxSmoker.Checked ? true : false;
         txtDOB.Text = lblDOB.Text;
-
     }
 
     protected void fillBlockedUsersForm()
@@ -325,11 +362,6 @@ public partial class Dashboard : System.Web.UI.Page
         }
     }
 
-    //protected void btnBlock_Click(object sender, EventArgs e)
-    //{
-    //    // block user to user
-    //}
-
     protected void btnUnBlock_Click(object sender, EventArgs e)
     {
         if(bannedUserLB.SelectedItem != null)
@@ -339,22 +371,106 @@ public partial class Dashboard : System.Web.UI.Page
             int blockedUser = Int32.Parse(item.Substring((index + 1), 1));
             SqlCommand cmd = new SqlCommand("DELETE FROM blocked_user WHERE blocked_by =" + userID + " AND blocked_user = " + blockedUser);
             InsertUpdateData(cmd);
+
+            Response.Redirect(Request.RawUrl);
         }
     }
 
     protected void btnBan_Click(object sender, EventArgs e)
     {
         //Admin ban a user
+        string newQuery = "UPDATE user_secret SET Access_level = 0 WHERE User_ID = " + ddlUsers.SelectedValue;
+        string aQuery = "IF (NOT EXISTS(SELECT User_ID FROM Banned_user WHERE User_ID = " + ddlUsers.SelectedValue + "))" +
+                     "BEGIN " +
+                        "INSERT INTO Banned_User(User_ID, duration) " +
+                        "VALUES(" + ddlUsers.SelectedValue + ", '" + ddlSelectDuration.Text + "')" +
+                     "END ELSE " +
+                     "BEGIN " +
+                        "UPDATE Banned_User " +
+                        "SET start_date = GetDate(), " +
+                        "duration = '" + ddlSelectDuration.Text + "', " +
+                        "ban_count = (ban_count + 1) " +
+                        "WHERE User_ID = " + ddlUsers.SelectedValue + " END";
+
+        string q1 = "UPDATE offer_rec SET active = 'n' WHERE User_ID = " + ddlUsers.SelectedValue;
+        string q2 = "UPDATE req_rec SET active = 'n' WHERE User_ID = " + ddlUsers.SelectedValue;
+
+        SqlCommand cmd = new SqlCommand(q1);
+        InsertUpdateData(cmd);
+        SqlCommand cmd2 = new SqlCommand(q2);
+        InsertUpdateData(cmd2);
+
+        SqlCommand newCommand = new SqlCommand(newQuery);
+        InsertUpdateData(newCommand);
+        SqlCommand aCommand = new SqlCommand(aQuery);
+        InsertUpdateData(aCommand);
+        lblBanActivity.Text = "Added " + ddlUsers.DataTextField + " to ban list";
+        Response.Redirect(Request.RawUrl);
     }
 
     protected void btnUnBan_Click(object sender, EventArgs e)
     {
-        //Admin unban
+        ////Admin unban
+        ////Set Access_level of selected user to 1 
+        ////Set 'active' attribute in Banned_user table to 'n' for selected user
+        string newQuery = "UPDATE user_secret SET Access_level = 1 WHERE User_ID =" + ddlBannedUsers.SelectedValue;
+        string aQuery = "UPDATE Banned_user " +
+                        "SET active = 'n' " +
+                        "WHERE User_ID =" + ddlBannedUsers.SelectedValue;
+        SqlCommand newCommand = new SqlCommand(newQuery);
+        SqlCommand aCommand = new SqlCommand(aQuery);
+        InsertUpdateData(newCommand);
+        InsertUpdateData(aCommand);
+        lblBanActivity.Text = "Removed " + ddlBannedUsers.SelectedValue + " from ban list";
+        Response.Redirect(Request.RawUrl);
     }
 
     protected void addPlace_Click(object sender, EventArgs e)
     {
-        //admin add place
+        string area = txtArea.Text.ToString();
+        string town = txtTown.Text.ToString();
+        if (area == "")
+        {
+            //Cannot add empty string to places table
+            lblRecentlyAdded.Text = "No new location added";
+        }
+        else
+        {
+            if (!(town == ""))
+            {
+                //append town string to area string
+                area += ", " + town;
+            }
+            string newQuery = "INSERT INTO places (place_name, c_code) " +
+                              "values('" + area + "', " + ddlSelectCounty.SelectedValue + ")";
+            SqlCommand newCommand = new SqlCommand(newQuery);
+            InsertUpdateData(newCommand);
+            lblRecentlyAdded.Text = "Recently Added " + area;
+            txtTown.Text = "";
+            txtArea.Text = "";
+            //lblCountySelected.Text = ", " + ddlSelectCounty.Text.ToString();
+            //lblCountySelected.Text = "Number Selected: " + cCode;
+        }
+    }
+
+    protected void loadCountyList()
+    {
+        //method to instantiate county DropDownList for 
+        //add new place/location modal
+        SqlConnection newConnection = new SqlConnection();
+        newConnection.ConnectionString = connection;
+        SqlCommand newCommand = new SqlCommand();
+        SqlDataReader newDataReader;
+        string newQuery = "SELECT c_code, Name FROM County";
+        newCommand = new SqlCommand(newQuery, newConnection);
+        newConnection.Open();
+        newDataReader = newCommand.ExecuteReader();
+        ddlSelectCounty.DataSource = newDataReader;
+        ddlSelectCounty.DataTextField = "Name";
+        ddlSelectCounty.DataValueField = "c_code";
+        ddlSelectCounty.DataBind();
+        newDataReader.Close();
+        newConnection.Close();
     }
 
     protected void removeComp_Click(object sender, EventArgs e)
@@ -365,25 +481,200 @@ public partial class Dashboard : System.Web.UI.Page
     protected void changeUserPW_Click(object sender, EventArgs e)
     {
         //admin change users pw
+        //Send to DBHelper.cs changePassword method
+        //takes two arguments, email string and new password string
+        string userEmail = ddlUserEmail.SelectedValue;
+        string passW = newPass.Text;
+        string passC = newPassConfirm.Text;
+        if (!(passW.Equals(passC)))
+        {
+            lblPassActivity.Text = "Error: Passwords do not match";
+        }
+        else
+        {
+            //pass email and password strings to DBHelper changePassword method
+            DBHelper.changePassword(userEmail, passW);
+            lblPassActivity.Text = "Changed password for: " + userEmail;
+        }
+    }
+
+    protected void loadUserEmailAdd()
+    {
+        //method to instantiate email address lists for 
+        //admin changing user password modal
+        SqlConnection newConnection = new SqlConnection();
+        newConnection.ConnectionString = connection;
+        SqlCommand newCommand = new SqlCommand();
+        SqlDataReader newDataReader;
+        string newQuery = "SELECT users.Email, users.User_ID as id, users.FName + ' ' + users.SName as full_name FROM users JOIN user_secret on users.User_ID = user_secret.User_ID WHERE user_secret.Access_level = 1 OR  users.User_ID IN (SELECT User_ID FROM Banned_user)";
+        newCommand = new SqlCommand(newQuery, newConnection);
+        newConnection.Open();
+        newDataReader = newCommand.ExecuteReader();
+        ddlUserEmail.DataSource = newDataReader;
+        ddlUserEmail.DataTextField = "full_name";
+        ddlUserEmail.DataValueField = "Email";
+        ddlUserEmail.DataBind();
+        newDataReader.Close();
+        newConnection.Close();
+    }
+
+    protected void loadUserLists()
+    {
+        //method to instantiate lists for users and banned users for Ban/Unban modal
+        SqlConnection newConnection = new SqlConnection();
+        newConnection.ConnectionString = connection;
+        SqlCommand newCommand = new SqlCommand();
+        SqlCommand aCommand = new SqlCommand();
+        SqlDataReader newDataReader;
+        SqlDataReader aDataReader;
+        string newQuery = "SELECT users.FName + ' ' + users.SName as full_name, " +
+                          "Banned_user.User_ID FROM users JOIN Banned_user " +
+                          "ON users.User_ID = Banned_user.User_ID " +
+                          "WHERE active = 'y'";
+        string aQuery = "SELECT users.User_ID, users.FName + ' ' + users.SName as full_name " + 
+            "FROM users JOIN user_secret on users.User_ID = user_secret.User_ID " + 
+            "WHERE users.User_ID  NOT IN (SELECT User_ID FROM  Banned_user WHERE active = 'y') " + 
+            "AND user_secret.Access_level = 1";
+        newCommand = new SqlCommand(newQuery, newConnection);
+        aCommand = new SqlCommand(aQuery, newConnection);
+        newConnection.Open();
+        newDataReader = newCommand.ExecuteReader();
+        ddlBannedUsers.DataSource = newDataReader;
+        ddlBannedUsers.DataTextField = "full_name"; //How to concatenate FName and SName?
+        ddlBannedUsers.DataValueField = "User_ID";
+        ddlBannedUsers.DataBind();
+        newDataReader.Close();
+        aDataReader = aCommand.ExecuteReader();
+        ddlUsers.DataSource = aDataReader;
+        ddlUsers.DataTextField = "full_name";
+        ddlUsers.DataValueField = "User_ID";
+        ddlUsers.DataBind();
+        aDataReader.Close();
+        newConnection.Close();
+    }
+
+    protected void btnAddMod_Click(object sender, EventArgs e)
+    {
+        //admin add mod
+        //set Access_level in user_secret table to 2
+        SqlConnection newConnection = new SqlConnection();
+        newConnection.ConnectionString = connection;
+        SqlCommand newCommand = new SqlCommand();
+        string newQuery = "UPDATE user_secret " +
+                          "SET Access_level=2 " +
+                          "WHERE User_ID = " +
+                          "(SELECT User_ID FROM users " +
+                          "WHERE Email = '" + ddlUsersToMod.SelectedValue + "')";
+        newCommand = new SqlCommand(newQuery, newConnection);
+        newConnection.Open();
+        newCommand.ExecuteNonQuery();
+        newConnection.Close();
+        editModActivity.Text = "Gave mod privileges to " + ddlUsersToMod.SelectedValue;
+        Response.Redirect(Request.RawUrl);
+    }
+
+    protected void btnRemoveMod_Click(object sender, EventArgs e)
+    {
+        string newQuery = "UPDATE user_secret SET Access_level=1 " +
+                          "WHERE User_ID = (SELECT User_ID FROM users " +
+                          "WHERE Email = '" + ddlRemoveMod.SelectedValue + "')";
+        SqlCommand newCommand = new SqlCommand(newQuery);
+        InsertUpdateData(newCommand);
+        editModActivity.Text = "Removed mod privileges from " + ddlRemoveMod.SelectedValue;
+        loadModEmailAdd();
+    }
+
+    protected void loadModEmailAdd()
+    {
+        //method to instantiate email address lists for 
+        //admin to give mod privileges
+
+        SqlConnection newConnection = new SqlConnection();
+        newConnection.ConnectionString = connection;
+        SqlCommand newCommand = new SqlCommand();
+        SqlCommand aCommand = new SqlCommand();
+        SqlDataReader newDataReader;
+        SqlDataReader aDataReader;
+        string newQuery = "SELECT user_secret.User_ID, users.Email " +
+                          "FROM users INNER JOIN user_secret " +
+                          "ON users.User_ID=user_secret.User_ID " +
+                          "WHERE user_secret.Access_level=2";
+        string aQuery = "SELECT user_secret.User_ID, users.Email " +
+                        "FROM users INNER JOIN user_secret " +
+                        "ON users.User_ID=user_secret.User_ID " +
+                        "WHERE user_secret.Access_level=1";
+        newCommand = new SqlCommand(newQuery, newConnection);
+        aCommand = new SqlCommand(aQuery, newConnection);
+        newConnection.Open();
+        newDataReader = newCommand.ExecuteReader();
+        ddlRemoveMod.DataSource = newDataReader;
+        ddlRemoveMod.DataTextField = "Email";
+        ddlRemoveMod.DataValueField = "Email";
+        ddlRemoveMod.DataBind();
+        newDataReader.Close();
+        aDataReader = aCommand.ExecuteReader();
+        ddlUsersToMod.DataSource = aDataReader;
+        ddlUsersToMod.DataTextField = "Email";
+        ddlUsersToMod.DataValueField = "Email";
+        ddlUsersToMod.DataBind();
+        aDataReader.Close();
+        newConnection.Close();
     }
 
     protected void btnRemoveUser_Click(object sender, EventArgs e)
     {
         //admin remove a user 
+        //set access level to 0
+        //remove user's records from Banned_user table if they exist
+        SqlConnection newConnection = new SqlConnection();
+        newConnection.ConnectionString = connection;
+        //SqlCommand newCommand = new SqlCommand();
+        string newQuery = "UPDATE user_secret SET Access_level=0 " +
+                         "WHERE User_ID = " + ddlRemoveUser.SelectedValue;
+        string aQuery = "DELETE FROM Banned_user " +
+                        "WHERE User_ID = " + ddlRemoveUser.SelectedValue;
+        string q1 = "UPDATE offer_rec SET active = 'n' WHERE User_ID = " + ddlRemoveUser.SelectedValue;
+        string q2 = "UPDATE req_rec SET active = 'n' WHERE User_ID = " + ddlRemoveUser.SelectedValue;
+
+        SqlCommand aCommand = new SqlCommand();
+        aCommand = new SqlCommand(aQuery, newConnection);
+
+        SqlCommand newCommand = new SqlCommand(newQuery);
+        SqlCommand cmd = new SqlCommand(q1);
+        SqlCommand cmd2 = new SqlCommand(q2);
+
+        newConnection.Open();
+        //newCommand.ExecuteNonQuery();
+        aCommand.ExecuteNonQuery();
+        newConnection.Close();
+
+        InsertUpdateData(newCommand);
+        //InsertUpdateData(aCommand);
+        InsertUpdateData(cmd);
+        InsertUpdateData(cmd2);
+
+        lblRemoveUser.Text = "Removed " + ddlRemoveUser.SelectedValue;
+        //userRemovalList();
+        Response.Redirect(Request.RawUrl);
     }
 
-    protected void btnCancel_Click(object sender, EventArgs e)
+    protected void userRemovalList()
     {
-        //remove a pending offer/request
-    }
-
-    protected void btnReviewTrip_Click(object sender, EventArgs e)
-    {
-        //review a trip
-    }
-
-    protected void btnReportTrip_Click(object sender, EventArgs e)
-    {
-        //report a trip
+        //method to instantiate lists for 
+        //admin removal of user(s)
+        SqlConnection newConnection = new SqlConnection();
+        newConnection.ConnectionString = connection;
+        SqlCommand newCommand = new SqlCommand();
+        SqlDataReader newDataReader;
+        string newQuery = "SELECT users.User_ID as id, users.FName + ' ' + users.SName as full_name FROM users JOIN user_secret on users.User_ID = user_secret.User_ID WHERE user_secret.Access_level = 1 OR  users.User_ID IN (SELECT User_ID FROM Banned_user)";
+        newCommand = new SqlCommand(newQuery, newConnection);
+        newConnection.Open();
+        newDataReader = newCommand.ExecuteReader();
+        ddlRemoveUser.DataSource = newDataReader;
+        ddlRemoveUser.DataTextField = "full_name";
+        ddlRemoveUser.DataValueField = "id";
+        ddlRemoveUser.DataBind();
+        newDataReader.Close();
+        newConnection.Close();
     }
 }
