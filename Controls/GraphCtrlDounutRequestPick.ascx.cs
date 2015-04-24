@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI.DataVisualization.Charting;
+using System.Drawing;
 
 public partial class GraphCtrlDounutRequestPick : System.Web.UI.UserControl
 {
@@ -30,6 +31,40 @@ public partial class GraphCtrlDounutRequestPick : System.Web.UI.UserControl
         Chart1.Series["PickUpRequesting"].YValueMembers = "Occurence";
         Chart1.Series["PickUpRequesting"].AxisLabel = "PickUp";
         Chart1.DataBind();
+
+        int noRows = dt.Rows.Count;
+
+        switch (noRows)
+        {
+            case 1: Chart1.Series["PickUpRequesting"].Points[1].Color = Color.FromArgb(168, 216, 240); break;
+            case 2: Chart1.Series["PickUpRequesting"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["PickUpRequesting"].Points[1].Color = Color.FromArgb(168, 216, 240); break;
+            case 3: Chart1.Series["PickUpRequesting"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["PickUpRequesting"].Points[1].Color = Color.FromArgb(168, 216, 240);
+                Chart1.Series["PickUpRequesting"].Points[2].Color = Color.FromArgb(240, 120, 48); break;
+            case 4: Chart1.Series["PickUpRequesting"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["PickUpRequesting"].Points[1].Color = Color.FromArgb(168, 216, 240);
+                Chart1.Series["PickUpRequesting"].Points[2].Color = Color.FromArgb(240, 120, 48);
+                Chart1.Series["PickUpRequesting"].Points[3].Color = Color.FromArgb(120, 24, 0); break;
+            case 5: Chart1.Series["PickUpRequesting"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["PickUpRequesting"].Points[1].Color = Color.FromArgb(168, 216, 240);
+                Chart1.Series["PickUpRequesting"].Points[2].Color = Color.FromArgb(240, 120, 48);
+                Chart1.Series["PickUpRequesting"].Points[3].Color = Color.FromArgb(120, 24, 0);
+                Chart1.Series["PickUpRequesting"].Points[4].Color = Color.FromArgb(72, 120, 144); break;
+            case 6: Chart1.Series["PickUpRequesting"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["PickUpRequesting"].Points[1].Color = Color.FromArgb(168, 216, 240);
+                Chart1.Series["PickUpRequesting"].Points[2].Color = Color.FromArgb(240, 120, 48);
+                Chart1.Series["PickUpRequesting"].Points[3].Color = Color.FromArgb(120, 24, 0);
+                Chart1.Series["PickUpRequesting"].Points[4].Color = Color.FromArgb(72, 120, 144);
+                Chart1.Series["PickUpRequesting"].Points[5].Color = Color.FromArgb(102, 102, 102); break;
+            case 7: Chart1.Series["PickUpRequesting"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["PickUpRequesting"].Points[1].Color = Color.FromArgb(168, 216, 240);
+                Chart1.Series["PickUpRequesting"].Points[2].Color = Color.FromArgb(240, 120, 48);
+                Chart1.Series["PickUpRequesting"].Points[3].Color = Color.FromArgb(120, 24, 0);
+                Chart1.Series["PickUpRequesting"].Points[4].Color = Color.FromArgb(72, 120, 144);
+                Chart1.Series["PickUpRequesting"].Points[5].Color = Color.FromArgb(102, 102, 102);
+                Chart1.Series["PickUpRequesting"].Points[6].Color = Color.FromArgb(87, 34, 0); break;
+        }
     }
 
 }

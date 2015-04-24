@@ -15,6 +15,13 @@
              transform: translate(-50%, -50%);
               
            }
+        .boxed1 {
+             width: auto;
+             border: 1px solid #c9cbcd;
+             border-radius: 5px;
+             padding: 2px;
+             margin: 15px; 
+           }
 
         .Star
         {
@@ -49,9 +56,11 @@
                             <asp:Label ID="userName" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="row form-group">
-                            <cc1:Rating ID="Rating1" AutoPostBack="true" OnChanged="OnRatingChanged" runat="server" StarCssClass="Star" WaitingStarCssClass="WaitingStar" FilledStarCssClass="FilledStar" EmptyStarCssClass="Star">
+                            <%--<cc1:Rating ID="Rating1" AutoPostBack="true" runat="server" StarCssClass="Star" WaitingStarCssClass="WaitingStar" FilledStarCssClass="FilledStar" EmptyStarCssClass="Star">
                          </cc1:Rating>&nbsp;
-                            <asp:Label ID="numberUserRating" runat="server" Text="" Font-Italic="True"></asp:Label>
+                            <asp:Label ID="numberUserRating" runat="server" Text="" Font-Italic="True"></asp:Label>--%>
+                            <asp:Label ID="lblStars" CssClass="stars" runat="server" Text=""></asp:Label>
+                                    <span class="small text-muted">(<asp:Label ID="lblCount" runat="server" Text=""></asp:Label>)</span>
                         </div>
                         <div class="row form-group">
                             <asp:Label ID="lblUserAge" runat="server" Text=""></asp:Label>
@@ -69,36 +78,39 @@
 
                         <div class="col-md-5">
                             <div class="row">
+                                <div class="col-md-12">
                                 <h3 class="text-center"><em><strong>REVIEWS</strong></em></h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <asp:ListView ID="ListView1" runat="server">
+                                <LayoutTemplate>
+                                 <div style="border:solid 2px #4d85b6; width:150%; padding:4px; margin:10px">
+                                     <th><h4 class="modal-header" style="text-align:center"><em>Recent Five Comments of this User</em></h4></th>
+                                  <asp:PlaceHolder ID="itemPlaceholder" runat="server" />
+                                 </div>
+                                </LayoutTemplate>
+                                 <ItemTemplate>
+                                  <div class="boxed1" style="text-align:center">
+                                  <%# Eval("comment")%>
+                                  </div>
+                               </ItemTemplate>
+                               <AlternatingItemTemplate>
+                                 <div class="boxed1" style="text-align:center">
+                                 <%# Eval("comment")%>
+                                 </div>
+                               </AlternatingItemTemplate>
+                               <EmptyDataTemplate>
+                                   <div class="boxed">
+                                       <asp:Label ID="Label1" runat="server" Text="No records found" Font-Italic="True" Font-Bold="True" Font-Size="Medium" ForeColor="#333333"></asp:Label>
+                                   </div>
+                               </EmptyDataTemplate>
+                                </asp:ListView>
                             </div>
 
                         </div>
                             </div>
-                        
-                       
                     </asp:Panel>
-                    <%--<div class ="row">
-                        <div class="boxValidation">
-                            <img alt="user picture" class="img-circle" height="40" width="40" src='<%=ResolveClientUrl("~/GetImage.aspx?ImageID=")%><%#Eval("User_ID")%>' />
-                        </div>
-                    </div>
-
-                    <div class ="row">
-                        <div class="boxValidation">
-                         <asp:Label ID="userName" runat="server" Text=""></asp:Label>
-                        </div>
-                    </div>
-                    
-                    <div class ="row">
-                        <div class="boxValidation">
-                         <cc1:Rating ID="Rating1" AutoPostBack="true" OnChanged="OnRatingChanged" runat="server" StarCssClass="Star" WaitingStarCssClass="WaitingStar" FilledStarCssClass="FilledStar" EmptyStarCssClass="Star">
-                         </cc1:Rating>&nbsp;
-                            <asp:Label ID="numberUserRating" runat="server" Text="" Font-Italic="True"></asp:Label>
-                        </div>
-                    </div>--%>
-                    
-                    
-
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" Runat="Server">
 </asp:Content>

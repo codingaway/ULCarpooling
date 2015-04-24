@@ -35,15 +35,12 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
         {
             tb_fromPoint.Style.Add("visibility", "hidden");
             tb_endPoint.Style.Add("visibility", "hidden");
+         
             getUserID();
             GMap1.Key = "GoogleKey";
             Page.DataBind();
             if (!this.IsPostBack)
-            {
-                //Get user ID from FormAuthentocation Ticket
-              
-
-               
+            {  
                 panelLoginUser.Visible = true;
                 panelGostUser.Visible = false;
 
