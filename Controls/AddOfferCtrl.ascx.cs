@@ -9,6 +9,8 @@ using System.Data.SqlClient;
 using Subgurim.Controles;
 using Subgurim.Controls;
 using Subgurim.Web;
+using System.Web.Security;
+using System.Configuration;
 using System.Globalization;
 
 
@@ -17,29 +19,56 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
     SqlConnection con1 = new SqlConnection("Data Source=(LocalDB)\\v11.0;AttachDbFilename=|DataDirectory|\\carpooling_db.mdf;Integrated Security=True");
     SqlCommand cmd1;
     SqlDataAdapter adpt1;
+
+    public string userID;
+    private string accLevel;
+
     protected void Page_Load(object sender, EventArgs e)
     {
-          tb_fromPoint.Style.Add("visibility", "hidden");
-          tb_endPoint.Style.Add("visibility", "hidden");
-        
-        GMap1.Key = "GoogleKey";
-        Page.DataBind();
-        if (!this.IsPostBack)
+        if (!Request.IsAuthenticated) //Check first if request is authenticated 
         {
-            fillDepartList();
-            GMap1.GZoom = 9;
-            GMap1.Add(new GControl(GControl.preBuilt.LargeMapControl));
-
-            GDirection direction = new GDirection();
-            direction.autoGenerate = false;
-            direction.buttonElementId = "bt_Go";
-            direction.fromElementId = tb_fromPoint.ClientID;
-            direction.toElementId = tb_endPoint.ClientID;
-            direction.divElementId = "div_directions";
-            direction.clearMap = true;
-
-            GMap1.Add(direction);
+            panelGostUser.Visible = true;
+            panelLoginUser.Visible = false;
+            
         }
+        else
+        {
+            tb_fromPoint.Style.Add("visibility", "hidden");
+            tb_endPoint.Style.Add("visibility", "hidden");
+         
+            getUserID();
+            GMap1.Key = "GoogleKey";
+            Page.DataBind();
+            if (!this.IsPostBack)
+            {  
+                panelLoginUser.Visible = true;
+                panelGostUser.Visible = false;
+
+                fillDepartList();
+                GMap1.GZoom = 9;
+                GMap1.Add(new GControl(GControl.preBuilt.LargeMapControl));
+
+                GDirection direction = new GDirection();
+                direction.autoGenerate = false;
+                direction.buttonElementId = "bt_Go";
+                direction.fromElementId = tb_fromPoint.ClientID;
+                direction.toElementId = tb_endPoint.ClientID;
+                direction.divElementId = "div_directions";
+                direction.clearMap = true;
+
+                GMap1.Add(direction);
+            }
+        }
+    }
+
+    protected void getUserID()
+    {
+        //Get user ID from FormAuthentocation Ticket
+        string[] userData;
+        HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+        FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+        userData = ticket.UserData.Split(',');
+        userID = userData[0];
     }
 
     private void fillDepartList()
@@ -114,11 +143,12 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
 
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+        string uID = userID;
         con1.Open();
         int count = 0;
         string str1 = DDdepartPlaces.SelectedItem.Value;
         string str4 = DDarrivalPlaces.SelectedItem.Value;
-     
+
         //Convert DateTime in microsoftSql Format
         string DateString = txtDate.Text;
         DateTime date = new DateTime();
@@ -126,18 +156,17 @@ public partial class AddOfferCtrl : System.Web.UI.UserControl
         string dateTime = date.ToString("MM/dd/yyyy HH:mm:ss");
 
         //Suppose User Id = 2
-        int userID = 2;
 
-        using (cmd1 = new SqlCommand("select count(*) from offer_rec", con1))
+
+        using (cmd1 = new SqlCommand("select MAX(offer_id) from offer_rec", con1))
         {
-            count = (int)cmd1.ExecuteScalar();
-            count = count + 100;
+            count = (int)cmd1.ExecuteScalar()+1;  
         }
 
-        using (cmd1 = new SqlCommand("insert into offer_rec values(@offer_id,@user_id,@from,@to,@date_time,@seats)", con1))
+        using (cmd1 = new SqlCommand("insert into [offer_rec]([offer_id],[user_id],[place_from],[place_to],[date_time],[seats]) values(@offer_id,@user_ID,@from,@to,@date_time,@seats)", con1))
         {
             cmd1.Parameters.AddWithValue("@offer_id", count.ToString());
-            cmd1.Parameters.AddWithValue("@user_id", userID.ToString());
+            cmd1.Parameters.AddWithValue("@user_ID", uID);
             cmd1.Parameters.AddWithValue("@from", str1);
             cmd1.Parameters.AddWithValue("@to", str4);
             cmd1.Parameters.AddWithValue("@date_time", dateTime);

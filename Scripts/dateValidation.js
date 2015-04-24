@@ -2,11 +2,12 @@
 
 //This funtion called from custome validation control that passes two arguments, sender and args
 //It validates a control by comparing date values from calling control with value from other control that has an ID 'txtStartDate'
-function compareDateValues(sender, args) {
+function compareDateValues(sender, args)
+{
     var date1, date2, now;
     now = new Date();
-    var dateString1 = document.getElementById('txtStartDate').value;
-    //var dateString2 = document.getElementById('endDate').value;
+    var dateString1 = document.getElementById('ContentPlaceHolder1_txtEndDate').value;
+    //var dateString2 = document.getElementById('ContentPlaceHolder1_txtEndDate').value;
     var dateString2 = args.Value;
 
     if (dateString1 == "") //If only end-date specified then only check if end-date is not in the past
@@ -18,7 +19,8 @@ function compareDateValues(sender, args) {
     }
 
         //There is value in start-date do we need to compare both dates
-    else if (isValidDate(dateString1) && isValidDate(dateString2)) {
+    else if (isValidDate(dateString1) && isValidDate(dateString2))
+    {
         date1 = stringToDate(dateString1);
         date2 = stringToDate(dateString2);
         if (date1 < now)
@@ -30,7 +32,6 @@ function compareDateValues(sender, args) {
     }
     else
         args.IsValid = false;
-
 }
 
 function isValidDate(dateString) {

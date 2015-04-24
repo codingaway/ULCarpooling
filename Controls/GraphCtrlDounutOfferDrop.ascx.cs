@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI.DataVisualization.Charting;
+using System.Drawing;
 
 public partial class GraphCtrlDounutOfferDrop : System.Web.UI.UserControl
 {
@@ -15,7 +16,7 @@ public partial class GraphCtrlDounutOfferDrop : System.Web.UI.UserControl
     {
         Chart1.Series["DropOffOffering"].ChartType = SeriesChartType.Doughnut;
 
-        SqlCommand cmd1 = new SqlCommand("Select offer_rec.place_to As Place, places.place_name As PickUp, Count(*) As Occurence FROM offer_rec JOIN places on offer_rec.place_to = places.Place_id GROUP BY offer_rec.place_to,places.place_name", con1);
+        SqlCommand cmd1 = new SqlCommand("Select TOP 7 offer_rec.place_to As Place, places.place_name As PickUp, Count(*) As Occurence FROM offer_rec JOIN places on offer_rec.place_to = places.Place_id GROUP BY offer_rec.place_to,places.place_name ORDER BY Count(*) DESC", con1);
         cmd1.CommandType = CommandType.Text;
 
         SqlDataAdapter da = new SqlDataAdapter();
@@ -30,5 +31,39 @@ public partial class GraphCtrlDounutOfferDrop : System.Web.UI.UserControl
         Chart1.Series["DropOffOffering"].YValueMembers = "Occurence";
         Chart1.Series["DropOffOffering"].AxisLabel = "PickUp";
         Chart1.DataBind();
+
+        int noRows = dt.Rows.Count;
+
+        switch (noRows)
+        {
+            case 1: Chart1.Series["DropOffOffering"].Points[1].Color = Color.FromArgb(168, 216, 240); break;
+            case 2: Chart1.Series["DropOffOffering"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["DropOffOffering"].Points[1].Color = Color.FromArgb(168, 216, 240); break;
+            case 3: Chart1.Series["DropOffOffering"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["DropOffOffering"].Points[1].Color = Color.FromArgb(168, 216, 240);
+                Chart1.Series["DropOffOffering"].Points[2].Color = Color.FromArgb(240, 120, 48); break;
+            case 4: Chart1.Series["DropOffOffering"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["DropOffOffering"].Points[1].Color = Color.FromArgb(168, 216, 240);
+                Chart1.Series["DropOffOffering"].Points[2].Color = Color.FromArgb(240, 120, 48);
+                Chart1.Series["DropOffOffering"].Points[3].Color = Color.FromArgb(120, 24, 0); break;
+            case 5: Chart1.Series["DropOffOffering"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["DropOffOffering"].Points[1].Color = Color.FromArgb(168, 216, 240);
+                Chart1.Series["DropOffOffering"].Points[2].Color = Color.FromArgb(240, 120, 48);
+                Chart1.Series["DropOffOffering"].Points[3].Color = Color.FromArgb(120, 24, 0);
+                Chart1.Series["DropOffOffering"].Points[4].Color = Color.FromArgb(72, 120, 144); break;
+            case 6: Chart1.Series["DropOffOffering"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["DropOffOffering"].Points[1].Color = Color.FromArgb(168, 216, 240);
+                Chart1.Series["DropOffOffering"].Points[2].Color = Color.FromArgb(240, 120, 48);
+                Chart1.Series["DropOffOffering"].Points[3].Color = Color.FromArgb(120, 24, 0);
+                Chart1.Series["DropOffOffering"].Points[4].Color = Color.FromArgb(72, 120, 144);
+                Chart1.Series["DropOffOffering"].Points[5].Color = Color.FromArgb(102, 102, 102); break;
+            case 7: Chart1.Series["DropOffOffering"].Points[0].Color = Color.FromArgb(72, 120, 168);
+                Chart1.Series["DropOffOffering"].Points[1].Color = Color.FromArgb(168, 216, 240);
+                Chart1.Series["DropOffOffering"].Points[2].Color = Color.FromArgb(240, 120, 48);
+                Chart1.Series["DropOffOffering"].Points[3].Color = Color.FromArgb(120, 24, 0);
+                Chart1.Series["DropOffOffering"].Points[4].Color = Color.FromArgb(72, 120, 144);
+                Chart1.Series["DropOffOffering"].Points[5].Color = Color.FromArgb(102, 102, 102);
+                Chart1.Series["DropOffOffering"].Points[6].Color = Color.FromArgb(87, 34, 0); break;
+        }
     }
 }

@@ -74,7 +74,8 @@
                                 <label class="control-label" for="txtStartDate">Time range</label>
                                 <div class="">
                                     <div class='input-group date'>
-                                        <asp:TextBox ID="txtStartDate" CssClass="form-control" runat="server" placeholder="dd/mm/yyy hh:mm"></asp:TextBox>
+                                        <asp:TextBox ID="txtStartDate" CssClass="form-control" runat="server" 
+                                            ValidationGroup="searchPage" placeholder="dd/mm/yyy hh:mm"></asp:TextBox>
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                         </span>
                                     </div>
@@ -83,7 +84,7 @@
                                         ControlToValidate="txtStartDate"
                                         ErrorMessage="Start Date-time is not valid."
                                         ClientValidationFunction="isValidDateValue"
-                                        ValidationGroup="searchPage" Display="Dynamic">X
+                                        ValidationGroup="searchPage" Display="Dynamic">
                                     </asp:CustomValidator>
                                 </div>
                             </div>
@@ -91,46 +92,39 @@
                                 <label class="control-label" for="txtEndDate">To</label>
                                 <div class="">
                                     <div class='input-group date'>
-                                        <asp:TextBox ID="txtEndDate" CssClass="form-control" runat="server" placeholder="dd/mm/yyy hh:mm"></asp:TextBox>
+                                        <asp:TextBox ID="txtEndDate" CssClass="form-control" runat="server" 
+                                            ValidationGroup="searchPage" placeholder="dd/mm/yyy hh:mm"></asp:TextBox>
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                         </span>
                                     </div>
+                                    
                                     <asp:CustomValidator
-                                        ID="valEndDate" runat="server"
+                                        ID="CustomValidator1" runat="server"
                                         ControlToValidate="txtEndDate"
                                         ErrorMessage="End Date-time is not valid."
                                         ClientValidationFunction="isValidDateValue"
-                                        ValidationGroup="searchPage" Display="Dynamic">X
+                                        ValidationGroup="searchPage" Display="Dynamic">
                                     </asp:CustomValidator>
-                                    <asp:CustomValidator
-                                        ID="valCompareEndDate" runat="server"
-                                        ControlToValidate="txtEndDate"
-                                        ErrorMessage="End Date-time must be after start date."
-                                        ClientValidationFunction="compareDateValues"
-                                        ValidationGroup="searchPage" Display="Dynamic">X
-                                    </asp:CustomValidator>
+                                  
                                 </div>
                             </div>
-                             <div class="form-group">
 
-                                <div class="col-md-8 pull-right">
-                                    <asp:Button ID="btnReset" type="reset" runat="server" CssClass="btn btn-default" Text="Reset" OnClick="btnReset_Click" />
-                                    <asp:Button ID="btnSearch" CausesValidation="true" CssClass="btn btn-primary" ValidationGroup="searchPage" runat="server" Text="Search" OnClick="btnSearch_Click" />
-
-                                </div>
-                            </div>
                             </ContentTemplate>
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="rblSearchOption" EventName="SelectedIndexChanged" />
                              <asp:AsyncPostBackTrigger ControlID="btnReset" EventName="Click" />
                         </Triggers>
                     </asp:UpdatePanel>
-                           
-                        
+                    <div class="form-group">
+                                <div class="col-md-8 pull-right">
+                                    <asp:Button ID="btnReset" CausesValidation="false" type="reset" runat="server" CssClass="btn btn-default" Text="Reset" OnClick="btnReset_Click" />
+                                    <asp:Button ID="btnSearch" CausesValidation="true" ValidationGroup="searchPage" CssClass="btn btn-primary" runat="server" Text="Search" OnClick="btnSearch_Click" />
 
+                                </div>
+                            </div>
                 </fieldset>
             </div>
-            <asp:Panel ID="Panel1" runat="server" Visible="false">
+            <asp:Panel ID="Panel1" runat="server">
                 <div class="col-md-8">
                     <h4>
                         <asp:Label ID="Label1" runat="server" Text="Search Results"></asp:Label>
@@ -158,7 +152,6 @@
             for (var selector in config) {
                 $(selector).chosen(config[selector]);
             }
-
             //Datetime picker
             $(function () {
                 $('.date').datetimepicker(
@@ -174,8 +167,6 @@
         //Initial bind
         $(document).ready(function () {
             BindControlEvents();
-
-
         });
 
         //Re-bind for callbacks
@@ -184,26 +175,112 @@
         prm.add_endRequest(function () {
             BindControlEvents();
         });
-
     </script>
-   <%--   <script type="text/javascript">
-          $.fn.stars = function () {
-              return $(this).each(function () {
-                  // Get the value
-                  var val = parseFloat($(this).html());
-                  //val = Math.round(val * 4) / 4; /* To round to nearest quarter */
-                  // Make sure that the value is in 0 - 5 range, multiply to get width
-                  var size = Math.max(0, (Math.min(5, val))) * 16;
-                  // Create stars holder
-                  var $span = $('<span />').width(size);
-                  // Replace the numerical value with stars
-                  $(this).html($span);
-              });
-          }
+    <script type="text/javascript">
+        /* Date validator -- @Authour: Abdul Halim */
 
-          $(function () {
-              $('span.stars').stars();
-          });
-    </script>--%>
+        //This funtion called from custome validation control that passes two arguments, sender and args
+        //It validates a control by comparing date values from calling control with value from other control that has an ID 'txtStartDate'
+        function compareDateValues(sender, args) {
+            var date1, date2, now;
+            now = new Date();
+            var dateString1 = document.getElementById('<%=txtStartDate.ClientID%>').value;
+            var dateString2 = args.Value;
+
+            if (dateString1 == "") //If only end-date specified then only check if end-date is not in the past
+            {
+                if (!isValidDate(dateString2) || (stringToDate(dateString2) < now))
+                    args.IsValid = false;
+                else
+                    args.IsValid = true;
+            }
+
+                //There is value in start-date do we need to compare both dates
+            else if (isValidDate(dateString1) && isValidDate(dateString2))
+            {
+                date1 = stringToDate(dateString1);
+                date2 = stringToDate(dateString2);
+                if (date1 < now)
+                    args.IsValid = false;
+                else if (date2 < date1)
+                    args.IsValid = false;
+                else
+                    args.IsValid = true;
+            }
+            else
+                args.IsValid = false;
+        }
+
+        function isValidDate(dateString) {
+            var dateVal = dateString;
+            if (dateVal == "") //Check if empty string
+                return false;
+
+            //define a regex matching date pattern "dd/MM/yyyy HH:mm"
+            var datePatern = /^((0?[1-9])|([1-2]\d)|(3[0-1]))\/((0?[1-9])|(1[0-2]))\/(\d{2}|\d{4})[\s]{1}(((0|1){1}\d)|2[0-3])\:([0-5]{1}\d)$/;
+
+            if (!datePatern.test(dateVal))
+                return false;
+
+            //split the string for each section
+            var delimiter = /\/|\:|\s/;
+            var dtArray = dateVal.split(delimiter);
+
+            //Checks for dd/mm/yyyy format.
+            var day = dtArray[0];
+            var month = dtArray[1];
+            var year = dtArray[2];
+            //hour and minutes should be valid after regex match
+
+            if (month < 1 || month > 12)
+                return false;
+            else if (day < 1 || day > 31)
+                return false;
+            else if ((month == 4 || month == 6 || month == 9 || month == 11) && day == 31)
+                return false;
+            else if (month == 2) {
+                var isleap = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+                if (day > 29 || (day == 29 && !isleap))
+                    return false;
+            }
+            return true;
+        }
+
+
+        //A function that returns date object from a validated date string as 'dd/MM/yyyy HH:mm' format
+        function stringToDate(dateString) {
+
+            var delimiter = /\/|\:|\s/;
+            var dtArray = dateString.split(delimiter);
+            var date = new Date();
+            //Date string is  "dd/mm/yyyy HH:mm" format.
+            var day = dtArray[0];
+            var month = dtArray[1];
+            var year = dtArray[2];
+            var hours = dtArray[3];
+            var minutes = dtArray[4];
+            date.setFullYear(year, month - 1, day);
+            date.setHours(hours);
+            date.setMinutes(minutes);
+            return date;
+        }
+
+
+        //Method for checking a single date input from customvalidation parameters
+        function isValidDateValue(sender, args) {
+            var inputDate;
+            var dateString = args.Value;
+            if (isValidDate(dateString)) {
+                inputDate = stringToDate(dateString);
+                now = new Date();
+                if (inputDate < now)
+                    args.IsValid = false;
+                else
+                    args.IsValid = true;
+            }
+            else
+                args.IsValid = false;
+        }
+    </script>
 </asp:Content>
 

@@ -17,7 +17,7 @@ public partial class Main : System.Web.UI.MasterPage
     protected override void OnPreRender(EventArgs e)
     {
         base.OnPreRender(e);
-        LoadScript();
+        //LoadScript();
     }
 
     protected void lbtnLogin_Click(object sender, EventArgs e)
