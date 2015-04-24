@@ -21,8 +21,8 @@ public partial class Search : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        
-        if(!IsPostBack)
+
+        if (!IsPostBack)
         {
             rblSearchOption.SelectedIndex = 0;
             initFromList();
@@ -55,7 +55,7 @@ public partial class Search : System.Web.UI.Page
             bool startDateExist = DateTime.TryParseExact(txtStartDate.Text, formatString, CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
             bool endDateExist = DateTime.TryParseExact(txtEndDate.Text, formatString, CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate);
 
-            
+
             if (rblSearchOption.SelectedIndex == 1) //Offers
             {
                 resultTable = "vRequestDetails";
@@ -69,16 +69,16 @@ public partial class Search : System.Web.UI.Page
 
             if (placeFrom != null)
                 searchQuery += " AND frm_id = " + placeFrom;
-            
+
             if (placeTo != null)
                 searchQuery += " AND to_id = " + placeTo;
-            
+
             if (startDateExist)
                 searchQuery += " AND date_time >= '" + startDate.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-            
+
             if (endDateExist)
                 searchQuery += " AND date_time <= '" + endDate.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-            
+
 
             ListView listView = (ListView)ResultList.FindControl("ListView1");
             string ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
@@ -93,6 +93,7 @@ public partial class Search : System.Web.UI.Page
                 listView.DataSource = ds;
                 listView.DataBind();
             }
+            catch (SqlException ex) { }
             finally
             {
                 cmd.Dispose();
@@ -107,43 +108,6 @@ public partial class Search : System.Web.UI.Page
     {
     }
 
-    //protected void ListView1_ItemCommand(object sender, ListViewCommandEventArgs e)
-    //{
-
-    //}
-
-    //protected void ListView1_ItemDataBound(object sender, ListViewItemEventArgs e)
-    //{
-
-    //    if(rblSearchOption.SelectedIndex == 0)
-    //    {
-    //        Label lblSeats = (Label)e.Item.FindControl("lblSeats");
-    //        lblSeats.Enabled = true;
-    //        lblSeats.Visible = true;
-    //        DataRowView rowView = (DataRowView)e.Item.DataItem;
-    //        lblSeats.Text += rowView["seats"].ToString();
-            
-    //        Button btn = (Button)e.Item.FindControl("btnCmd");
-    //        btn.Text = "Send Offer";
-
-            
-
-    //    }
-
-    //    //If user is logged in then show buttons to send response to the offer/request
-    //    if (Request.IsAuthenticated)
-    //    {
-
-    //        Panel p1 = (Panel)e.Item.FindControl("pnlAnonymous");
-    //        Panel p2 = (Panel)e.Item.FindControl("pnlLoggedIn");
-
-    //        p1.Visible = false;
-    //        p2.Visible = true;
-    //    }
-
-
-    //}
-
     protected void btnFrmHidden_Click(object sender, EventArgs e)
     {
         initFromList();
@@ -153,7 +117,7 @@ public partial class Search : System.Web.UI.Page
     {
         string tableName = rblSearchOption.SelectedIndex == 0 ? "vOfferFromPlace" : "vReqFromPlace";
 
-        string aQuery = "select * from " + tableName;
+        string aQuery = "select distinct * from " + tableName;
         SqlDataSource2.SelectCommand = aQuery;
         ddlTripFrom.Items.Clear();
         ddlTripFrom.DataBind();
@@ -172,12 +136,12 @@ public partial class Search : System.Web.UI.Page
         string aQuery;
         if (ddlTripFrom.SelectedIndex > 0)
         {
-            aQuery = "select pname, place_id from " + tableName + " WHERE frm_id = "
+            aQuery = "select distinct pname, place_id from " + tableName + " WHERE frm_id = "
                         + ddlTripFrom.SelectedValue;
         }
         else
         {
-            aQuery = "select pname, place_id from " + tableName;
+            aQuery = "select distinct pname, place_id from " + tableName;
         }
         SqlDataSource3.SelectCommand = aQuery;
         ddlTripTo.Items.Clear();
@@ -195,70 +159,5 @@ public partial class Search : System.Web.UI.Page
         initToList();
         txtEndDate.Text = "";
         txtStartDate.Text = "";
-    }
-    protected void Button1_Click(object sender, EventArgs e)
-    {
-        if (Page.IsValid)
-        {
-            string resultTable;
-
-            Panel1.Visible = true;
-            DateTime startDate, endDate;
-            string placeFrom = null, placeTo = null;
-            if (ddlTripFrom.SelectedIndex > 0)
-                placeFrom = ddlTripFrom.SelectedValue;
-            if (ddlTripTo.SelectedIndex > 0)
-                placeTo = ddlTripTo.SelectedValue;
-
-            string formatString = "dd/MM/yyyy HH:mm";
-
-            bool startDateExist = DateTime.TryParseExact(txtStartDate.Text, formatString, CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
-            bool endDateExist = DateTime.TryParseExact(txtEndDate.Text, formatString, CultureInfo.InvariantCulture, DateTimeStyles.None, out endDate);
-
-
-            if (rblSearchOption.SelectedIndex == 1) //Offers
-            {
-                resultTable = "vRequestDetails";
-            }
-            else
-            {
-                resultTable = "vOfferDetails";
-            }
-
-            string searchQuery = "SELECT * FROM " + resultTable + " WHERE 1 = 1";
-
-            if (placeFrom != null)
-                searchQuery += " AND frm_id = " + placeFrom;
-
-            if (placeTo != null)
-                searchQuery += " AND to_id = " + placeTo;
-
-            if (startDateExist)
-                searchQuery += " AND date_time >= '" + startDate.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-
-            if (endDateExist)
-                searchQuery += " AND date_time <= '" + endDate.ToString("yyyy-MM-dd HH:mm:ss") + "'";
-
-
-            ListView listView = (ListView)ResultList.FindControl("ListView1");
-            string ConnectionString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
-            SqlConnection myConnection = new SqlConnection(ConnectionString);
-            SqlCommand cmd = new SqlCommand(searchQuery, myConnection);
-            try
-            {
-                myConnection.Open();
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataSet ds = new DataSet();
-                da.Fill(ds);
-                listView.DataSource = ds;
-                listView.DataBind();
-            }
-            finally
-            {
-                cmd.Dispose();
-                myConnection.Dispose();
-
-            }
-        }
     }
 }

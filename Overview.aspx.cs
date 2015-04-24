@@ -18,6 +18,7 @@ public partial class Overview : System.Web.UI.Page
     {
         string userAge = "";
         string user_id = Request.QueryString["id"].ToString();
+        userImage.ImageUrl = "~/GetImage.aspx?ImageID=" + user_id;
 
         if (!IsPostBack)
         {
@@ -37,13 +38,20 @@ public partial class Overview : System.Web.UI.Page
                 {
                     userName.Text = rd1["FName"].ToString() + " " + rd1["SName"].ToString();
                     userAge = rd1["dob"].ToString();
-                    DateTime dt = Convert.ToDateTime(userAge);
+                    if (userAge == "")
+                    { lblUserAge.Text = "No DOB"; }
+                    else 
+                    {
+                        lblUserAge.Text = userAge;
+                        DateTime dt = Convert.ToDateTime(userAge);
+
+                        DateTime now = DateTime.Today;
+                        int age = now.Year - dt.Year;
+                        if (now < dt.AddYears(age))
+                            age--;
+                        lblUserAge.Text = age.ToString() + " age";
+                    }
                     
-                    DateTime now = DateTime.Today;
-                    int age = now.Year - dt.Year;
-                    if(now < dt.AddYears(age))
-                        age --;
-                    lblUserAge.Text = age.ToString()+" age";
 
                     //To check if smoker
                     if (rd1["Smoker"].ToString().Equals("y"))

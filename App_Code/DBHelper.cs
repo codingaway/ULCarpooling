@@ -52,6 +52,46 @@ public class DBHelper
         return isUnique;
     }
 
+    public static bool isUserBanned(string email)
+    {
+        bool isBlocked = true;
+
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+        SqlConnection conn = new SqlConnection(conString);
+        SqlCommand cmd = new SqlCommand("select Access_level from login_info where email = @Email", conn);
+        cmd.Parameters.AddWithValue("@Email", email);
+       
+        SqlDataAdapter da = new SqlDataAdapter(cmd);
+        DataTable dt = new DataTable();
+
+        try
+        {
+            conn.Open();
+            da.Fill(dt);
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+                string output = row["Access_level"].ToString();
+                if(output != null)
+                {
+                    int accLevel = Convert.ToInt32(output);
+                    if (accLevel > 0)
+                        isBlocked = false;
+                }              
+            }
+        }
+        catch (SqlException ex){}
+        finally
+        {
+            da.Dispose();
+            conn.Dispose();
+        }
+        return isBlocked;
+    }
+
+
+
     public static bool addNewUser(string fName, string sName, string email, DateTime dob, string password, string question, string answer, string mobile, string category, string smoker, string gender)
      {
          //bool success = false;
@@ -220,4 +260,77 @@ public class DBHelper
     }
 
 
+
+    public static string [] getQandA(string email)
+    {
+        string[] qAndA = null;
+
+        SqlConnection conn;
+        SqlCommand cmd;
+
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+        conn = new SqlConnection();
+        conn.ConnectionString = conString;
+        cmd = new SqlCommand("select user_secret.Question, user_secret.Answer" + 
+            " from users join user_secret on users.User_ID = user_secret.User_ID" 
+            + " where users.Email= @Email", conn);
+        cmd.Parameters.AddWithValue("@Email", email);
+
+        SqlDataAdapter da = new SqlDataAdapter(cmd);
+        DataTable dt = new DataTable();
+
+        try
+        {
+            conn.Open();
+            da.Fill(dt);
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+                qAndA = new string[2];
+                qAndA[0] = row["Question"].ToString();
+                qAndA[1] = row["Answer"].ToString();
+            }
+        }
+        finally
+        {
+            da.Dispose();
+            conn.Dispose();
+        }
+        return qAndA;
+    }
+
+
+    public static bool verifySecreteAns(string email, string answer)
+    {
+        bool varified = false;
+        string hash = null;
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+        SqlConnection conn = new SqlConnection(conString);
+        SqlCommand cmd = new SqlCommand("Select user_secret.Answer from user_secret inner join users on " +
+            "users.User_ID = user_secret.User_ID where users.Email = @email", conn);
+        cmd.Parameters.AddWithValue("@email", email);
+        try
+        {
+            conn.Open();
+            var returnValue = cmd.ExecuteScalar();
+            if (returnValue != null)
+                hash = returnValue.ToString();
+        }
+        catch (NullReferenceException ex)
+        {
+            varified = false;
+        }
+        finally
+        {
+            conn.Dispose();
+            cmd.Dispose();
+        }
+
+        if (hash != null && Crypto.VerifyHashedPassword(hash, answer))
+            varified = true;
+        return varified;
+    }
+
 }
+

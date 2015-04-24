@@ -41,11 +41,11 @@ public partial class login : System.Web.UI.Page
                 creatAuthTicket(userName, userID + "," + accessLevel);
 
                 //Redirect user to original Return URL 
-                string strRedirect;
-                strRedirect = Request["ReturnUrl"];
-                if (strRedirect == null)
-                    strRedirect = "default.aspx";
-                Response.Redirect(strRedirect, true);
+                //string strRedirect;
+                //strRedirect = Request["ReturnUrl"];
+                //if (strRedirect == null)
+                //    strRedirect = "Dashboard.aspx";
+                Response.Redirect("Dashboard.aspx");
             }
             else //User access level is:0 = Access revoked
             {

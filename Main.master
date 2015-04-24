@@ -22,7 +22,6 @@
     </asp:ContentPlaceHolder>
 </head>
 <body>
-    <asp:SqlDataSource ID="SqlDataSource1" runat="server"></asp:SqlDataSource>
     <form id="form1" runat="server">
         <%--Add AJAX scrpit handler--%>
         <asp:ScriptManager ID="ScriptManager1" EnablePartialRendering="true" runat="server" />
@@ -90,7 +89,7 @@
             <!-- /container -->
             <footer class="footer">
                 <div class="container">
-                    <div class="row">
+                    <div class="row top-buffer">
 
                         <div class="col-md-3 top-margin text-space">
                             <ul class="footer--list">
@@ -113,15 +112,27 @@
 
                         <div class="col-md-3 top-margin text-space">
                             <div class="social-icons">
-                                <a href="#" target="_blank">
-                                    <img alt="Twitter Logo" class="twitter-datacamp-position" src="https://d3egmynekukbig.cloudfront.net/assets/twitter-6a5067dc2efb237a71046008a09e940d.png" /></a>
-                            </div>
-
-                            <div>
-                                <a href="#" target="_blank">
-                                    <img alt="Facebook Logo" class="facebook-datacamp-position" src="https://d3egmynekukbig.cloudfront.net/assets/facebook-8b2ed1afff78708231dbd8dd75d2d22b.png" /></a>
-                            </div>
+                                <span class="text-uppercase" style="color:lightgray">Follow us</span>
+                                <ul>
+                                    <li>
+                                        <a href="#" target="_blank">
+                                    <img alt="Twitter Logo" class="" src="Images/twitter.png" /></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" target="_blank">
+                                    <img alt="Facebook Logo" class="" src="Images/facebook.png" /></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" target="_blank">
+                                    <img alt="Facebook Logo" class="" src="Images/googleplus.png" /></a>
+                                    </li>
+                                    <li>
+                                        <a href="#" target="_blank">
+                                    <img alt="Facebook Logo" class="" src="Images/rssfeed.png" /></a>
+                                    </li>
+                                </ul>
                         </div>
+                            </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">

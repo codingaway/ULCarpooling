@@ -19,12 +19,7 @@ public partial class uscCustomList : System.Web.UI.UserControl
     {
         if (Request.IsAuthenticated) //Check first if request is authenticated 
         {
-            //Get user ID from FormAuthentocation Ticket
-            string[] userData;
-            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
-            FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
-            userData = ticket.UserData.Split(',');
-            userID = userData[0];
+            userID = getUserIDFromCookie();
         }
 
         lblHeading.Text = listType == DBHelper.OFFER_LIST ? "Offers" : "Request";
@@ -162,7 +157,6 @@ public partial class uscCustomList : System.Web.UI.UserControl
     {
         int row = 0;
         string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ToString();
-        //DataSet dataset = new DataSet();
 
         string aQuery;
         if (listType == DBHelper.OFFER_LIST)

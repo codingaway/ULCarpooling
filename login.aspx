@@ -34,9 +34,9 @@
             <asp:Button ID="btnLogin" CssClass="btn btn-lg btn-primary btn-block" runat="server" Text="Sign in" ValidationGroup="Login" OnClick="btnLogin_Click" />
             <p>
                 <span>Not registered? </span>
-                <asp:LinkButton ID="btnSignup" runat="server">Sign up</asp:LinkButton>
+                <asp:HyperLink ID="btnSignup" runat="server" NavigateUrl="~/Register.aspx">Sign up</asp:HyperLink>
             </p>
-            <asp:LinkButton ID="btnForgotPass" runat="server">Forgot Password</asp:LinkButton>
+            <asp:HyperLink ID="btnForgotPass" NavigateUrl="~/Recovery.aspx" runat="server">Forgot Password</asp:HyperLink>
             <br />
             <asp:Label ID="lblErrorMsg" CssClass="text-danger text-right" runat="server" Text="Label" Visible="false"></asp:Label>
         </div>

@@ -2,6 +2,10 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <%@ Register Src="~/Controls/uscCustomList.ascx" TagPrefix="uc1" TagName="uscCustomList" %>
+<%@ Register Src="~/Controls/GraphCtrlBarOfferPick.ascx" TagPrefix="uc1" TagName="GraphCtrlBarOfferPick" %>
+<%@ Register Src="~/Controls/GraphCtrlBarRequestDrop.ascx" TagPrefix="uc1" TagName="GraphCtrlBarRequestDrop" %>
+
+
 
 
 
@@ -17,7 +21,7 @@
             <div class="item active">
                 <img src="Images/bridge2.png" />
                 <div class="carousel-caption page-header">
-                    <h1>UL Carpooling <small>Subtext for header</small></h1>
+                    <h1>UL Carpooling <small>Commute smarter</small></h1>
                 </div>
             </div>
             <!-- End Item -->
@@ -90,6 +94,7 @@
                 </div>
             </div>
             <div class="col-md-4">
+                
                 <div class="well sidebar">
 
                     <h2>Side column</h2>

@@ -202,4 +202,14 @@ span.stars span {
     background-position: 0 0;
 }
 
+.social-icons {
+    position: relative;
+}
+.social-icons ul {
+    }
+.social-icons li{display: inline;}
+.social-icons a img{
+    float: left;
+    margin-left: 5px;
+}
     
