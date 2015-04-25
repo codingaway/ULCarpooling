@@ -6,6 +6,7 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="Content/chosen.min.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -127,15 +128,95 @@
             <asp:Panel ID="Panel1" runat="server">
                 <div class="col-md-8">
                     <h4>
-                        <asp:Label ID="Label1" runat="server" Text="Search Results"></asp:Label>
+                        <asp:Label ID="lblHeading" runat="server"></asp:Label>
                     </h4>
-                    <uc1:uscCustomList runat="server" ID="ResultList" />
+                   <%-- <uc1:uscCustomList runat="server" ID="ResultList" />--%>
+
+
+                     <asp:ListView ID="ListView1" DataSourceID="SqlDataSource1" runat="server" OnItemCommand="ListView1_ItemCommand" OnItemDataBound="ListView1_ItemDataBound">
+            <LayoutTemplate>
+                <div runat="server">
+                    <div id="itemPlaceholder" runat="server" />
+                    <asp:DataPager ID="pager1" PageSize="10" runat="server">
+                        <Fields>
+                            <asp:NumericPagerField />
+                        </Fields>
+                    </asp:DataPager>
+                </div>
+            </LayoutTemplate>
+            <ItemTemplate>
+                <cc1:CollapsiblePanelExtender ID="CollapsiblePanelExtender1" runat="server"
+                    TargetControlID="contentPanel"
+                    ExpandControlID="titlePanel"
+                    CollapseControlID="titlePanel"
+                    Collapsed="true"
+                    ImageControlID="imgShowHide"
+                    TextLabelID="lblShowHideDetails"
+                    CollapsedText=""
+                    ExpandedText=""
+                    ExpandedImage="~/Images/up.png"
+                    CollapsedImage="~/Images/down.png" />
+
+                <div class="panel panel-info list-item">
+                    <div class="panel-heading">
+                        <asp:Panel ID="titlePanel" runat="server" CssClass="collapsePanelHeader">
+
+
+                            <asp:Label ID="lblShowHideDetails" runat="server" Text=""></asp:Label>
+                            <span id="panel-title" class="panel-title">
+                                <span class="glyphicon glyphicon-map-marker"></span><span class="place-title"><%#Eval("frm_place") %></span> &nbsp;To&nbsp;<span class="place-title"><%#Eval("to_place")%></span><br /><span class="glyphicon glyphicon-calendar"></span><span class="date-time"><%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %></span></span><asp:Image ID="imgShowHide" runat="server" CssClass="arrow" ImageUrl="~/Images/down.png" />
+                        </asp:Panel>
+                    </div>
+                    <asp:Panel ID="contentPanel" runat="server">
+                        <div class="panel-body listing-item">
+
+                            <asp:Panel ID="pnlAnonymous" runat="server">
+                                <span>Please 
+                                                <asp:HyperLink ID="lbtnLogin" NavigateUrl="~/login.aspx" runat="server">Sign in</asp:HyperLink>
+                                    to respond to any listing. Not registered yet? 
+                                                <asp:HyperLink ID="lbtnRegister" NavigateUrl="~/Register.aspx" runat="server">Sign up</asp:HyperLink>
+                                    for free.
+                                </span>
+                            </asp:Panel>
+                            <asp:Panel ID="pnlLoggedIn" runat="server" Visible="False">
+                                <div class="col-md-1">
+                                    <img alt="user picture" class="img-circle" height="40" width="40" src='<%=ResolveClientUrl("~/GetImage.aspx?ImageID=")%><%#Eval("User_ID")%>' />
+                                </div>
+                                <div class="col-md-4">
+                                    <asp:HyperLink ID="hlViewOverview" runat="server"><%#Eval("full_name") %></asp:HyperLink>
+                                    <br />
+                                    <asp:Label ID="lblStars" CssClass="stars" runat="server" Text=""></asp:Label>
+                                    <span class="small text-muted">(<asp:Label ID="lblCount" runat="server" Text=""></asp:Label>)</span>
+                                </div>
+                                <div class="col-md-7">
+                                    <asp:Label ID="lblSeats" runat="server" CssClass="small text-success pull-right" Text="Seats: " Enabled="false" Visible="false"></asp:Label><br />
+                                    <asp:Button CssClass="btn btn-info pull-right" ID="btnCmd" CommandName="ItemCommand" runat="server" Text="Send request" />
+                                    <asp:DataList ID="DataList1" runat="server" RepeatDirection="Horizontal" Enabled="false" RepeatLayout="Flow">
+                                        <HeaderTemplate>
+                                            <asp:Label ID="lblHeading" Text="People confirmed this trip:" runat="server" />
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <a href="/Overview.aspx?id=<%#Eval("user_id")%>"><%#Eval("uname") %></a>
+                                        </ItemTemplate>
+                                    </asp:DataList>
+                                </div>
+                            </asp:Panel>
+                        </div>
+                    </asp:Panel>
+
+                </div>
+            </ItemTemplate>
+        </asp:ListView>
+
+
                 </div>
             </asp:Panel>
         </div>
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" runat="Server">
+    <script src="Scripts/moment.min.js"></script>
+    <script src="Scripts/bootstrap-datetimepicker.min.js"></script>
     <script src="Scripts/chosen.jquery.min.js"></script>
     <script type="text/javascript">
         function BindControlEvents() {
@@ -175,108 +256,6 @@
         prm.add_endRequest(function () {
             BindControlEvents();
         });
-    </script>
-    <script type="text/javascript">
-        /* Date validator -- @Authour: Abdul Halim */
-
-        //This funtion called from custome validation control that passes two arguments, sender and args
-        //It validates a control by comparing date values from calling control with value from other control that has an ID 'txtStartDate'
-        function compareDateValues(sender, args)
-        {
-            console.log("Running comparison method");
-            var date1, date2, now;
-            now = new Date();
-            date1 = stringToDate(document.getElementById('ContentPlaceHolder1_txtStartDate').value);
-            date2 = stringToDate(args.Value);
-            if (date1 == null)
-            {
-                console.log("Date is null");
-                date1 = now;
-            }
-            else
-            {
-                console.log("Date is not null");
-            }
-            if (date2 < date1)
-                 args.IsValid = false;
-             else
-                 args.IsValid = true;
-        }
-
-        function isValidDate(dateString) {
-
-            console.log("Running isVAlidDate method");
-            var dateVal = dateString;
-            if (dateVal == "") //Check if empty string
-                return false;
-
-            //define a regex matching date pattern "dd/MM/yyyy HH:mm"
-            var datePatern = /^((0?[1-9])|([1-2]\d)|(3[0-1]))\/((0?[1-9])|(1[0-2]))\/(\d{2}|\d{4})[\s]{1}(((0|1){1}\d)|2[0-3])\:([0-5]{1}\d)$/;
-
-            if (!datePatern.test(dateVal))
-                return false;
-
-            //split the string for each section
-            var delimiter = /\/|\:|\s/;
-            var dtArray = dateVal.split(delimiter);
-
-            //Checks for dd/mm/yyyy format.
-            var day = dtArray[0];
-            var month = dtArray[1];
-            var year = dtArray[2];
-            //hour and minutes should be valid after regex match
-
-            if (month < 1 || month > 12)
-                return false;
-            else if (day < 1 || day > 31)
-                return false;
-            else if ((month == 4 || month == 6 || month == 9 || month == 11) && day == 31)
-                return false;
-            else if (month == 2) {
-                var isleap = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
-                if (day > 29 || (day == 29 && !isleap))
-                    return false;
-            }
-            return true;
-        }
-
-
-        //A function that returns date object from a validated date string as 'dd/MM/yyyy HH:mm' format
-        function stringToDate(dateString) {
-            var date = null;
-            if (dateString != null) {
-                var delimiter = /\/|\:|\s/;
-                var dtArray = dateString.split(delimiter);
-                var date = new Date();
-                //Date string is  "dd/mm/yyyy HH:mm" format.
-                var day = dtArray[0];
-                var month = dtArray[1];
-                var year = dtArray[2];
-                var hours = dtArray[3];
-                var minutes = dtArray[4];
-                date.setFullYear(year, month - 1, day);
-                date.setHours(hours);
-                date.setMinutes(minutes);
-            }
-            return date;
-        }
-
-
-        //Method for checking a single date input from customvalidation parameters
-        function isValidDateValue(sender, args) {
-            var inputDate;
-            var dateString = args.Value;
-            if (isValidDate(dateString)) {
-                inputDate = stringToDate(dateString);
-                now = new Date();
-                if (inputDate < now)
-                    args.IsValid = false;
-                else
-                    args.IsValid = true;
-            }
-            else
-                args.IsValid = false;
-        }
     </script>
 </asp:Content>
 

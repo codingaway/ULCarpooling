@@ -10,7 +10,7 @@
                 <fieldset>
                     <legend>Contact Us</legend>
          <div class="modal-header">
-             <label for="Heading" style="font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: medium; font-style: normal; color: #000000">Talk to me about anything. If you’d like to give any feedback send it or if you have any question ask me, I’ll get back to you shortly.</label>
+             <p>If you have any queries or simply want to send us your valuable feedback regarding this site you can forward your message using the form below. Thank you.</p>
          </div>
                        <div class="form-group">
                         <label class="control-label col-md-3" for="Name">Name :</label>

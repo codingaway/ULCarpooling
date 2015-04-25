@@ -3,9 +3,12 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h4>
-            <asp:Label ID="lblHeading" runat="server"></asp:Label></h4>
-        <asp:ListView ID="ListView1" runat="server" OnItemCommand="ListView1_ItemCommand" OnItemDataBound="ListView1_ItemDataBound">
+
+
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:DbConnString %>" >
+        </asp:SqlDataSource>
+
+        <asp:ListView ID="ListView1" DataSourceID="SqlDataSource1" runat="server" OnItemCommand="ListView1_ItemCommand" OnItemDataBound="ListView1_ItemDataBound">
             <LayoutTemplate>
                 <div runat="server">
                     <div id="itemPlaceholder" runat="server" />
@@ -36,13 +39,7 @@
 
                             <asp:Label ID="lblShowHideDetails" runat="server" Text=""></asp:Label>
                             <span id="panel-title" class="panel-title">
-                                <span class="glyphicon glyphicon-map-marker"></span><span class="place-title"><%#Eval("frm_place") %></span> &nbsp;To&nbsp;<span class="place-title"><%#Eval("to_place")%></span>
-
-                                <br />
-                                <span class="glyphicon glyphicon-calendar"></span>
-                                <span class="date-time"><%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %></span>
-                            </span>
-                            <asp:Image ID="imgShowHide" runat="server" CssClass="arrow" ImageUrl="~/Images/down.png" />
+                                <span class="glyphicon glyphicon-map-marker"></span><span class="place-title"><%#Eval("frm_place") %></span> &nbsp;To&nbsp;<span class="place-title"><%#Eval("to_place")%></span><br /><span class="glyphicon glyphicon-calendar"></span><span class="date-time"><%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %></span></span><asp:Image ID="imgShowHide" runat="server" CssClass="arrow" ImageUrl="~/Images/down.png" />
                         </asp:Panel>
                     </div>
                     <asp:Panel ID="contentPanel" runat="server">

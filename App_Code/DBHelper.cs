@@ -332,5 +332,112 @@ public class DBHelper
         return varified;
     }
 
+
+    public static bool awaitingConfirm(string id, string listingID, int listType)
+    {
+        int row = 0;
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ToString();
+
+        string aQuery;
+        if (listType == DBHelper.OFFER_LIST)
+        {
+            aQuery = "SELECT count(*) FROM offer_response"
+                + " WHERE offer_id = @list_id"
+                + " AND user_id = @userID";
+        }
+        else
+        {
+            aQuery = "SELECT count(*) FROM req_response"
+                + " WHERE req_id = @list_id"
+                + " AND user_id = @userID";
+        }
+        SqlConnection conn = new SqlConnection(conString);
+        SqlCommand cmd = new SqlCommand(aQuery, conn);
+        cmd.Parameters.AddWithValue("@list_id", listingID);
+        cmd.Parameters.AddWithValue("@userID", id);
+
+        try
+        {
+            conn.Open();
+            row = Convert.ToInt32(cmd.ExecuteScalar());
+        }
+        finally
+        {
+            conn.Dispose();
+            cmd.Dispose();
+        }
+        if (row > 0)
+            return true;
+        else
+            return false;
+    }
+
+    public static bool isOwnListing(string id, string listingID, int listType)
+    {
+        int row = 0;
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ToString();
+
+        string aQuery;
+        if (listType == DBHelper.OFFER_LIST)
+        {
+            aQuery = "SELECT count(*) FROM offer_rec"
+                + " WHERE offer_id = @list_id"
+                + " AND user_id = @userID";
+        }
+        else
+        {
+            aQuery = "SELECT count(*) FROM req_rec"
+                + " WHERE Request_id = @list_id"
+                + " AND user_id = @userID";
+        }
+        SqlConnection conn = new SqlConnection(conString);
+        SqlCommand cmd = new SqlCommand(aQuery, conn);
+        cmd.Parameters.AddWithValue("@list_id", listingID);
+        cmd.Parameters.AddWithValue("@userID", id);
+
+        try
+        {
+            conn.Open();
+            row = Convert.ToInt32(cmd.ExecuteScalar());
+        }
+        finally
+        {
+            conn.Dispose();
+            cmd.Dispose();
+        }
+        if (row > 0)
+            return true;
+        else
+            return false;
+    }
+
+    /* Medhods that returns a dataset of confiremd user given an offer_id*/
+    public static int getConfirmedPassengers(string offer_id, DataSet dataset)
+    {
+        int rowCount = 0;
+        string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ToString();
+        string aQuery = "SELECT offer_response.user_id, users.FName + ' ' + users.SName AS uname FROM users"
+            + " JOIN offer_response ON users.User_ID = offer_response.user_id"
+            + " WHERE offer_response.offer_id = @list_id"
+            + " AND offer_response.status = 'Confirmed'";
+        SqlConnection conn = new SqlConnection(conString);
+        SqlCommand cmd = new SqlCommand(aQuery, conn);
+        cmd.Parameters.AddWithValue("@list_id", offer_id);
+
+        SqlDataAdapter da = new SqlDataAdapter();
+        da.SelectCommand = cmd;
+        try
+        {
+            conn.Open();
+            rowCount = da.Fill(dataset);
+        }
+        finally
+        {
+            da.Dispose();
+            cmd.Dispose();
+        }
+        return rowCount;
+    }
+
 }
 

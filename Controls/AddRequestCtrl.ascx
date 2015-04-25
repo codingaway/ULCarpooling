@@ -86,7 +86,9 @@
    <asp:RequiredFieldValidator ID="RFVdate" runat="server" ControlToValidate="txtDate" ErrorMessage="* Please Select Date *"  ValidationGroup="AddRequest" ForeColor="Red"></asp:RequiredFieldValidator><br />          
    <asp:CustomValidator ID="valStartDate" runat="server" ControlToValidate="txtDate" ErrorMessage="* Date-time is not valid *" ClientValidationFunction="isValidDateValue" ValidationGroup="AddRequest" ForeColor="Red">
    </asp:CustomValidator>
-  <asp:CompareValidator ID="CompareDate" runat="server" ErrorMessage="* Invalid Date *" ControlToValidate="txtDate" ValueToCompare="<%# DateTime.Today.ToString() %>" Operator="GreaterThanEqual" ValidationGroup="AddRequest"></asp:CompareValidator>
+<%--  <asp:CompareValidator ID="CompareDate" runat="server" ErrorMessage="* Invalid Date *" 
+      ControlToValidate="txtDate" ValueToCompare="<%# DateTime.Today.ToString() %>" Operator="GreaterThanEqual" 
+      ValidationGroup="AddRequest"></asp:CompareValidator>--%>
   </div>     
 </div>
 </div>

@@ -2,37 +2,53 @@
 
 //This funtion called from custome validation control that passes two arguments, sender and args
 //It validates a control by comparing date values from calling control with value from other control that has an ID 'txtStartDate'
-function compareDateValues(sender, args)
-{
+
+function compareDateValues(sender, args) {
+    console.log("Running comparison method");
     var date1, date2, now;
     now = new Date();
-    var dateString = null;
-    dateString1 = document.getElementById('ContentPlaceHolder1_txtEndDate').value;
+    //var dateString = null;
+    dateString1 = document.getElementById('ContentPlaceHolder1_txtStartDate').value;
+
     //var dateString2 = document.getElementById('ContentPlaceHolder1_txtEndDate').value;
     var dateString2 = args.Value;
-
-    if (dateString1 == null) //If only end-date specified then only check if end-date is not in the past
+    console.log("Date 1: " + dateString1);
+    console.log("Date 2: " + dateString2);
+    if (dateString1 == "") //If only end-date specified then only check if end-date is not in the past
     {
-        if (!isValidDate(dateString2) || (stringToDate(dateString2) < now))
+        console.log("dateString1 is null");
+        if (!isValidDate(dateString2) || (stringToDate(dateString2) < now)) {
             args.IsValid = false;
-        else
+            console.log("dateString2 is NOT VALID");
+        }
+        else {
             args.IsValid = true;
+            console.log("dateString2 is VALID");
+        }
     }
 
-    //There is value in start-date do we need to compare both dates
-    else if (isValidDate(dateString1) && isValidDate(dateString2))
-    {
+        //There is value in start-date do we need to compare both dates
+    else if (isValidDate(dateString1) && isValidDate(dateString2)) {
+        console.log("dateString1 is NOT null");
         date1 = stringToDate(dateString1);
         date2 = stringToDate(dateString2);
-        if (date1 < now)
+        if (date1 < now) {
             args.IsValid = false;
-        else if (date2 < date1)
+            console.log("Invalid data1 < now");
+        }
+        else if (date2 < date1) {
             args.IsValid = false;
-        else
+            console.log("Invalid data2 < date1");
+        }
+        else {
             args.IsValid = true;
+            console.log("Both dates are valid");
+        }
     }
-    else
+    else {
         args.IsValid = false;
+        console.log("Invalid: data1 or date2 is not valid date format");
+    }
 }
 
 function isValidDate(dateString) {
@@ -67,42 +83,51 @@ function isValidDate(dateString) {
         if (day > 29 || (day == 29 && !isleap))
             return false;
     }
+    console.log(dateString + " passed regex checking.");
     return true;
-}    
+}
 
 
 //A function that returns date object from a validated date string as 'dd/MM/yyyy HH:mm' format
 function stringToDate(dateString) {
-
-    var delimiter = /\/|\:|\s/;
-    var dtArray = dateString.split(delimiter);
-    var date = new Date();
-    //Date string is  "dd/mm/yyyy HH:mm" format.
-    var day = dtArray[0];
-    var month = dtArray[1];
-    var year = dtArray[2];
-    var hours = dtArray[3];
-    var minutes = dtArray[4];
-    date.setFullYear(year, month - 1, day);
-    date.setHours(hours);
-    date.setMinutes(minutes);
+    var date = null;
+    if (dateString != null) {
+        var delimiter = /\/|\:|\s/;
+        var dtArray = dateString.split(delimiter);
+        var date = new Date();
+        //Date string is  "dd/mm/yyyy HH:mm" format.
+        var day = dtArray[0];
+        var month = dtArray[1];
+        var year = dtArray[2];
+        var hours = dtArray[3];
+        var minutes = dtArray[4];
+        date.setFullYear(year, month - 1, day);
+        date.setHours(hours);
+        date.setMinutes(minutes);
+    }
     return date;
 }
 
 
 //Method for checking a single date input from customvalidation parameters
-function isValidDateValue(sender, args)
-{
+function isValidDateValue(sender, args) {
+    console.log("Running isValidDateValue method");
     var inputDate;
     var dateString = args.Value;
     if (isValidDate(dateString)) {
         inputDate = stringToDate(dateString);
         now = new Date();
-        if (inputDate < now)
+        if (inputDate < now) {
             args.IsValid = false;
-        else
+            console.log("Invalid date value: date < now");
+        }
+        else {
             args.IsValid = true;
+            console.log("Valid date value: date >= now");
+        }
     }
-    else
+    else {
         args.IsValid = false;
+        console.log("Invalid fprmate : regex failed");
+    }
 }

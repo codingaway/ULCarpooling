@@ -30,19 +30,27 @@
        <div class="row">
        <div class="col-md-5">
          <label for="Depart">County :</label>
-           <asp:DropDownList ID="DDdepartCounty" CssClass="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DDdepartCounty_SelectedIndexChanged1">
+           <asp:DropDownList ID="DDdepartCounty" CssClass="form-control" runat="server" AutoPostBack="True" 
+               OnSelectedIndexChanged="DDdepartCounty_SelectedIndexChanged1">
            </asp:DropDownList>
        </div> 
        <div class="col-md-5">
          <label for="Depart">Place :</label>
-           <asp:DropDownList ID="DDdepartPlaces" CssClass="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DDdepartPlaces_SelectedIndexChanged1" Enabled="False">
+           <asp:DropDownList ID="DDdepartPlaces" CssClass="form-control" runat="server" AutoPostBack="True" 
+               OnSelectedIndexChanged="DDdepartPlaces_SelectedIndexChanged1" Enabled="False">
            </asp:DropDownList>
        </div>
        </div>
     <div class="row">
         <div class="boxValidation">
-     <asp:RequiredFieldValidator ID="RFVdepartCounty" InitialValue="0" runat="server" ControlToValidate="DDdepartCounty" ErrorMessage="* Please Select County from Start Location *"  ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator><br />
-     <asp:RequiredFieldValidator ID="RFVdepartPlaces" InitialValue="0" runat="server" ControlToValidate="DDdepartPlaces" ErrorMessage="* Please Select Places from Start Location *"  ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator>
+     <asp:RequiredFieldValidator ID="RFVdepartCounty" InitialValue="0" 
+         runat="server" ControlToValidate="DDdepartCounty" 
+         ErrorMessage="* Please Select County from Start Location *"  
+         ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator><br />
+     <asp:RequiredFieldValidator ID="RFVdepartPlaces" InitialValue="0" runat="server" 
+         ControlToValidate="DDdepartPlaces" 
+         ErrorMessage="* Please Select Places from Start Location *"  
+         ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator>
         </div>
     </div> 
 </div> 
@@ -52,19 +60,25 @@
     <div class="row">
       <div class="col-md-5">
         <label for="Depart">County :</label>
-          <asp:DropDownList ID="DDarrivalCounty" CssClass="form-control" runat="server" OnSelectedIndexChanged="DDarrivalCounty_SelectedIndexChanged1" AutoPostBack="True" Enabled="False">
+          <asp:DropDownList ID="DDarrivalCounty" CssClass="form-control" runat="server" 
+              OnSelectedIndexChanged="DDarrivalCounty_SelectedIndexChanged1" AutoPostBack="True" Enabled="False">
           </asp:DropDownList>
       </div>
       <div class="col-md-5">
         <label for="Depart">Place :</label>
-          <asp:DropDownList ID="DDarrivalPlaces" CssClass="form-control" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DDarrivalPlaces_SelectedIndexChanged1" Enabled="False">
+          <asp:DropDownList ID="DDarrivalPlaces" CssClass="form-control" runat="server" AutoPostBack="True" 
+              OnSelectedIndexChanged="DDarrivalPlaces_SelectedIndexChanged1" Enabled="False">
           </asp:DropDownList>
       </div>
      </div>
     <div class="row">
      <div class="boxValidation">
-      <asp:RequiredFieldValidator ID="RFVarrivalCounty" InitialValue="0" runat="server" ControlToValidate="DDarrivalCounty" ErrorMessage="* Please Select County from End Location *" ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator><br />       
-      <asp:RequiredFieldValidator ID="RFVarrivalPlaces" InitialValue="0" runat="server" ControlToValidate="DDarrivalPlaces" ErrorMessage="* Please Select Places from End Location *" ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator>
+      <asp:RequiredFieldValidator ID="RFVarrivalCounty" InitialValue="0" runat="server" 
+          ControlToValidate="DDarrivalCounty" ErrorMessage="* Please Select County from End Location *" 
+          ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator><br />       
+      <asp:RequiredFieldValidator ID="RFVarrivalPlaces" InitialValue="0" runat="server" 
+          ControlToValidate="DDarrivalPlaces" ErrorMessage="* Please Select Places from End Location *" 
+          ValidationGroup="AddOffer" ForeColor="Red" ></asp:RequiredFieldValidator>
      </div>
     </div>
 </div>
@@ -85,10 +99,17 @@
                         
  <div class="row">
   <div class="boxValidation">
-   <asp:RequiredFieldValidator ID="RFVdate" runat="server" ControlToValidate="txtDate" ErrorMessage="* Please Select Date *"  ValidationGroup="AddOffer" ForeColor="Red"></asp:RequiredFieldValidator><br />          
-   <asp:CustomValidator ID="valStartDate" runat="server" ControlToValidate="txtDate" ErrorMessage="* Date-time is not valid *" ClientValidationFunction="isValidDateValue" ValidationGroup="AddOffer" ForeColor="Red">
+   <asp:RequiredFieldValidator ID="RFVdate" runat="server" ControlToValidate="txtDate" 
+       ErrorMessage="* Please Select Date *"  
+       ValidationGroup="AddOffer" ForeColor="Red"></asp:RequiredFieldValidator><br />          
+   <asp:CustomValidator ID="valStartDate" runat="server" ControlToValidate="txtDate" 
+       ErrorMessage="* Date-time is not valid *" ClientValidationFunction="isValidDateValue" 
+       ValidationGroup="AddOffer" ForeColor="Red">
    </asp:CustomValidator>
-      <asp:CompareValidator ID="CompareDate" runat="server" ErrorMessage="* Invalid Date *" ControlToValidate="txtDate" ValueToCompare="<%# DateTime.Today.ToString() %>" Operator="GreaterThanEqual" ValidationGroup="AddOffer"></asp:CompareValidator>
+<%--      <asp:CompareValidator ID="CompareDate" runat="server" 
+          ErrorMessage="* Invalid Date *" ControlToValidate="txtDate" 
+          ValueToCompare="<%# DateTime.Today.ToString() %>" Operator="GreaterThanEqual" 
+          ValidationGroup="AddOffer"></asp:CompareValidator>--%>
   </div>     
 </div>
  </div>
