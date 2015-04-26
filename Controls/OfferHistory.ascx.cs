@@ -148,7 +148,7 @@ public partial class OfferHistory : System.Web.UI.UserControl
             SqlCommand cmd;
             if (ViewState["table"].Equals("Reviews"))
             {
-                cmd = new SqlCommand("Insert into Reviews(user_id, reviewed_by, listing_id, listing_type, rating, comment, submit_date) Values(@userID, @reviewedBy, @listingID, @listingType, @rating, @comment, @sumbmitDate)");
+                cmd = new SqlCommand("Insert into Reviews(user_id, reviewed_by, listing_id, listing_type, rating, comment, submit_date) Values(@userID, @reviewedBy, @listingID, @listingType, @rating, @comment, @submitDate)");
                 cmd.Parameters.AddWithValue("@userID", selectedUser);
                 cmd.Parameters.AddWithValue("@reviewedBy", userID);
                 cmd.Parameters.AddWithValue("@listingID", ViewState["offer_id"].ToString());

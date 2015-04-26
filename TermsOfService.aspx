@@ -4,7 +4,9 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    
+   <div class="row top-buffer">
+    <div class="col-md-1"></div>
+    <div class="well col-md-10">  
     
 <p><h2>TERMS OF SERVICE</h2></p>
 
@@ -39,7 +41,9 @@ ULCarpooling has the right to terminate user relations (by blocking, banning, re
 
 6. Data Protection<br />
 ULCarpooling handles the personal data of its users in accordance with our privacy policy and data protection laws.<br />
-
+    </div>
+    <div class="col-md-1"></div>
+    </div>
 
 
 </asp:Content>

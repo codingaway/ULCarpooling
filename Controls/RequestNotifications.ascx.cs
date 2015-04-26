@@ -46,9 +46,15 @@ public partial class RequestNotifications : System.Web.UI.UserControl
         Button btn3 = (Button)e.Item.FindControl("btnDecline");
         Button btn4 = (Button)e.Item.FindControl("btnConfirm");
         DataRowView rowView = (DataRowView)e.Item.DataItem;
+        HyperLink hpl = (HyperLink)e.Item.FindControl("hlViewOverview");
         btn3.CommandArgument = rowView["Request_id"].ToString();
         btn4.CommandArgument = rowView["Request_id"].ToString();
         ViewState["dID"] = rowView["driver_id"].ToString();
+
+        string request_id = rowView["Request_id"].ToString();
+        string[] nameID = getDriverNameID(request_id);
+        hpl.Text = nameID[1];
+        hpl.NavigateUrl = ResolveClientUrl("/Overview.aspx") + "?id=" + nameID[0];
     }
 
     private Boolean InsertUpdateData(SqlCommand cmd)
@@ -74,5 +80,36 @@ public partial class RequestNotifications : System.Web.UI.UserControl
             con.Close();
             con.Dispose();
         }
+    }
+
+    protected string[] getDriverNameID(string requestID)
+    {
+        string connection = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+        SqlConnection conn = new SqlConnection();
+        conn.ConnectionString = connection;
+        string[] nameID = new string[2];
+        using (SqlCommand cmd = new SqlCommand("Select driver_id, driver_name  from vRequestsNotifications Where Request_id =" + requestID, conn))
+        {
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            try
+            {
+                conn.Open();
+                da.Fill(dt);
+
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    nameID[0] = row["driver_id"].ToString();
+                    nameID[1] = row["driver_name"].ToString();
+                }
+            }
+            finally
+            {
+                da.Dispose();
+                conn.Dispose();
+            }
+        }
+        return nameID;
     }
 }

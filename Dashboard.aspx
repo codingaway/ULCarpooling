@@ -42,12 +42,26 @@
                                             <label for="txtName" class="col-sm-4 control-label">Name: </label>
                                             <div class="col-sm-8">
                                                  <asp:TextBox ID="txtName" runat="server" Text="" />
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtName"
+                                                    ValidationGroup="valGroupEditProfile" Display="Dynamic"
+                                                     ErrorMessage="First name and Surname required"></asp:RequiredFieldValidator>
+                                                
+                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="txtName"
+                                                    ErrorMessage="Name is not in right format" ValidationGroup="valGroupEditProfile" Display="Dynamic"
+                                                     ValidationExpression="^([\w'-])+(\s){1}([\w'-])+$"></asp:RegularExpressionValidator>
                                             </div>
                                           </div>
                                         <div class="form-group">
                                             <label for="txtPhone" class="col-sm-4 control-label">Phone: </label>
                                             <div class="col-sm-8">
                                                    <asp:TextBox ID="txtPhone" runat="server" Text="" />
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" 
+                                                    ValidationGroup="valGroupEditProfile" runat="server" Display="Dynamic"
+                                                    ErrorMessage="Phone number required" ControlToValidate="txtPhone"></asp:RequiredFieldValidator>
+                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator3" 
+                                                    ValidationGroup="valGroupEditProfile" runat="server" Display="Dynamic"
+                                                    ControlToValidate="txtPhone" ValidationExpression="^([\d+]){7,15}$"
+                                                     ErrorMessage="Phone number format is not right"></asp:RegularExpressionValidator>
                                             </div>
                                           </div>
                                         <div class="form-group">
@@ -69,25 +83,37 @@
                                             <label for="txtDOB" class="col-sm-4 control-label">Date of Birth: </label>
                                             <div class="col-sm-8">
                                                    <asp:TextBox ID="txtDOB" runat="server" />
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDOB"
+                                                    ValidationGroup="valGroupEditProfile" Display="Dynamic"
+                                                     ErrorMessage="DOB required"></asp:RequiredFieldValidator>
+                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="txtDOB"
+                                                    ErrorMessage="DoB is not in right format" ValidationGroup="valGroupEditProfile" Display="Dynamic"
+                                                     ValidationExpression="^((0?[1-9])|([1-2]\d)|(3[0-1]))\/((0?[1-9])|(1[0-2]))\/(\d{2}|\d{4})$"></asp:RegularExpressionValidator>
                                                  <cc1:CalendarExtender ID="CalendarExtender1" runat="server" TargetControlID="txtDOB" Format="dd/MM/yyyy"/>
+
                                             </div>
                                           </div>
                                         <div class="form-group">
                                             <label for="txtOldPW" class="col-sm-4 control-label">Old Password: </label>
                                             <div class="col-sm-8">
                                                  <asp:TextBox ID="txtOldPW" runat="server" Text="" />
+                           
                                             </div>
                                           </div>
                                         <div class="form-group">
                                             <label for="txtNewPW" class="col-sm-4 control-label">New Password: </label>
                                             <div class="col-sm-8">
                                                    <asp:TextBox ID="txtNewPW" runat="server" Text="" />
+
                                             </div>
                                           </div>
                                         <div class="form-group">
                                             <label for="txtConPW" class="col-sm-4 control-label">Confirm Password: </label>
                                             <div class="col-sm-8">
                                                    <asp:TextBox ID="txtConPW" runat="server" Text="" />
+                                                <asp:CompareValidator ID="CompareValidator1" runat="server" 
+                                                    ErrorMessage="New passwords don't match!" ValidationGroup="valGroupEditProfile"
+                                                    ControlToValidate="txtConPW" ControlToCompare="txtNewPW" Operator="Equal"  Display="Dynamic"></asp:CompareValidator>
                                             </div>
                                           </div>
                                         <div class="form-group">
@@ -99,7 +125,7 @@
                                     </div>   
                                 </div>
                                 <div class="modal-footer">
-                                    <asp:Button ID="editDetails" CssClass="btn btn-primary" runat="server" OnClick="saveDetails_Click" Text="Save Changes"></asp:Button>
+                                    <asp:Button ID="editDetails" CssClass="btn btn-primary" ValidationGroup="valGroupEditProfile" runat="server" OnClick="saveDetails_Click" Text="Save Changes"></asp:Button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
@@ -174,7 +200,7 @@
                             </div>
                         </div>
                     </div>
-                    <asp:Label ID="lblRecentlyAdded" runat="server" Text="No Recent Additions" Visible="false" />
+                    <%--<asp:Label ID="lblRecentlyAdded" runat="server" Text="No Recent Additions" Visible="false" />--%>
                     <p></p>
                 <%--<asp:Button ID="btnReviewComplaints" CssClass="btn btn-primary" runat="server" Text="Review complaints" data-toggle="modal" data-target="#reviewComplaints" Visible="false"/>
                     <div class="modal fade" id="reviewComplaints" tabindex="-1" role="dialog" aria-labelledby="reviewComplaintsLabel" aria-hidden="true">
@@ -227,7 +253,7 @@
                                         <div class="col-md-6">
                                             Select and remove to unban
 										    <asp:DropDownList ID="ddlBannedUsers" runat="server" Width="224"></asp:DropDownList><p></p><br />
-                                            <asp:Button ID="btnUnbanUser" CssClass="btn btn-primary" runat="server" OnClick="btnUnBan_Click" Text="Unban User"></asp:Button>
+                                            <asp:Button ID="btnUnbanUser" CssClass="btn btn-primary" runat="server" OnClick="btnUnBan_Click" Text="Remove Ban"></asp:Button>
                                         </div>
                                     </div>
                                 </div>
@@ -309,16 +335,22 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
-                                                Select Moderator to Remove<br />
+                                                Select and Add as Moderators<br />
+										        <asp:DropDownList ID="ddlUsersToMod" runat="server" Width="224"></asp:DropDownList><p></p>
+                                                <asp:Button ID="Button2" CssClass="btn btn-primary" runat="server" OnClick="btnAddMod_Click" Text="Add New Moderator"></asp:Button>
+                                                <%--Select Moderator to Remove<br />
 											    <asp:DropDownList ID="ddlRemoveMod" runat="server" Width="224"></asp:DropDownList><p></p>
-                                                <asp:Button ID="Button1" CssClass="btn btn-primary" runat="server" OnClick="btnRemoveMod_Click" Text="Remove Moderator"></asp:Button>
+                                                <asp:Button ID="Button1" CssClass="btn btn-primary" runat="server" OnClick="btnRemoveMod_Click" Text="Remove Moderator"></asp:Button>--%>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="row">
-								                Select and Add as Moderators<br />
+                                                Select Moderator to Remove<br />
+											    <asp:DropDownList ID="ddlRemoveMod" runat="server" Width="224"></asp:DropDownList><p></p>
+                                                <asp:Button ID="Button1" CssClass="btn btn-primary" runat="server" OnClick="btnRemoveMod_Click" Text="Remove Moderator"></asp:Button>
+								                <%--Select and Add as Moderators<br />
 										        <asp:DropDownList ID="ddlUsersToMod" runat="server" Width="224"></asp:DropDownList><p></p>
-                                                <asp:Button ID="Button2" CssClass="btn btn-primary" runat="server" OnClick="btnAddMod_Click" Text="Add New Moderator"></asp:Button>
+                                                <asp:Button ID="Button2" CssClass="btn btn-primary" runat="server" OnClick="btnAddMod_Click" Text="Add New Moderator"></asp:Button>--%>
 									        </div>
                                         </div>
                                     </div>
@@ -331,6 +363,9 @@
                     </div>
                     <asp:Label ID="editModActivity" runat="server" Text="No Recent Activity" Visible="false" />
                     <p></p>
+                    <p>
+                        <asp:Label ID="lblRecentlyAdded" runat="server" Text="No Recent Activity" Visible="false" />
+                    </p>
                 <h2>My Active Offers</h2>
                 <uc1:PendingOffers runat="server" ID="PendingOffers"/>
                 <h2>My Active Requests</h2>
@@ -342,9 +377,9 @@
                 <uc5:OfferNotifications runat="server" ID="OfferNotifications" />
                 <h4>Requests awaiting confirmation</h4>
                 <uc6:RequestNotifications runat="server" ID="RequestNotifications" />
-                <h4>Responses to your offers</h4>
+                <h4>Offering a lift</h4>
                 <uc8:RequestNotificationResponse runat="server" ID="RequestNotificationResponse" />
-                <h4>Responses to your requests</h4>
+                <h4>Requesting a lift</h4>
                 <uc7:OfferNotificationResponse runat="server" ID="OfferNotificationResponse" />
                 <h2>Trip History</h2>
                 <uc3:OfferHistory runat="server" ID="OfferHistory" />

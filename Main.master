@@ -115,19 +115,19 @@
                                 <span class="text-uppercase" style="color:lightgray">Follow us</span>
                                 <ul>
                                     <li>
-                                        <a href="#" target="_blank">
+                                        <a href="#">
                                     <img alt="Twitter Logo" class="" src="Images/twitter.png" /></a>
                                     </li>
                                     <li>
-                                        <a href="#" target="_blank">
+                                        <a href="#">
                                     <img alt="Facebook Logo" class="" src="Images/facebook.png" /></a>
                                     </li>
                                     <li>
-                                        <a href="#" target="_blank">
+                                        <a href="#">
                                     <img alt="Facebook Logo" class="" src="Images/googleplus.png" /></a>
                                     </li>
                                     <li>
-                                        <a href="#" target="_blank">
+                                        <a href="#">
                                     <img alt="Facebook Logo" class="" src="Images/rssfeed.png" /></a>
                                     </li>
                                 </ul>

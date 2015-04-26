@@ -16,8 +16,8 @@
             </LayoutTemplate>
             <ItemTemplate>
                 <div class="well">
-                      <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> <%#Eval("frm_place") %> to <%#Eval("to_place")%>
-                      <asp:Button CssClass="btn btn-info pull-right" ID="btnCancelOffer" CommandName="ItemCommand" runat="server" Text="Cancel" />
+                      <%#((System.DateTime)Eval("date_time")).ToString("dd-MMM-yyyy HH:mm") %> <%#Eval("frm_place") %> to <%#Eval("to_place")%><br />
+                      <asp:Button CssClass="btn btn-xs btn-info" ID="btnCancelOffer" CommandName="ItemCommand" runat="server" Text="Cancel" />
                 </div>
             </ItemTemplate>
         </asp:ListView>

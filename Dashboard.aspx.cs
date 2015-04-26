@@ -12,6 +12,7 @@ using System.Data;
 using System.Configuration;
 using System.Web.Security;
 using System.Web.UI.HtmlControls;
+using System.Globalization;
 
 
 public partial class Dashboard : System.Web.UI.Page
@@ -64,10 +65,10 @@ public partial class Dashboard : System.Web.UI.Page
                     btnEditMod.Visible = true;
                     lblSiteManagement.Visible = true;
                     lblRecentlyAdded.Visible = true;
-                    lblBanActivity.Visible = true;
-                    lblPassActivity.Visible = true;
-                    editModActivity.Visible = true;
-                    lblRemoveUser.Visible = true;
+                    //lblBanActivity.Visible = true;
+                    //lblPassActivity.Visible = true;
+                    //editModActivity.Visible = true;
+                    //lblRemoveUser.Visible = true;
                     loadUserLists();
                     loadUserEmailAdd();
                     loadModEmailAdd();
@@ -81,7 +82,7 @@ public partial class Dashboard : System.Web.UI.Page
                     btnBan.Visible = true;
                     lblSiteManagement.Visible = true;
                     lblRecentlyAdded.Visible = true;
-                    lblBanActivity.Visible = true;
+                    //lblBanActivity.Visible = true;
                     loadUserLists();
                     loadCountyList();
                 } break;
@@ -94,7 +95,7 @@ public partial class Dashboard : System.Web.UI.Page
         //Need a command to load users image from DB and display to profileImage
 
         //Need commands to load name, email and phone from DB and display to txtName, txtEmail, txtPhone
-        using (SqlCommand cmd = new SqlCommand("Select * from users Where User_ID =" + userID, conn))
+        using (SqlCommand cmd = new SqlCommand("Select User_ID, FName, SName, Email, Mobile, FORMAT(dob, 'dd/MM/yyyy', 'en-gb') as dob, Smoker, cat_no, gender from users Where User_ID =" + userID, conn))
         {
                 cmd.CommandType = System.Data.CommandType.Text;
                 cmd.Connection = conn;
@@ -172,11 +173,11 @@ public partial class Dashboard : System.Web.UI.Page
                 active = (ListView)RequestNotifications.FindControl("requestNotifcationsLV");
             } break;
             case (7):{
-                query = "Select offer_id, status FROM offer_response where user_id = " + userID + " AND r_date >= (GETDATE() - 7)";
+                query = "Select offer_id, status FROM offer_response where user_id = " + userID + " AND r_date >= GETDATE()";
                 active = (ListView)OfferNotificationResponse.FindControl("OfferNotificationResponseLV");
             } break;
             case (8):{
-                query = "Select req_id, status FROM req_response where user_id = " + userID + " AND r_date >= (GETDATE() - 7)";
+                query = "Select req_id, status FROM req_response where user_id = " + userID + " AND r_date >= GETDATE()";
                 active = (ListView)RequestNotificationResponse.FindControl("RequestNotificationResponseLV");
             } break;
             default: break;
@@ -271,11 +272,23 @@ public partial class Dashboard : System.Web.UI.Page
             fs.Close();
             br.Close();
 
-            string strQuery2 = "UPDATE profile_image SET image_name = @iName, content_type = @cType, data = @data WHERE user_ID =" + userID;
+            string strQuery2 = "";
+
+            if(isImageExist(userID))
+            {
+                strQuery2 = "UPDATE profile_image SET image_name = @iName, content_type = @cType, data = @data WHERE user_ID =" + userID;
+            }
+            else
+            {
+                strQuery2 = "INSERT into profile_image(user_ID, image_name, content_type, data) VALUES(" + userID + ", @iName, @cType, @data)";
+            }
+
+            
             SqlCommand cmd2 = new SqlCommand(strQuery2);
             cmd2.Parameters.Add("@data", SqlDbType.Binary).Value = bytes;
             cmd2.Parameters.Add("@cType", SqlDbType.VarChar).Value = contenttype;
             cmd2.Parameters.Add("@iName", SqlDbType.VarChar).Value = filename;
+
             InsertUpdateData(cmd2);
         }
 
@@ -324,18 +337,60 @@ public partial class Dashboard : System.Web.UI.Page
 
         if (!txtDOB.Text.Equals(""))
         {
-            cmd.Parameters.AddWithValue("@DOB", txtDOB.Text);
+            //Localized the date format
+            DateTimeFormatInfo dateInfo = new System.Globalization.DateTimeFormatInfo();
+            dateInfo.ShortDatePattern = "dd/MM/yyyy";
+            DateTime dob = Convert.ToDateTime(txtDOB.Text, dateInfo);
+            cmd.Parameters.AddWithValue("@DOB", dob);
         }
         else
         {
             valid = false;
         }
 
+        if(!txtNewPW.Text.Equals("") && txtNewPW.Text.Equals(txtConPW.Text))
+        {
+            string newPw = txtNewPW.Text.Trim();
+                
+            if(!txtOldPW.Text.Equals("")  && DBHelper.verifyUser(lblEmail.Text, txtOldPW.Text))
+            {
+                DBHelper.changePassword(lblEmail.Text, newPw);
+            }
+        }
+
         if (valid)
         {
             InsertUpdateData(cmd);
-            Page_Load(sender, e);
+            //Page_Load(sender, e);
+            Response.Redirect(Request.RawUrl);
         }
+    }
+
+    private bool isImageExist(string userID)
+    {
+        bool imageExist = false;
+
+        try
+        {
+            string conString = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = conString;
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("select count(*) from profile_image where user_ID = @userID", conn);
+            SqlParameter param = new SqlParameter();
+            param.ParameterName = "@userID";
+            param.Value = userID;
+            cmd.Parameters.Add(param);
+            int count = (int)cmd.ExecuteScalar();
+            if (count > 0)
+                imageExist = true;
+            cmd.Dispose();
+            conn.Dispose();
+        }
+        catch (SqlException ex)
+        {}
+       
+        return imageExist;
     }
 
     private Boolean InsertUpdateData(SqlCommand cmd)
@@ -389,7 +444,8 @@ public partial class Dashboard : System.Web.UI.Page
                         "UPDATE Banned_User " +
                         "SET start_date = GetDate(), " +
                         "duration = '" + ddlSelectDuration.Text + "', " +
-                        "ban_count = (ban_count + 1) " +
+                        "ban_count = (ban_count + 1), " +
+                        "active = 'y'" +
                         "WHERE User_ID = " + ddlUsers.SelectedValue + " END";
 
         string q1 = "UPDATE offer_rec SET active = 'n' WHERE User_ID = " + ddlUsers.SelectedValue;
@@ -404,7 +460,7 @@ public partial class Dashboard : System.Web.UI.Page
         InsertUpdateData(newCommand);
         SqlCommand aCommand = new SqlCommand(aQuery);
         InsertUpdateData(aCommand);
-        lblBanActivity.Text = "Added " + ddlUsers.DataTextField + " to ban list";
+        //lblBanActivity.Text = "Added " + ddlUsers.DataTextField + " to ban list";
         Response.Redirect(Request.RawUrl);
     }
 
@@ -486,15 +542,22 @@ public partial class Dashboard : System.Web.UI.Page
         string userEmail = ddlUserEmail.SelectedValue;
         string passW = newPass.Text;
         string passC = newPassConfirm.Text;
-        if (!(passW.Equals(passC)))
+        if (passW == "")
         {
-            lblPassActivity.Text = "Error: Passwords do not match";
+            lblPassActivity.Text = "Error: No password entered!";
         }
         else
         {
-            //pass email and password strings to DBHelper changePassword method
-            DBHelper.changePassword(userEmail, passW);
-            lblPassActivity.Text = "Changed password for: " + userEmail;
+            if (!(passW.Equals(passC)))
+            {
+                lblPassActivity.Text = "Error: Passwords do not match";
+            }
+            else
+            {
+                //pass email and password strings to DBHelper changePassword method
+                DBHelper.changePassword(userEmail, passW);
+                lblPassActivity.Text = "Changed password for: " + userEmail;
+            }
         }
     }
 
@@ -527,27 +590,33 @@ public partial class Dashboard : System.Web.UI.Page
         SqlCommand aCommand = new SqlCommand();
         SqlDataReader newDataReader;
         SqlDataReader aDataReader;
-        string newQuery = "SELECT users.FName + ' ' + users.SName as full_name, " +
+        string newQuery = "SELECT users.User_ID as id, users.FName + ' ' + users.SName + ' (' + CONVERT(varchar, users.User_ID) + ')' as full_name, " +
                           "Banned_user.User_ID FROM users JOIN Banned_user " +
                           "ON users.User_ID = Banned_user.User_ID " +
                           "WHERE active = 'y'";
-        string aQuery = "SELECT users.User_ID, users.FName + ' ' + users.SName as full_name " + 
-            "FROM users JOIN user_secret on users.User_ID = user_secret.User_ID " + 
-            "WHERE users.User_ID  NOT IN (SELECT User_ID FROM  Banned_user WHERE active = 'y') " + 
-            "AND user_secret.Access_level = 1";
+        string aQuery = "SELECT * FROM vGetUserNameID";
+            
+            //"SELECT users.User_ID as id, users.FName + ' ' + users.SName _ ' (' + as full_name " + 
+            //"FROM users JOIN user_secret on users.User_ID = user_secret.User_ID " + 
+            //"WHERE users.User_ID  NOT IN (SELECT User_ID FROM  Banned_user WHERE active = 'y') " + 
+            //"AND user_secret.Access_level = 1";
         newCommand = new SqlCommand(newQuery, newConnection);
         aCommand = new SqlCommand(aQuery, newConnection);
         newConnection.Open();
         newDataReader = newCommand.ExecuteReader();
         ddlBannedUsers.DataSource = newDataReader;
         ddlBannedUsers.DataTextField = "full_name"; //How to concatenate FName and SName?
-        ddlBannedUsers.DataValueField = "User_ID";
+        ddlBannedUsers.DataValueField = "id";
         ddlBannedUsers.DataBind();
         newDataReader.Close();
+        if (ddlBannedUsers.Items.Count == 0)
+        {
+            btnUnbanUser.Enabled = false;
+        }
         aDataReader = aCommand.ExecuteReader();
         ddlUsers.DataSource = aDataReader;
         ddlUsers.DataTextField = "full_name";
-        ddlUsers.DataValueField = "User_ID";
+        ddlUsers.DataValueField = "id";
         ddlUsers.DataBind();
         aDataReader.Close();
         newConnection.Close();
@@ -562,9 +631,7 @@ public partial class Dashboard : System.Web.UI.Page
         SqlCommand newCommand = new SqlCommand();
         string newQuery = "UPDATE user_secret " +
                           "SET Access_level=2 " +
-                          "WHERE User_ID = " +
-                          "(SELECT User_ID FROM users " +
-                          "WHERE Email = '" + ddlUsersToMod.SelectedValue + "')";
+                          "WHERE User_ID = " + ddlUsersToMod.SelectedValue;
         newCommand = new SqlCommand(newQuery, newConnection);
         newConnection.Open();
         newCommand.ExecuteNonQuery();
@@ -576,8 +643,7 @@ public partial class Dashboard : System.Web.UI.Page
     protected void btnRemoveMod_Click(object sender, EventArgs e)
     {
         string newQuery = "UPDATE user_secret SET Access_level=1 " +
-                          "WHERE User_ID = (SELECT User_ID FROM users " +
-                          "WHERE Email = '" + ddlRemoveMod.SelectedValue + "')";
+                          "WHERE User_ID = " + ddlRemoveMod.SelectedValue;
         SqlCommand newCommand = new SqlCommand(newQuery);
         InsertUpdateData(newCommand);
         editModActivity.Text = "Removed mod privileges from " + ddlRemoveMod.SelectedValue;
@@ -595,11 +661,11 @@ public partial class Dashboard : System.Web.UI.Page
         SqlCommand aCommand = new SqlCommand();
         SqlDataReader newDataReader;
         SqlDataReader aDataReader;
-        string newQuery = "SELECT user_secret.User_ID, users.Email " +
+        string newQuery = "SELECT user_secret.User_ID as id, users.FName + ' ' + users.SName + ' (' + CONVERT(varchar, user_secret.User_ID) + ')' as full_name " +
                           "FROM users INNER JOIN user_secret " +
                           "ON users.User_ID=user_secret.User_ID " +
                           "WHERE user_secret.Access_level=2";
-        string aQuery = "SELECT user_secret.User_ID, users.Email " +
+        string aQuery = "SELECT user_secret.User_ID as id, users.FName + ' ' + users.SName + ' (' + CONVERT(varchar, user_secret.User_ID) + ')' as full_name " +
                         "FROM users INNER JOIN user_secret " +
                         "ON users.User_ID=user_secret.User_ID " +
                         "WHERE user_secret.Access_level=1";
@@ -608,14 +674,19 @@ public partial class Dashboard : System.Web.UI.Page
         newConnection.Open();
         newDataReader = newCommand.ExecuteReader();
         ddlRemoveMod.DataSource = newDataReader;
-        ddlRemoveMod.DataTextField = "Email";
-        ddlRemoveMod.DataValueField = "Email";
+        
+        ddlRemoveMod.DataTextField = "full_name";
+        ddlRemoveMod.DataValueField = "id";
         ddlRemoveMod.DataBind();
         newDataReader.Close();
+        if (ddlRemoveMod.Items.Count == 0)
+        {
+            Button1.Enabled = false;
+        }
         aDataReader = aCommand.ExecuteReader();
         ddlUsersToMod.DataSource = aDataReader;
-        ddlUsersToMod.DataTextField = "Email";
-        ddlUsersToMod.DataValueField = "Email";
+        ddlUsersToMod.DataTextField = "full_name";
+        ddlUsersToMod.DataValueField = "id";
         ddlUsersToMod.DataBind();
         aDataReader.Close();
         newConnection.Close();

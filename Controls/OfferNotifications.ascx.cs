@@ -33,7 +33,7 @@ public partial class OfferNotifications : System.Web.UI.UserControl
             if (e.CommandArgument != null)
             {
                 string seats = checkSeats(e.CommandArgument.ToString());
-                if (!seats.Equals(""))
+                if (!seats.Equals("") || !seats.Equals("0"))
                 {
                     Label error = (Label)e.Item.FindControl("lblError");
                     error.Visible = false;
@@ -60,10 +60,17 @@ public partial class OfferNotifications : System.Web.UI.UserControl
     {
         Button btn = (Button)e.Item.FindControl("btnDecline");
         Button btn2 = (Button)e.Item.FindControl("btnConfirm");
+        HyperLink hpl = (HyperLink)e.Item.FindControl("hlViewOverview");
         DataRowView rowView = (DataRowView)e.Item.DataItem;
-        btn.CommandArgument = rowView["offer_id"].ToString();
+        string offer_id = rowView["offer_id"].ToString();
+        btn.CommandArgument = offer_id; 
         btn2.CommandArgument = rowView["offer_id"].ToString();
         ViewState["pID"] = rowView["passenger_id"].ToString();
+
+
+        string[] nameID = getPassengerNameID(offer_id);
+        hpl.Text = nameID[1];
+        hpl.NavigateUrl = ResolveClientUrl("/Overview.aspx") + "?id=" + nameID[0];
     }
 
     private Boolean InsertUpdateData(SqlCommand cmd)
@@ -102,15 +109,56 @@ public partial class OfferNotifications : System.Web.UI.UserControl
             cmd.CommandType = System.Data.CommandType.Text;
             cmd.Connection = conn;
 
-            conn.Open();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
 
-            SqlDataReader reader = cmd.ExecuteReader();
-            
-            if (reader.HasRows)
+            try
             {
-                seats = reader["seats"].ToString();
+                conn.Open();
+                da.Fill(dt);
+
+                if(dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    seats = row["seats"].ToString();
+                }
+            }
+            finally
+            {
+
             }
         }
         return seats;
+    }
+
+    protected string[] getPassengerNameID(string offerID)
+    {
+        string connection = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
+        SqlConnection conn = new SqlConnection();
+        conn.ConnectionString = connection;
+        string[] nameID = new string[2];
+        using (SqlCommand cmd = new SqlCommand("Select passenger_id, passenger_name  from vOfferNotifications Where offer_id =" + offerID, conn))
+        {
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            try
+            {
+                conn.Open();
+                da.Fill(dt);
+
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    nameID[0] = row["passenger_id"].ToString();
+                    nameID[1] = row["passenger_name"].ToString();
+                }
+            }
+            finally
+            {
+                da.Dispose();
+                conn.Dispose();
+            }
+        }
+        return nameID;
     }
 }

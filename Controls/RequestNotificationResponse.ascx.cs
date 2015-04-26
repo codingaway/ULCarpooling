@@ -23,26 +23,31 @@ public partial class RequestNotificationResponse : System.Web.UI.UserControl
     {
         Label lbl1 = (Label)e.Item.FindControl("lblResponse");
         DataRowView rowView = (DataRowView)e.Item.DataItem;
+        HyperLink hpl = (HyperLink)e.Item.FindControl("hlViewOverview");
         string req_id = rowView["req_id"].ToString();
         string status;
         status = (rowView["status"].ToString()).Trim();
         //Debug.WriteLine("Offer id is: " + offer_id + " Status is: " + status);
 
         if (status.CompareTo("Confirmed") == 0)
-            lbl1.Text = " has accepted your offer of a lift";
+            lbl1.Text = "Confirmed by ";
         else if (status.CompareTo("Declined") == 0)
-            lbl1.Text = " has declined your offer of a lift";
+            lbl1.Text = "Declined by ";
+        else if (status.CompareTo("pending") == 0)
+            lbl1.Text = "Pending confirmation from ";
 
-        Label lbl2 = (Label)e.Item.FindControl("lblName");
-        lbl2.Text = getPassengerName(req_id);
+        string[] nameID = getPassengerNameID(req_id);
+        hpl.Text = nameID[1];
+        hpl.NavigateUrl = ResolveClientUrl("/Overview.aspx") + "?id=" + nameID[0];
     }
-    protected string getPassengerName(string req_id)
+
+    protected string[] getPassengerNameID(string requestID)
     {
         string connection = ConfigurationManager.ConnectionStrings["DbConnString"].ConnectionString;
         SqlConnection conn = new SqlConnection();
         conn.ConnectionString = connection;
-        string name = "";
-        using (SqlCommand cmd = new SqlCommand("Select * from vRequestDetails Where id =" + req_id, conn))
+        string[] nameID = new string[2];
+        using (SqlCommand cmd = new SqlCommand("Select User_ID, full_name  from vRequestDetails Where id =" + requestID, conn))
         {
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -54,7 +59,8 @@ public partial class RequestNotificationResponse : System.Web.UI.UserControl
                 if (dt.Rows.Count > 0)
                 {
                     DataRow row = dt.Rows[0];
-                    name = row["full_name"].ToString();
+                    nameID[0] = row["User_ID"].ToString();
+                    nameID[1] = row["full_name"].ToString();
                 }
             }
             finally
@@ -63,7 +69,7 @@ public partial class RequestNotificationResponse : System.Web.UI.UserControl
                 conn.Dispose();
             }
         }
-        return name;
+        return nameID;
     }
 
 }

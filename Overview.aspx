@@ -44,74 +44,65 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-                    
-                    <asp:Panel ID="Panel1" runat="server">
-                        
-                        <div class="row boxed">
-                        <div class="col-md-3">
-                        <div class="row form-group">
-                            <asp:Image ID="imUserPic" runat="server" Height="150" Width="150" />
-                            <%--<img alt="user picture" class="img-circle" height="150" width="130" src='<%=ResolveClientUrl("~/GetImage.aspx?ImageID=")%><%#Eval("User_ID")%>' />--%>
-                        </div>
-                        <div class="row form-group">
-                            <asp:Label ID="userName" runat="server" Text=""></asp:Label>
-                        </div>
-                        <div class="row form-group">
-                            <%--<cc1:Rating ID="Rating1" AutoPostBack="true" runat="server" StarCssClass="Star" WaitingStarCssClass="WaitingStar" FilledStarCssClass="FilledStar" EmptyStarCssClass="Star">
-                         </cc1:Rating>&nbsp;
-                            <asp:Label ID="numberUserRating" runat="server" Text="" Font-Italic="True"></asp:Label>--%>
+    <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:DbConnString %>" ></asp:SqlDataSource>                                     
+    <div class="well top-buffer">
+        <h3 class="text-center">User Overview</h3>
+           <div class="row">           
+                        <div class="col-md-3 col-md-offset-2">
+                            
+                            <asp:Image ID="imUserPic" runat="server" Height="150" Width="150" /><br />
+                            <h2><asp:Label ID="userName" runat="server" Text=""></asp:Label></h2>
                             <asp:Label ID="lblStars" CssClass="stars" runat="server" Text=""></asp:Label>
-                                    <span class="small text-muted">(<asp:Label ID="lblCount" runat="server" Text=""></asp:Label>)</span>
-                        </div>
-                        <div class="row form-group">
-                            <asp:Label ID="lblUserAge" runat="server" Text=""></asp:Label>
-                        </div>
-                        <div class="row form-group">
-                            <asp:Label ID="lblisSmoker" runat="server" Text=""></asp:Label>
-                        </div>
-                        <div class="row form-group">
-                            <asp:Label ID="lblGender" runat="server" Text=""></asp:Label>
-                        </div>
-                        <div class="row form-group">
-                            <asp:Label ID="lblUserCat" runat="server" Text=""></asp:Label>
-                        </div>
+                            <asp:Label ID="lblTotalComments" runat="server" Text="Total rating: " />
+                            <span class="small text-muted">(<asp:Label ID="lblCount" runat="server" Text=""></asp:Label>)</span>
+                            <br />
+                            <asp:Label ID="lblUserAge" runat="server" Text=""></asp:Label><br />
+                            <asp:Label ID="lblisSmoker" runat="server" Text=""></asp:Label><br />
+                            <asp:Label ID="lblGender" runat="server" Text=""></asp:Label> <br />
+                            <asp:Label ID="lblUserCat" runat="server" Text=""></asp:Label> <br />
                         </div>
 
                         <div class="col-md-5">
-                            <div class="row">
-                                <div class="col-md-12">
-                                <h3 class="text-center"><em><strong>REVIEWS</strong></em></h3>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <asp:ListView ID="ListView1" runat="server">
+                                <h5 class="text-primary"><em>Recent Comments of this User</em></h5>
+                                <asp:ListView ID="ListView1" runat="server" OnItemDataBound="ListView1_ItemDataBound">
                                 <LayoutTemplate>
-                                 <div style="border:solid 2px #4d85b6; width:150%; padding:4px; margin:10px">
-                                     <th><h4 class="modal-header" style="text-align:center"><em>Recent Five Comments of this User</em></h4></th>
+                                 <div>
+                                     
                                   <asp:PlaceHolder ID="itemPlaceholder" runat="server" />
                                  </div>
                                 </LayoutTemplate>
                                  <ItemTemplate>
-                                  <div class="boxed1" style="text-align:center">
-                                  <%# Eval("comment")%>
-                                  </div>
+                                     <div class="panel panel-default">
+                                         <div class="panel-body">
+                                            <em>"<%# Eval("comment")%>"</em>
+                                          </div>
+                                          <div class="panel-heading">
+                                                <span><%# Eval("submit_date")%></span> <span class="text-info pull-right"> <%# Eval("Name")%></span>
+                                              </div>
+                                          
+                                        </div>
                                </ItemTemplate>
-                               <AlternatingItemTemplate>
-                                 <div class="boxed1" style="text-align:center">
-                                 <%# Eval("comment")%>
-                                 </div>
-                               </AlternatingItemTemplate>
+<%--                               <AlternatingItemTemplate>
+                                 <div class="panel panel-warning">
+                                          <div class="panel-heading">
+                                                <span class="panel-title"> <%# Eval("Name")%></span>
+                                              </div>
+                                          <div class="panel-body">
+                                            <em>"<%# Eval("comment")%>"</em>
+                                          </div>
+                                          <div class="panel-footer pull-right"><%# Eval("submit_date")%></div>
+                                        </div>
+                               </AlternatingItemTemplate>--%> 
                                <EmptyDataTemplate>
-                                   <div class="boxed">
-                                       <asp:Label ID="Label1" runat="server" Text="No records found" Font-Italic="True" Font-Bold="True" Font-Size="Medium" ForeColor="#333333"></asp:Label>
+                                   <div class="well">
+                                       <asp:Label ID="Label1" runat="server" Text="There are no comments for this user"></asp:Label>
                                    </div>
                                </EmptyDataTemplate>
                                 </asp:ListView>
-                            </div>
-
                         </div>
-                            </div>
-                    </asp:Panel>
+           </div>
+    </div>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="cphScripts" Runat="Server">
 </asp:Content>

@@ -20,7 +20,7 @@
                         <asp:Panel ID="titlePanel" runat="server">
                             <asp:Label ID="lblShowHideDetails" runat="server" Text=""></asp:Label>
                             <span id="panel-title" class="panel-title">
-                                <span class="glyphicon glyphicon-map-marker"></span><span class="place-title"><asp:Label ID="lblName" runat="server" /></span>&nbsp;<asp:Label ID="lblResponse" runat="server" /></span>
+                                <span class="glyphicon glyphicon-map-marker"></span><asp:Label ID="lblResponse" runat="server" /></span>&nbsp;<span class="place-title"><asp:HyperLink ID="hlViewOverview" runat="server"></asp:HyperLink></span>
                         </asp:Panel>
                     </div>
                 </div>

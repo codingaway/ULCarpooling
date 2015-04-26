@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using AjaxControlToolkit;
 using System.Configuration;
 using System.Security;
+using System.Text.RegularExpressions;
 
 public partial class Overview : System.Web.UI.Page
 {
@@ -16,76 +17,114 @@ public partial class Overview : System.Web.UI.Page
     SqlCommand cmd1;
     SqlDataAdapter adp1;
     SqlDataReader rd1;
+   
+
     protected void Page_Load(object sender, EventArgs e)
     {
         string userAge = "";
-        
+        string user_id = "";
+        if(Request.QueryString.HasKeys())
+             user_id = Request.QueryString["id"].ToString();
+        Regex regex = new Regex("\\d");
 
-        if (!IsPostBack)
+        if(!regex.IsMatch(user_id) || !Request.IsAuthenticated)
         {
-            //getting user id from request query 
-            string user_id = Request.QueryString["id"].ToString();
-
-            BindRatings(user_id);
-           
-            //method for listview
-            BindListViewControls(user_id);
-            imUserPic.ImageUrl = "~/GetImage.aspx?ImageID=" + user_id;
-
-            con1.Open();
-            
-            using (cmd1 = new SqlCommand("SELECT FName,SName,dob,Smoker,Gender,User_category.Description As Category from users JOIN User_category on users.cat_no = User_category.Cat_no WHERE User_ID ="+user_id, con1))
-            {
-                rd1 = cmd1.ExecuteReader();
-                if (rd1.Read())
-                {
-                    userName.Text = rd1["FName"].ToString() + " " + rd1["SName"].ToString();
-                    userAge = rd1["dob"].ToString();
-                    if (userAge == "")
-                    {
-                        lblUserAge.Text = "No DOB Found";
-                    }
-                    else
-                    {
-                        DateTime dt = Convert.ToDateTime(userAge);
-                        DateTime now = DateTime.Today;
-                        int age = now.Year - dt.Year;
-                        if (now < dt.AddYears(age))
-                            age--;
-                        lblUserAge.Text = age.ToString() + " age";
-                    }
-                    
-                    //To check if smoker
-                    if (rd1["Smoker"].ToString().Equals("y"))
-                    {
-                        lblisSmoker.Text = "Smoker";
-                    }
-                    else 
-                    {
-                        lblisSmoker.Text = "Non Smoker";
-                    }
-
-                    //To check if Non Smoker
-                    if (rd1["Gender"].ToString().Equals("m"))
-                    {
-                        lblGender.Text = "Male";
-                    }
-                    else
-                    {
-                        lblGender.Text = "Female";
-                    }
-
-                    lblUserCat.Text = rd1["Category"].ToString();
-                    
-                }
-                rd1.Close();
-            }
-            
-
-            con1.Close();
+            Response.StatusCode = 400;
+            Response.End();
         }
+        else
+        {
+            if (!IsPostBack)
+            {
+                //getting user id from request query 
+                user_id = Request.QueryString["id"].ToString();
+
+                if (isUserValid(user_id))
+                {
+                    ListView1.DataBind();
+
+                    BindRatings(user_id);
+
+                    //method for listview
+                    BindListViewControls(user_id);
+                    imUserPic.ImageUrl = "~/GetImage.aspx?ImageID=" + user_id;
+
+                    con1.Open();
+
+                    using (cmd1 = new SqlCommand("SELECT FName,SName,dob,Smoker,Gender,User_category.Description As Category from users JOIN User_category on users.cat_no = User_category.Cat_no WHERE User_ID =" + user_id, con1))
+                    {
+                        rd1 = cmd1.ExecuteReader();
+                        if (rd1.Read())
+                        {
+                            userName.Text = rd1["FName"].ToString() + " " + rd1["SName"].ToString();
+                            userAge = rd1["dob"].ToString();
+                            if (userAge == "")
+                            {
+                                lblUserAge.Text = "No DOB Found";
+                            }
+                            else
+                            {
+                                DateTime dt = Convert.ToDateTime(userAge);
+                                DateTime now = DateTime.Today;
+                                int age = now.Year - dt.Year;
+                                if (now < dt.AddYears(age))
+                                    age--;
+                                lblUserAge.Text = age.ToString() + " age";
+                            }
+
+                            //To check if smoker
+                            if (rd1["Smoker"].ToString().Equals("y"))
+                            {
+                                lblisSmoker.Text = "Smoker";
+                            }
+                            else
+                            {
+                                lblisSmoker.Text = "Non Smoker";
+                            }
+
+                            //To check if Non Smoker
+                            if (rd1["Gender"].ToString().Equals("m"))
+                            {
+                                lblGender.Text = "Male";
+                            }
+                            else
+                            {
+                                lblGender.Text = "Female";
+                            }
+
+                            lblUserCat.Text = rd1["Category"].ToString();
+
+                        }
+                        rd1.Close();
+                    }
+                    con1.Close();
+                }
+
+                else
+                {
+                    Response.StatusCode = 400;
+                    Response.End();
+                }
+            }
+        }
+        
     }
 
+    public bool isUserValid(string userID)
+    {
+        con1.Open();
+        int value=0;
+        using (cmd1 = new SqlCommand("SELECT Count(*) from users where User_ID = @uID" , con1))
+        {
+            cmd1.Parameters.AddWithValue("@uID", userID);
+            value = Convert.ToInt32(cmd1.ExecuteScalar());
+        }
+        con1.Close();
+        if (value > 0)
+            return true;
+        else
+            return false;
+    }
 
     public void BindRatings(string userID)
     {
@@ -106,7 +145,7 @@ public partial class Overview : System.Web.UI.Page
     private void BindListViewControls(string userID)
     {
         con1.Open();
-        string query = "Select TOP 5 comment from Reviews WHERE user_id=" + userID + " AND comment!=null ORDER BY submit_date DESC";
+        string query = "Select TOP 5 comment, users.FName+' '+users.SName As Name,submit_date from Reviews JOIN users ON Reviews.reviewed_by=users.User_ID WHERE Reviews.user_id="+userID +" AND comment IS NOT NULL ORDER BY submit_date DESC";
 
         SqlDataAdapter da = new SqlDataAdapter(query, con1);
         DataTable table = new DataTable();
@@ -116,5 +155,9 @@ public partial class Overview : System.Web.UI.Page
         ListView1.DataSource = table;
         ListView1.DataBind();
         con1.Close();
+    }
+    protected void ListView1_ItemDataBound(object sender, ListViewItemEventArgs e)
+    {
+
     }
 }
