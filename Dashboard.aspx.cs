@@ -173,11 +173,11 @@ public partial class Dashboard : System.Web.UI.Page
                 active = (ListView)RequestNotifications.FindControl("requestNotifcationsLV");
             } break;
             case (7):{
-                query = "Select offer_id, status FROM offer_response where user_id = " + userID + " AND r_date >= GETDATE()";
+                query = "Select offer_id, status FROM offer_response where user_id = " + userID + " AND r_date >= GETDATE() - 1";
                 active = (ListView)OfferNotificationResponse.FindControl("OfferNotificationResponseLV");
             } break;
             case (8):{
-                query = "Select req_id, status FROM req_response where user_id = " + userID + " AND r_date >= GETDATE()";
+                query = "Select req_id, status FROM req_response where user_id = " + userID + " AND r_date >= GETDATE() - 1";
                 active = (ListView)RequestNotificationResponse.FindControl("RequestNotificationResponseLV");
             } break;
             default: break;

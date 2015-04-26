@@ -9,11 +9,11 @@
             <LayoutTemplate>
                 <div runat="server">
                     <div id="itemPlaceholder" runat="server" />
-                    <asp:DataPager ID="pager1" PageSize="2" runat="server">
+                    <%--<asp:DataPager ID="pager1" PageSize="2" runat="server">
                         <Fields>
                             <asp:NumericPagerField />
                         </Fields>
-                    </asp:DataPager>
+                    </asp:DataPager>--%>
                 </div>
             </LayoutTemplate>
             <ItemTemplate>
